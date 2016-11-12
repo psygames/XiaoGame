@@ -8,12 +8,10 @@ import java.io.InputStreamReader;
 public class ProtoToJava {
 
 	public static void genByBat() {
-		String batPath = System.getenv("proto_bat_path");
-		String protoPath = System.getenv("proto_path");
-		String command = "cmd.exe /c  " + batPath + "/run.bat";
+		String batPath = System.getenv("git_path");
+		String command = "cmd.exe /c  " + batPath + "/serverGen.bat";
 		Process process = null;
 		try {
-			System.out.println(protoPath);
 			System.out.println(command);
 			process = Runtime.getRuntime().exec(command);
 

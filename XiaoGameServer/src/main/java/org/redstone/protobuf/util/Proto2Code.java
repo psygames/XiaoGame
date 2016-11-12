@@ -20,11 +20,11 @@ public class Proto2Code {
 			System.out.println(command);
 			process = Runtime.getRuntime().exec(command);
 
-			// »ñÈ¡½ø³ÌµÄ±ê×¼ÊäÈëÁ÷
+			// è·å–è¿›ç¨‹çš„æ ‡å‡†è¾“å…¥æµ
 			final InputStream is1 = process.getInputStream();
-			// »ñÈ¡½ø³ÇµÄ´íÎóÁ÷
+			// è·å–è¿›åŸçš„é”™è¯¯æµ
 			final InputStream is2 = process.getErrorStream();
-			// Æô¶¯Á½¸öÏß³Ì£¬Ò»¸öÏß³Ì¸ºÔğ¶Á±ê×¼Êä³öÁ÷£¬ÁíÒ»¸ö¸ºÔğ¶Á±ê×¼´íÎóÁ÷
+			// å¯åŠ¨ä¸¤ä¸ªçº¿ç¨‹ï¼Œä¸€ä¸ªçº¿ç¨‹è´Ÿè´£è¯»æ ‡å‡†è¾“å‡ºæµï¼Œå¦ä¸€ä¸ªè´Ÿè´£è¯»æ ‡å‡†é”™è¯¯æµ
 			new Thread() {
 				public void run() {
 					BufferedReader br1 = new BufferedReader(new InputStreamReader(is1));
@@ -70,13 +70,13 @@ public class Proto2Code {
 			}.start();
 
 			if(process.waitFor() !=0){
-				if (process.exitValue() == 1) {//p.exitValue()==0±íÊ¾Õı³£½áÊø£¬1£º·ÇÕı³£½áÊø     
-	                System.err.println("ÃüÁîÖ´ĞĞÊ§°Ü!");  
+				if (process.exitValue() == 1) {//p.exitValue()==0è¡¨ç¤ºæ­£å¸¸ç»“æŸï¼Œ1ï¼šéæ­£å¸¸ç»“æŸ     
+	                System.err.println("å‘½ä»¤æ‰§è¡Œå¤±è´¥!");  
 	                System.exit(1);  
 	            } 
 			}
 			process.destroy();
-			System.out.println("ÔËĞĞ½áÊø...");
+			System.out.println("è¿è¡Œç»“æŸ...");
 		} catch (Exception e) {
 			try {
 				process.getErrorStream().close();

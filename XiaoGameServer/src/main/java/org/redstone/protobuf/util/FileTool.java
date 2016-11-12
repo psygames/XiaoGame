@@ -11,6 +11,12 @@ public class FileTool
     private static final String DEFULT_ENCODING = "utf8";
 
 
+
+    public static void moveFiles(String fromDir,String ext,String destDir)
+    {
+        
+    }
+
     public static void moveDir(String from, String dest)
     {
         File fromFile = new File(from);

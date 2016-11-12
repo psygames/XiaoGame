@@ -26,6 +26,8 @@ public class CSharpFix
         // Move To Dest Directory
         FileTool.moveDir(fromDir, destDir);
 
+
+
         // Format CS File
         String content = FileTool.readText(destDir);
         content = format(content);

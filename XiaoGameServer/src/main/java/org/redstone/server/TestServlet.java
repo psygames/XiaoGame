@@ -1,4 +1,4 @@
-package test.websocket.servlet;
+package org.redstone.server;
 
 import java.nio.ByteBuffer;
 
@@ -9,9 +9,9 @@ import javax.websocket.RemoteEndpoint.Async;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import com.google.protobuf.InvalidProtocolBufferException;
+import org.redstone.protobuf.msg.CardProto.Card;
 
-import test.websocket.protobuf.msg.CardProto.Card;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 @ServerEndpoint("/test")
 public class TestServlet {

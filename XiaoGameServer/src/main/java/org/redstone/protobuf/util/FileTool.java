@@ -11,21 +11,42 @@ public class FileTool
     private static final String DEFULT_ENCODING = "utf8";
 
 
-
-    public static void moveFiles(String fromDir,String ext,String destDir)
+    public static void clearDir(String dir)
     {
-        
-    }
+        File destFile = new File(dir);
 
-    public static void moveDir(String from, String dest)
-    {
-        File fromFile = new File(from);
-
-        File destFile = new File(dest);
         if (destFile.exists())
             destFile.delete();
         destFile.mkdirs();
 
+    }
+
+    public static void moveFiles(String fromDir, String destDir, String ext)
+    {
+        // Clear
+        clearDir(destDir);
+
+        // Move
+        File fromFile = new File(fromDir);
+        for (File f : fromFile.listFiles())
+        {
+            if (f.getName().endsWith(ext))
+            {
+                File destFile = new File(destDir + "/" + f.getName());
+                f.renameTo(destFile);
+            }
+        }
+    }
+
+
+    public static void moveDir(String from, String dest)
+    {
+        // Clear
+        clearDir(dest);
+
+        // Move
+        File fromFile = new File(from);
+        File destFile = new File(dest);
         fromFile.renameTo(destFile);
     }
 

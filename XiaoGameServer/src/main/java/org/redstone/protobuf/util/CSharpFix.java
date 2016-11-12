@@ -13,7 +13,7 @@ public class CSharpFix
 
     public final Map<String, String> replaceMembs = new HashMap<String, String>()
     {{
-        put("a", "b");
+        put("namespace [\\s\\S]*?\\n", "namespace message\\r\\n");
     }};
 
     public static void start()
@@ -24,8 +24,7 @@ public class CSharpFix
     private void execute()
     {
         // Move To Dest Directory
-        FileTool.moveDir(fromDir, destDir);
-
+        FileTool.moveFiles(fromDir, destDir, ".cs");
 
 
         // Format CS File
@@ -38,7 +37,7 @@ public class CSharpFix
     {
         for (Map.Entry<String, String> kv : replaceMembs.entrySet())
         {
-            content = content.replace(kv.getKey(), kv.getValue());
+            content = content.replaceAll(kv.getKey(), kv.getValue());
         }
 
         return content;

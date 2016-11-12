@@ -1,0 +1,4 @@
+cd %git_path%/XiaoGame/XiaoGameServer/src/main/resources
+f:
+protoc  --proto_path=%git_path% --java_out=%git_path%/XiaoGame/XiaoGameServer/src/main/java %git_path%/XiaoGame/XiaoGameServer/src/main/java/org/redstone/protobuf/proto/*.proto
+pause

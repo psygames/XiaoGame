@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 	public void Init()
 	{
 		m_connection = new Connection();
-		m_connection.Init("ws://192.168.10.105:8080/test.websocket/test", OnMessage, OnOpen, OnClose, OnError);
+		m_connection.Init("ws://192.168.10.105:8080/XiaoGameServer/test", OnMessage, OnOpen, OnClose, OnError);
 	}
 
 	public void Connect()

@@ -1,0 +1,13 @@
+	option java_package = "test.websocket.protobuf.msg";
+	option java_outer_classname = "CardProto" ;
+	option optimize_for = LITE_RUNTIME;
+	
+	message Card{
+
+		required int32 num = 1;
+		
+		required string color = 2;
+
+		optional string memo = 3;
+
+	}

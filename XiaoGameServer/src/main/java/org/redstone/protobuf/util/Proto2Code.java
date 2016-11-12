@@ -5,11 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class ProtoToJava {
+public class Proto2Code {
 
-	public static void genByBat() {
+	public static void genByBat(String type) {
 		String batPath = System.getenv("git_path");
-		String command = "cmd.exe /c  " + batPath + "/serverGen.bat";
+		if("client".equalsIgnoreCase(type)){
+			batPath += "/XiaoGame/XiaoGameServer/src/main/resources/serverGen/serverGen.bat";
+		}else{
+			batPath += "/XiaoGame/XiaoGameServer/src/main/java/org/redstone/protobuf/proto/clientGen.bat";
+		}
+		String command = "cmd.exe /c " + batPath;
 		Process process = null;
 		try {
 			System.out.println(command);
@@ -83,7 +88,7 @@ public class ProtoToJava {
 	}
 
 	public static void main(String[] args) {
-		ProtoToJava.genByBat();
+		Proto2Code.genByBat("client");
 		//System.out.println(System.getProperty("user.dir"));
 	}
 

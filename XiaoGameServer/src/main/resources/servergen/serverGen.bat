@@ -1,5 +1,7 @@
 @echo off
 
+cd F:\github_projects\XiaoGame\XiaoGameServer\src\main\resources\servergen
+
 echo 当前CMD默认目录：%cd%
 
 echo 协议文件路径

@@ -1,6 +1,16 @@
 package org.redstone.protobuf.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * Created by yinlong on 16/11/12.
@@ -32,8 +42,14 @@ public class FileTool
         {
             if (f.getName().endsWith(ext))
             {
+            	System.out.println("move file " + fromDir + "/" + f.getName() + " -----> " + destDir + "/" + f.getName() );
                 File destFile = new File(destDir + "/" + f.getName());
                 f.renameTo(destFile);
+                try {
+					FileUtils.copyFile(f, destFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             }
         }
     }
@@ -69,6 +85,7 @@ public class FileTool
                 while ((lineTxt = bufferedReader.readLine()) != null)
                 {
                     sb.append(lineTxt);
+                    sb.append("\r\n");
                 }
                 read.close();
             } else
@@ -91,14 +108,15 @@ public class FileTool
 
     public static void writeText(String path, String content, String encoding, boolean append)
     {
-        FileOutputStream out = null;
+    	BufferedWriter wr = null;
         try
         {
             File file = new File(path);
             if (!file.exists())
                 file.createNewFile();
-            out = new FileOutputStream(file, append);
-            out.write(content.getBytes(encoding));
+            wr = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), encoding));
+            wr.write(content);
+            wr.flush();
         } catch (Exception e)
         {
             System.out.println("写入文件内容出错");
@@ -107,8 +125,8 @@ public class FileTool
         {
             try
             {
-                if (out != null)
-                    out.close();
+                if (wr != null)
+                    wr.close();
             } catch (Exception e)
             {
             }

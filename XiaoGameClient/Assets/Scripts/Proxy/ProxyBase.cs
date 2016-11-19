@@ -1,27 +1,27 @@
 ﻿using System;
-
+using message;
 namespace RedStone.Proxy
 {
 	public class ProxyBase
 	{
+		public NetworkManager network
+		{
+			get { return NetworkManager.instance; }
+		}
+
 		public ProxyBase()
 		{
-			
+
 		}
 
-		public void Init()
+		protected virtual void OnInit()
 		{
-			
-		}
 
-		protected virtual OnInit()
-		{
-			
 		}
 
 		protected virtual void OnUpdate()
-		{ 
-			
+		{
+
 		}
 	}
 }

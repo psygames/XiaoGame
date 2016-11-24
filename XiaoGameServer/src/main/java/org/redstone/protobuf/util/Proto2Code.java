@@ -108,7 +108,7 @@ public class Proto2Code {
 	}
 
 	public static void main(String[] args) {
-		//Proto2Code.genByBat("java");
+//		Proto2Code.genByBat("java");
 		Proto2Code.genByBat("cs");
 		CSharpFix.start();
 		System.out.println("finished!!!");

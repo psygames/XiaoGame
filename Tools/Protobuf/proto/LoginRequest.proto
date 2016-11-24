@@ -1,3 +1,5 @@
+syntax = "proto2";
+option java_multiple_files = true;
 package org.redstone.protobuf.msg;
 
 message LoginRequest

@@ -17,7 +17,7 @@ import org.redstone.server.TestServlet;
  */
 public class HandlerUtils {
 	private static final Logger logger = Logger.getLogger(TestServlet.class);
-	private static Map<String, String> handlerMap = new HashMap<String, String>();
+	private static Map<Integer, String> handlerMap = new HashMap<Integer, String>();
 	
 	static{
 		refresh();
@@ -44,8 +44,8 @@ public class HandlerUtils {
 	 * @throws
 	 */
 	public static void refresh(){
-		handlerMap.put("1001", "org.redstone.handler.LoginHandler");
-		handlerMap.put("1003", "org.redstone.handler.JoinBattleHandler");
+		handlerMap.put(1001, "org.redstone.handler.LoginHandler");
+		handlerMap.put(1003, "org.redstone.handler.JoinBattleHandler");
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class HandlerUtils {
 	 * @return String 
 	 * @throws
 	 */
-	public  String getHandlerName(String msgType){
+	public  String getHandlerName(int msgType){
 		if(handlerMap == null || !handlerMap.containsKey(msgType)){
 			refresh();
 			if(!handlerMap.containsKey(msgType)){
@@ -67,7 +67,7 @@ public class HandlerUtils {
 		return handlerMap.get(msgType);
 	}
 	
-	public  IMsgHandler getHandler(String msgType){
+	public  IMsgHandler getHandler(int msgType){
 		String name = getHandlerName(msgType);
 		try {
 			IMsgHandler handler = (IMsgHandler) Class.forName(name).newInstance();

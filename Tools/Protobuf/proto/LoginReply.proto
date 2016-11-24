@@ -1,0 +1,7 @@
+package org.redstone.protobuf.msg;
+
+message LoginReply
+{
+  optional string name = 1;
+  optional int level = 2;
+}

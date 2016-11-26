@@ -10,8 +10,7 @@
     
 package org.redstone.handler;
 
-import org.apache.log4j.Logger;
-import org.redstone.server.TestServlet;
+import java.nio.ByteBuffer;
 
 /**
     * @ClassName: IMsgHandler
@@ -22,6 +21,6 @@ import org.redstone.server.TestServlet;
     */
 
 public interface IMsgHandler {
-	public void process(byte[] msgBody);
+	public ByteBuffer process(byte[] msgBody);
 
 }

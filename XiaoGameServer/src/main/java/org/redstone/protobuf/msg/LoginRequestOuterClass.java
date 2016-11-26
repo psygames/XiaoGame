@@ -24,7 +24,7 @@ public final class LoginRequestOuterClass {
     java.lang.String[] descriptorData = {
       "\n\022LoginRequest.proto\022\031org.redstone.proto" +
       "buf.msg\"!\n\014LoginRequest\022\021\n\tdeviceUID\030\001 \001" +
-      "(\003B\002P\001"
+      "(\tB\002P\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

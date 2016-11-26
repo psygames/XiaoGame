@@ -15,10 +15,10 @@ namespace message
   {
     public LoginRequest() {}
     
-    private long _deviceUID = default(long);
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"deviceUID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(long))]
-    public long deviceUID
+    private string _deviceUID = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"deviceUID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string deviceUID
     {
       get { return _deviceUID; }
       set { _deviceUID = value; }

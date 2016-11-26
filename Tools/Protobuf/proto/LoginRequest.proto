@@ -4,5 +4,5 @@ package org.redstone.protobuf.msg;
 
 message LoginRequest
 {
-  optional int64 deviceUID = 1;
+  optional string deviceUID = 1;
 }

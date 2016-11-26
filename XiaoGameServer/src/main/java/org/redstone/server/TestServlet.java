@@ -46,7 +46,9 @@ public class TestServlet {
 		reciveBuff.get(msgType, 0, 2);
 		byte[] msgBody = new byte[reciveBuff.position()-2];
 		reciveBuff.get(msgBody, 2, reciveBuff.position());
-		IMsgHandler handler = HandlerUtils.getInstance().getHandler(DataUtils.getInstance().byteArray2T(msgType,Integer.class));
+		IMsgHandler handler = HandlerUtils.getInstance().getHandler(DataUtils.getInstance().byteArray2T(msgType,Short.class));
 		handler.process(msgBody);
+		
+		session.getAsyncRemote().sendBinary(reciveBuff);
 	}
 }

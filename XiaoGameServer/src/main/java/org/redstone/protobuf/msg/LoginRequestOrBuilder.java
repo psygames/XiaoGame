@@ -8,11 +8,16 @@ public interface LoginRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional int64 deviceUID = 1;</code>
+   * <code>optional string deviceUID = 1;</code>
    */
   boolean hasDeviceUID();
   /**
-   * <code>optional int64 deviceUID = 1;</code>
+   * <code>optional string deviceUID = 1;</code>
    */
-  long getDeviceUID();
+  java.lang.String getDeviceUID();
+  /**
+   * <code>optional string deviceUID = 1;</code>
+   */
+  com.google.protobuf.ByteString
+      getDeviceUIDBytes();
 }

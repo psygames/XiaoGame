@@ -15,7 +15,7 @@ public  final class LoginRequest extends
     super(builder);
   }
   private LoginRequest() {
-    deviceUID_ = 0L;
+    deviceUID_ = "";
   }
 
   @java.lang.Override
@@ -46,9 +46,10 @@ public  final class LoginRequest extends
             }
             break;
           }
-          case 8: {
+          case 10: {
+            com.google.protobuf.ByteString bs = input.readBytes();
             bitField0_ |= 0x00000001;
-            deviceUID_ = input.readInt64();
+            deviceUID_ = bs;
             break;
           }
         }
@@ -92,18 +93,45 @@ public  final class LoginRequest extends
 
   private int bitField0_;
   public static final int DEVICEUID_FIELD_NUMBER = 1;
-  private long deviceUID_;
+  private java.lang.Object deviceUID_;
   /**
-   * <code>optional int64 deviceUID = 1;</code>
+   * <code>optional string deviceUID = 1;</code>
    */
   public boolean hasDeviceUID() {
     return ((bitField0_ & 0x00000001) == 0x00000001);
   }
   /**
-   * <code>optional int64 deviceUID = 1;</code>
+   * <code>optional string deviceUID = 1;</code>
    */
-  public long getDeviceUID() {
-    return deviceUID_;
+  public java.lang.String getDeviceUID() {
+    java.lang.Object ref = deviceUID_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        deviceUID_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <code>optional string deviceUID = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getDeviceUIDBytes() {
+    java.lang.Object ref = deviceUID_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      deviceUID_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -120,7 +148,7 @@ public  final class LoginRequest extends
                       throws java.io.IOException {
     getSerializedSize();
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
-      output.writeInt64(1, deviceUID_);
+      output.writeBytes(1, getDeviceUIDBytes());
     }
     unknownFields.writeTo(output);
   }
@@ -133,7 +161,7 @@ public  final class LoginRequest extends
     size = 0;
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(1, deviceUID_);
+        .computeBytesSize(1, getDeviceUIDBytes());
     }
     size += unknownFields.getSerializedSize();
     memoizedSerializedSize = size;
@@ -242,7 +270,7 @@ public  final class LoginRequest extends
     }
     public Builder clear() {
       super.clear();
-      deviceUID_ = 0L;
+      deviceUID_ = "";
       bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
@@ -289,7 +317,9 @@ public  final class LoginRequest extends
     public Builder mergeFrom(org.redstone.protobuf.msg.LoginRequest other) {
       if (other == org.redstone.protobuf.msg.LoginRequest.getDefaultInstance()) return this;
       if (other.hasDeviceUID()) {
-        setDeviceUID(other.getDeviceUID());
+        bitField0_ |= 0x00000001;
+        deviceUID_ = other.deviceUID_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -319,34 +349,78 @@ public  final class LoginRequest extends
     }
     private int bitField0_;
 
-    private long deviceUID_ ;
+    private java.lang.Object deviceUID_ = "";
     /**
-     * <code>optional int64 deviceUID = 1;</code>
+     * <code>optional string deviceUID = 1;</code>
      */
     public boolean hasDeviceUID() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int64 deviceUID = 1;</code>
+     * <code>optional string deviceUID = 1;</code>
      */
-    public long getDeviceUID() {
-      return deviceUID_;
+    public java.lang.String getDeviceUID() {
+      java.lang.Object ref = deviceUID_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          deviceUID_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>optional int64 deviceUID = 1;</code>
+     * <code>optional string deviceUID = 1;</code>
      */
-    public Builder setDeviceUID(long value) {
-      bitField0_ |= 0x00000001;
+    public com.google.protobuf.ByteString
+        getDeviceUIDBytes() {
+      java.lang.Object ref = deviceUID_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        deviceUID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>optional string deviceUID = 1;</code>
+     */
+    public Builder setDeviceUID(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
       deviceUID_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>optional int64 deviceUID = 1;</code>
+     * <code>optional string deviceUID = 1;</code>
      */
     public Builder clearDeviceUID() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      deviceUID_ = 0L;
+      deviceUID_ = getDefaultInstance().getDeviceUID();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional string deviceUID = 1;</code>
+     */
+    public Builder setDeviceUIDBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+      deviceUID_ = value;
       onChanged();
       return this;
     }

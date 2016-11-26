@@ -76,12 +76,22 @@ namespace ProtoBuf
         {
             return (T) RuntimeTypeModel.Default.Deserialize(source, null, typeof(T));
         }
-        /// <summary>
-        /// Writes a protocol-buffer representation of the given instance to the supplied stream.
-        /// </summary>
-        /// <param name="instance">The existing instance to be serialized (cannot be null).</param>
-        /// <param name="destination">The destination stream to write to.</param>
-        public static void Serialize<T>(Stream destination, T instance)
+		/// <summary>
+		/// Deserialize the specified source and type.
+		/// 反序列化source 使用 类型，BY 殷龙 2016-11-24 23:05:34
+		/// </summary>
+		/// <param name="source">Source.</param>
+		/// <param name="type">Type.</param>
+		public static object Deserialize(Stream source, Type type)
+		{
+			return RuntimeTypeModel.Default.Deserialize(source, null, type);
+		}
+		/// <summary>
+		/// Writes a protocol-buffer representation of the given instance to the supplied stream.
+		/// </summary>
+		/// <param name="instance">The existing instance to be serialized (cannot be null).</param>
+		/// <param name="destination">The destination stream to write to.</param>
+		public static void Serialize<T>(Stream destination, T instance)
         {
             if(instance != null) {
                 RuntimeTypeModel.Default.Serialize(destination, instance);

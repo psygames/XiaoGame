@@ -23,7 +23,7 @@ namespace RedStone
 
 		public void OnLogin()
 		{
-			GetProxy<HallProxy>().Login("haha", "hehe");
+			GetProxy<HallProxy>().Login(SystemInfo.deviceUniqueIdentifier.GetHashCode());
 		}
 	}
 }

@@ -23,5 +23,10 @@ namespace RedStone.Proxy
 		{
 
 		}
+
+		protected virtual void OnDestroy()
+		{ 
+		
+		}
 	}
 }

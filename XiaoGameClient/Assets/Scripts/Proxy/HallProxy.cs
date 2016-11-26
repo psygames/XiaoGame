@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using message;
 namespace RedStone.Proxy
 {
@@ -10,15 +11,33 @@ namespace RedStone.Proxy
 
 		}
 
-		public void Login(string uuid, string pwd = "")
+		protected override void OnInit()
 		{
-			Card card = new Card();
-			card.color = "black";
-			card.num = 7;
-			card.memo = "黑桃7";
-
-			network.SendMessage(card);
+			base.OnInit();
+			network.Register<LoginReply>(OnLogin);
 		}
 
+		protected override void OnDestroy()
+		{
+			network.UnRegister<LoginReply>(OnLogin);
+			base.OnDestroy();
+		}
+
+		public void Login(long uuid)
+		{
+			LoginRequest msg = new LoginRequest();
+			msg.deviceUID = uuid;
+			network.SendMessage(msg);
+
+			network.SendMessage<LoginRequest, LoginReply>(msg, (reply) =>
+			{
+				Debug.Log("Once: " + reply.name);
+			});
+		}
+
+		public void OnLogin(LoginReply msg)
+		{
+			Debug.Log("Keep: " + msg.name);
+		}
 	}
 }

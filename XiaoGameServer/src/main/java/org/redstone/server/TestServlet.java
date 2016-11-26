@@ -1,5 +1,8 @@
 package org.redstone.server;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 
 import javax.websocket.OnClose;
@@ -11,6 +14,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.apache.log4j.Logger;
 import org.redstone.handler.IMsgHandler;
+import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.HandlerUtils;
 
 @ServerEndpoint("/test")
@@ -42,17 +46,7 @@ public class TestServlet {
 		reciveBuff.get(msgType, 0, 2);
 		byte[] msgBody = new byte[reciveBuff.position()-2];
 		reciveBuff.get(msgBody, 2, reciveBuff.position());
-		IMsgHandler handler = HandlerUtils.getInstance().getHandler(byteArrayToInt(msgType));
+		IMsgHandler handler = HandlerUtils.getInstance().getHandler(DataUtils.getInstance().byteArray2T(msgType,Integer.class));
 		handler.process(msgBody);
-	}
-	
-	public static int byteArrayToInt(byte[] bytes) {  
-	    int value = 0;  
-	    // 由高位到低位  
-	    for (int i = 0; i < bytes.length; i++) {  
-	        int shift = (bytes.length - 1 - i) * 8;  
-	        value += (bytes[i] & 0xFF) << shift;// 往高位游  
-	    }  
-	    return value;  
 	}
 }

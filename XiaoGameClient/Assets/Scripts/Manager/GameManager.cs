@@ -25,17 +25,6 @@ namespace RedStone
 			NetworkManager.instance.Init();
 		}
 
-		private void callback1(string num)
-		{
-			Debug.Log(num + 1);
-		}
-
-
-		private void callback(string num)
-		{
-			Debug.Log(num + 0);
-		}
-
 		void Update()
 		{
 			NetworkManager.instance.Update();

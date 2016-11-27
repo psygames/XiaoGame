@@ -4,6 +4,6 @@ package org.redstone.protobuf.msg;
 
 message JoinBattleReply
 {
-  optional string address;
-  optional int32 roomId;
+  optional string address = 1;
+  optional int32 roomId = 2;
 }

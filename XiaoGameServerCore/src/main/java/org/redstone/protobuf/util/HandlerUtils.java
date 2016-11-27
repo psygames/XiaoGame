@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.redstone.handler.IMsgHandler;
-import org.redstone.server.TestServlet;
 
 /**
  * 
@@ -16,7 +15,7 @@ import org.redstone.server.TestServlet;
  *
  */
 public class HandlerUtils {
-	private static final Logger logger = Logger.getLogger(TestServlet.class);
+	private static final Logger logger = Logger.getLogger(HandlerUtils.class);
 	private static Map<Short, String> handlerMap = new HashMap<Short, String>();
 	
 	static{
@@ -45,7 +44,7 @@ public class HandlerUtils {
 	 */
 	public static void refresh(){
 		for(MsgType msg : MsgType.values()){
-			if(msg.getClsName().toLowerCase().contains("reply")){
+			if(!msg.getClsName().toLowerCase().contains("reply")){
 				handlerMap.put(msg.getMsgType(), "org.redstone.handler." + msg.getClsName() + "Handler");
 			}
 		}
@@ -75,7 +74,7 @@ public class HandlerUtils {
 		try {
 			IMsgHandler handler = (IMsgHandler) Class.forName(name).newInstance();
 			return handler;
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		} catch (Exception e) {
 			logger.error("实例化" + name + "失败", e);
 		}
 		return null;

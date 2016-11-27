@@ -42,59 +42,9 @@ public class Proto2Code {
 			// 获取进城的错误流
 			final InputStream is2 = process.getErrorStream();
 			// 启动两个线程，一个线程负责读标准输出流，另一个负责读标准错误流
-			new Thread() {
-				public void run() {
-					BufferedReader br1 = null;
-					try {
-						br1 = new BufferedReader(new InputStreamReader(is1, "gbk"));
-						String line1 = null;
-						while ((line1 = br1.readLine()) != null && br1 != null) {
-							if (line1 != null) {
-								System.out.println(line1);
-							}
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						try {
-							is1.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}.start();
-
-			new Thread() {
-				public void run() {
-					BufferedReader br2 = null;
-					try {
-						br2 = new BufferedReader(new InputStreamReader(is1, "gbk"));
-						String line2 = null;
-						while ((line2 = br2.readLine()) != null && br2 != null) {
-							if (line2 != null) {
-								System.out.println(line2);
-							}
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						try {
-							is2.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}.start();
-
-			if(process.waitFor() !=0){
-				if (process.exitValue() == 1) {//p.exitValue()==0表示正常结束，1：非正常结束     
-	                System.err.println("命令执行失败!");  
-	                System.exit(1);  
-	            } 
-			}
-			process.destroy();
+			new Thread(new StreamClear(is1, process)).start();
+			new Thread(new StreamClear(is2, process)).start();
+			process.waitFor();
 			System.out.println("运行结束...");
 		} catch (Exception e) {
 			try {
@@ -102,16 +52,55 @@ public class Proto2Code {
 				process.getInputStream().close();
 				process.getOutputStream().close();
 			} catch (Exception ee) {
+				ee.printStackTrace();
+			}
+		}finally{
+			if(process != null){
+				process.destroy();
 			}
 		}
 		System.out.println(separatorLine + type.toUpperCase() +"生成END" + separatorLine);
 	}
-
+	
 	public static void main(String[] args) {
-//		Proto2Code.genByBat("java");
-		//Proto2Code.genByBat("cs");
+		Proto2Code.genByBat("java");
+		Proto2Code.genByBat("cs");
 		CSharpFix.start();
 		System.out.println("finished!!!");
 	}
 
+}
+
+class StreamClear implements Runnable{
+	private InputStream stream;
+	private Process process;
+	public StreamClear(InputStream stream, Process process){
+		this.stream = stream;
+		this.process = process;
+	}
+	@Override
+	public void run() {
+		BufferedReader br2 = null;
+		try {
+			br2 = new BufferedReader(new InputStreamReader(stream, "gbk"));
+			String line2 = null;
+			while ((line2 = br2.readLine()) != null && br2 != null) {
+				if (line2 != null) {
+					System.out.println(line2);
+					if(line2.equals("协议生成完毕")){
+						//process.destroy();
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

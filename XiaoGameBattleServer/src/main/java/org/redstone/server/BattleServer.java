@@ -17,25 +17,25 @@ import org.redstone.handler.IMsgHandler;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.HandlerUtils;
 
-@ServerEndpoint("/test")
-public class TestServlet {
+@ServerEndpoint("/battleServer")
+public class BattleServer {
 	
 	Session session;
 	static Map<String, String> sessionMap = new HashMap<String, String>();
 	Basic remote;
-	private final Logger logger = Logger.getLogger(TestServlet.class);
+	private final Logger logger = Logger.getLogger(BattleServer.class);
 	@OnOpen
 	public void onOpen(Session s){
 		session = s;
 		remote = session.getBasicRemote();
 		sessionMap.put(session.getId(), "");
-		logger.info(session.getId() + "登入");
+		logger.info(session.getId() + "登入battle");
 	}
 	
 	@OnClose
 	public void onClose(){
 		sessionMap.remove(session.getId());
-		logger.info(session.getId() + "退出");
+		logger.info(session.getId() + "退出battle");
 	}
 	
 	@OnMessage

@@ -11,4 +11,3 @@ for /f "delims=" %%i in ('dir /b ".\*.proto"') do (
 echo cs文件生成完毕
 echo 删除临时proto文件
 del .\*.proto /f /s /q
-pause

@@ -11,11 +11,13 @@
 package org.redstone.handler;
 
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 import org.redstone.protobuf.msg.LoginReply;
 import org.redstone.protobuf.msg.LoginRequest;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.MsgType;
+import org.redstone.protobuf.util.SessionUtils;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -27,12 +29,13 @@ import com.google.protobuf.InvalidProtocolBufferException;
     *
     */
 
-public class LoginRequestHandler extends MsgHandler implements IMsgHandler{
+public class LoginRequestHandler extends BaseMsgHandler implements IMsgHandler{
 	@Override
-	public ByteBuffer process(byte[] msgBody) {
+	public ByteBuffer process(byte[] msgBody, String sessionId) {
 		try {
 			LoginRequest bean = LoginRequest.parseFrom(msgBody);
 			logger.info("设备" + bean.getDeviceUID() + "登录");
+			SessionUtils.addDeviceUID(sessionId, bean.getDeviceUID());
 			
 			LoginReply.Builder builder = LoginReply.newBuilder();
 			builder.setName("傻吊你好");
@@ -48,6 +51,11 @@ public class LoginRequestHandler extends MsgHandler implements IMsgHandler{
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("解析登录请求异常", e);
 		}
+		return null;
+	}
+
+	@Override
+	public ByteBuffer processSocket(Map<String, Object> msgBody) {
 		return null;
 	}
 }

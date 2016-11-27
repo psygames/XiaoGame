@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: BoardSync.proto
-namespace message
+namespace org.redstone.protobuf.msg
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Enums")]
   public partial class Enums : global::ProtoBuf.IExtensible
@@ -39,9 +39,9 @@ namespace message
   {
     public ChessRow() {}
     
-    private readonly global::System.Collections.Generic.List<message.Enums.ChessType> _types = new global::System.Collections.Generic.List<message.Enums.ChessType>();
+    private readonly global::System.Collections.Generic.List<org.redstone.protobuf.msg.Enums.ChessType> _types = new global::System.Collections.Generic.List<org.redstone.protobuf.msg.Enums.ChessType>();
     [global::ProtoBuf.ProtoMember(1, Name=@"types", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    public global::System.Collections.Generic.List<message.Enums.ChessType> types
+    public global::System.Collections.Generic.List<org.redstone.protobuf.msg.Enums.ChessType> types
     {
       get { return _types; }
     }
@@ -82,16 +82,16 @@ namespace message
   {
     public BoardSync() {}
     
-    private readonly global::System.Collections.Generic.List<message.ChessRow> _rows = new global::System.Collections.Generic.List<message.ChessRow>();
+    private readonly global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessRow> _rows = new global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessRow>();
     [global::ProtoBuf.ProtoMember(1, Name=@"rows", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public global::System.Collections.Generic.List<message.ChessRow> rows
+    public global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessRow> rows
     {
       get { return _rows; }
     }
   
-    private readonly global::System.Collections.Generic.List<message.ChessPlaceStatistics> _statistics = new global::System.Collections.Generic.List<message.ChessPlaceStatistics>();
+    private readonly global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessPlaceStatistics> _statistics = new global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessPlaceStatistics>();
     [global::ProtoBuf.ProtoMember(2, Name=@"statistics", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public global::System.Collections.Generic.List<message.ChessPlaceStatistics> statistics
+    public global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessPlaceStatistics> statistics
     {
       get { return _statistics; }
     }

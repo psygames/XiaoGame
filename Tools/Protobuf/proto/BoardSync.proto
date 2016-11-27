@@ -1,0 +1,27 @@
+syntax = "proto2";
+option java_multiple_files = true;
+package org.redstone.protobuf.msg;
+
+enum ChessType
+{
+  None = 1;
+  White = 2;
+  Black = 3;
+}
+
+message ChessRow
+{
+  repeated ChessType = 1;
+}
+
+message ChessPlaceStatistics
+{
+  public int num = 1;   // 棋子编号
+  public float ratio = 2; // 棋子放置率
+}
+
+message BoardSync
+{
+  repeated ChessRow = 1;
+  repeated ChessPlaceStatistics = 2;
+}

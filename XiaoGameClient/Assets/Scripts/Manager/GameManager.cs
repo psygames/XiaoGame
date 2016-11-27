@@ -18,16 +18,32 @@ namespace RedStone
 			NetworkManager.CreateInstance();
 			ProxyManager.CreateInstance();
 			EventManager.CreateInstance();
+			UIManager.CreateInstance();
 		}
 
 		private void Init()
 		{
 			NetworkManager.instance.Init();
+			ProxyManager.instance.Init();
+			UIManager.instance.Init();
+			UIManager.instance.Show<LoginView>();
 		}
 
-		void Update()
+		private void Update()
 		{
 			NetworkManager.instance.Update();
+			ProxyManager.instance.Update();
+		}
+
+		private void OnDestroy()
+		{
+			ProxyManager.instance.Destroy();
+			EventManager.instance.ClearAll();
+		}
+
+		private void OnApplicationQuit()
+		{
+			NetworkManager.instance.CloseAll();
 		}
 	}
 }

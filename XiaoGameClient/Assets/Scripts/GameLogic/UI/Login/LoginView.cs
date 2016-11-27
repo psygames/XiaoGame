@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using RedStone.Proxy;
 using System.Collections;
 
 namespace RedStone
 {
-	public class LoginView : MonoBehaviour
+	public class LoginView : ViewBase
 	{
-		protected T GetProxy<T>() where T : Proxy.ProxyBase
+		protected T GetProxy<T>() where T : ProxyBase
 		{
 			return ProxyManager.instance.GetProxy<T>();
 		}
@@ -23,7 +22,7 @@ namespace RedStone
 
 		public void OnLogin()
 		{
-			GetProxy<HallProxy>().Login(SystemInfo.deviceUniqueIdentifier.GetHashCode());
+			GetProxy<HallProxy>().Login(SystemInfo.deviceUniqueIdentifier);
 		}
 	}
 }

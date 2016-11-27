@@ -1,12 +1,12 @@
 ﻿using System;
 using message;
-namespace RedStone.Proxy
+namespace RedStone
 {
 	public class ProxyBase
 	{
-		public NetworkManager network
+		public Net.Network network
 		{
-			get { return NetworkManager.instance; }
+			get { return NetworkManager.instance.Get(NetType.Hall); }
 		}
 
 		public ProxyBase()
@@ -14,19 +14,19 @@ namespace RedStone.Proxy
 
 		}
 
-		protected virtual void OnInit()
+		public virtual void OnInit()
 		{
 
 		}
 
-		protected virtual void OnUpdate()
+		public virtual void OnUpdate()
 		{
 
 		}
 
-		protected virtual void OnDestroy()
-		{ 
-		
+		public virtual void OnDestroy()
+		{
+
 		}
 	}
 }

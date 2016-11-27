@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RedStone
 {
@@ -29,8 +30,11 @@ namespace RedStone
 		{
 			if (!m_handlers.ContainsKey(eventName))
 				return;
-			foreach (var action in m_handlers[eventName])
-				action.Value.Invoke(param);
+			List<int> keys = m_handlers[eventName].Keys.ToList();
+			for (int i = 0; i < keys.Count; i++)
+			{
+				m_handlers[eventName][keys[i]].Invoke(param);
+			}
 		}
 
 		public void ClearAll()

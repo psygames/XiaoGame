@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using message;
-namespace RedStone.Proxy
+namespace RedStone
 {
 	public class HallProxy : ProxyBase
 	{
@@ -11,33 +11,25 @@ namespace RedStone.Proxy
 
 		}
 
-		protected override void OnInit()
+		public override void OnInit()
 		{
 			base.OnInit();
-			network.Register<LoginReply>(OnLogin);
 		}
 
-		protected override void OnDestroy()
+		public override void OnDestroy()
 		{
-			network.UnRegister<LoginReply>(OnLogin);
 			base.OnDestroy();
 		}
 
-		public void Login(long uuid)
+		public void Login(string uuid)
 		{
 			LoginRequest msg = new LoginRequest();
 			msg.deviceUID = uuid;
-			network.SendMessage(msg);
-
-			network.SendMessage<LoginRequest, LoginReply>(msg, (reply) =>
+			network.SendMessage<LoginRequest, LoginReply>
+			(msg, (reply) =>
 			{
-				Debug.Log("Once: " + reply.name);
+				UIManager.instance.Show<GomukuView>();
 			});
-		}
-
-		public void OnLogin(LoginReply msg)
-		{
-			Debug.Log("Keep: " + msg.name);
 		}
 	}
 }

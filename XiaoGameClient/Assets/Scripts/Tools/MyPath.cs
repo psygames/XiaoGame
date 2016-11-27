@@ -8,5 +8,10 @@ namespace RedStone
 		{
 			get { return Application.dataPath + "/../../"; }
 		}
+
+		public static string RES_UI
+		{
+			get { return "Prefabs/UI/"; }
+		}
 	}
 }

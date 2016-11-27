@@ -16,9 +16,10 @@ public class CSharpFix {
 		private static final long serialVersionUID = -3582164660929036163L;
 		{
 			put("namespace [\\s\\S]*?\\r\\n", "namespace message\r\n");
+			put("org.redstone.protobuf.msg.", "message.");
 		}
 	};
-	
+
 
 	public static void start() {
 		new CSharpFix().execute();
@@ -31,12 +32,12 @@ public class CSharpFix {
 		// Move To Dest Directory
 		System.out.println("move...");
 		FileTool.moveFiles(FROM_DIR, DEST_DIR, ".cs");
-		
+
 		System.out.println("Format...");
 		// Format CS File
 		this.formatFiles(DEST_DIR);
 	}
-	
+
 	private void formatFiles(String destDir)
 	{
 		File destFile = new File(destDir);
@@ -47,7 +48,7 @@ public class CSharpFix {
 			FileTool.writeText(destDir + "/" + f.getName(), content);
         }
 	}
-	
+
 
 	private String format(String content) {
 		for (Map.Entry<String, String> kv : replaceMembs.entrySet()) {

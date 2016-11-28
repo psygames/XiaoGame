@@ -8,6 +8,16 @@ namespace RedStone
 	{
 		private Dictionary<string, Dictionary<int, Action<object>>> m_handlers = new Dictionary<string, Dictionary<int, Action<object>>>();
 
+		public void Register(string eventName, Action handler)
+		{
+			Register<object>(eventName, (obj) => { handler.Invoke(); });
+		}
+
+		public void UnRegister(string eventName, Action handler)
+		{
+			UnRegister<object>(eventName, (obj) => { handler.Invoke(); });
+		}
+
 		public void Register<T>(string eventName, Action<T> handler)
 		{
 			if (!m_handlers.ContainsKey(eventName))
@@ -26,7 +36,7 @@ namespace RedStone
 				m_handlers.Remove(eventName);
 		}
 
-		public void Send(string eventName, object param)
+		public void Send(string eventName, object param = null)
 		{
 			if (!m_handlers.ContainsKey(eventName))
 				return;

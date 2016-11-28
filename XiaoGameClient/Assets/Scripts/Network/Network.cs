@@ -7,7 +7,7 @@ namespace RedStone.Net
 {
 	public class Network
 	{
-		private Connection m_connection;
+		private IConnection m_connection;
 		private List<byte[]> m_receiveQueue = new List<byte[]>();
 
 		private Dictionary<string, int> m_protocolNum = new Dictionary<string, int>();
@@ -15,7 +15,7 @@ namespace RedStone.Net
 
 		public Network()
 		{
-			m_connection = new Connection();
+			m_connection = new WebSocketConnection();
 		}
 
 		public void Init(string addr)
@@ -163,7 +163,7 @@ namespace RedStone.Net
 			Type type = HeaderToType(header);
 			object msg = DeSerialize(body, type);
 
-			EventManager.instance.Send(GetEventName(msg.GetType()), msg);
+			EventManager.instance.Send(msg.GetType().ToString(), msg);
 		}
 
 		#region Tools
@@ -184,11 +184,6 @@ namespace RedStone.Net
 				m_protocolNum.Add(protoName, protoNum);
 				m_numProtocal.Add(protoNum, protoName);
 			}
-		}
-
-		private string GetEventName(Type t)
-		{
-			return t.ToString();
 		}
 
 		private Type HeaderToType(byte[] header)

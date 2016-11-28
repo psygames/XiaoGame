@@ -5,6 +5,8 @@ namespace RedStone
 {
 	public class HallProxy : ProxyBase
 	{
+		private PlayerData m_mainPlayerData = new PlayerData();
+
 		public HallProxy()
 		{
 
@@ -28,6 +30,7 @@ namespace RedStone
 			network.SendMessage<LoginRequest, LoginReply>
 			(msg, (reply) =>
 			{
+				m_mainPlayerData.SetData(reply);
 				UIManager.instance.Show<GomukuView>();
 			});
 		}

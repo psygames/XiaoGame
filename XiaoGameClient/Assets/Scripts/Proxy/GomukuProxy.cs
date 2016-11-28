@@ -5,7 +5,7 @@ namespace RedStone
 	public class GomukuProxy : ProxyBase
 	{
 		public Dictionary<int, ChessData> chesses { get { return m_chesses; } }
-		private List<PlaceStatistics> placeStatistics { get { return m_placeStatistics; } }
+		public List<PlaceStatistics> placeStatistics { get { return m_placeStatistics; } }
 
 		private Dictionary<int, ChessData> m_chesses = new Dictionary<int, ChessData>();
 		private List<PlaceStatistics> m_placeStatistics = new List<PlaceStatistics>();
@@ -48,6 +48,8 @@ namespace RedStone
 				sta.SetData(board.statistics[i].num, board.statistics[i].ratio);
 				m_placeStatistics.Add(sta);
 			}
+
+			EventManager.instance.Send(Event.Gomuku.BoardSync);
 		}
 
 		public override void OnUpdate()

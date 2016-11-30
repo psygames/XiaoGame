@@ -28,8 +28,8 @@ public class GomokuRoom extends BaseRoom{
 	 * @param roomType
 	 * @param groupCount
 	 */
-	public GomokuRoom(String gameType, String roomType, int groupCount) {
-		super(gameType, roomType, groupCount);
+	public GomokuRoom(int roomId, String gameType, String roomType, int groupCount) {
+		super(roomId, gameType, roomType, groupCount);
 	}
 	
 }

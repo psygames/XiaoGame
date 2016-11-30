@@ -18,12 +18,14 @@ package org.redstone.protobuf.util;
 public enum MsgType {
 	LoginRequest("LoginRequest",(short)1001),
 	LoginReply("LoginReply",(short)1002),
-	JoinBattleRequest("JoinBattleRequest",(short)1003),
-	JoinBattleReply("JoinBattleReply",(short)1004),
+	AsignRoomRequest("AsignRoomRequest",(short)1003),
+	AsignRoomReply("AsignRoomReply",(short)1004),
 	BoardSync("BoardSync",(short)1005),
 	PlaceRequest("LoginRequest",(short)1007),
 	PlaceReply("PlaceReply",(short)1008),
-	NewTurnBroadcast("NewTurnBroadcast",(short)1011);
+	NewTurnBroadcast("NewTurnBroadcast",(short)1011),
+	JoinRoomRequest("JoinRoomRequest",(short)2001),
+	JoinRoomReply("JoinRoomReply",(short)2002);
 	
 	private String clsName;
 	private short msgType;

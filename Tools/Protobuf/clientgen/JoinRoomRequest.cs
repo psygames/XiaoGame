@@ -7,21 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from: JoinBattleReply.proto
+// Generated from: JoinRoomRequest.proto
 namespace org.redstone.protobuf.msg
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"JoinBattleReply")]
-  public partial class JoinBattleReply : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"JoinRoomRequest")]
+  public partial class JoinRoomRequest : global::ProtoBuf.IExtensible
   {
-    public JoinBattleReply() {}
+    public JoinRoomRequest() {}
     
-    private string _address = "";
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"address", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    private string _deviceUID = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"deviceUID", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]
-    public string address
+    public string deviceUID
     {
-      get { return _address; }
-      set { _address = value; }
+      get { return _deviceUID; }
+      set { _deviceUID = value; }
     }
     private int _roomId = default(int);
     [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"roomId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]

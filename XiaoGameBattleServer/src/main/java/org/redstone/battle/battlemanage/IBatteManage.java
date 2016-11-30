@@ -19,6 +19,6 @@ import org.redstone.db.model.Gamer;
  *
  */
 public interface IBatteManage {
-	BaseRoom joinRoom(String gameType, String roomType, Gamer gamer);
+	BaseRoom asignRoom(String gameType, String roomType, Gamer gamer);
 	byte[] process(byte[] reqData);
 }

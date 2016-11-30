@@ -1,17 +1,7 @@
 syntax = "proto2";
-option java_multiple_files = false;
+option java_multiple_files = true;
 package org.redstone.protobuf.msg;
-
-message Enums
-{
-	enum ChessType
-	{
-	  None = 1;
-	  White = 2;
-	  Black = 3;
-	}
-}
-
+import "Enums.proto";
 message ChessRow
 {
   repeated Enums.ChessType types= 1 ;

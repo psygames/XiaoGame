@@ -2,8 +2,7 @@ syntax = "proto2";
 option java_multiple_files = true;
 package org.redstone.protobuf.msg;
 
-message JoinBattleReply
+message AssignRoomRequest
 {
-  optional string address = 1;
-  optional int32 roomId = 2;
+  
 }

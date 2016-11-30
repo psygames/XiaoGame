@@ -8,32 +8,9 @@
 //------------------------------------------------------------------------------
 
 // Generated from: BoardSync.proto
+// Note: requires additional types generated from: Enums.proto
 namespace org.redstone.protobuf.msg
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Enums")]
-  public partial class Enums : global::ProtoBuf.IExtensible
-  {
-    public Enums() {}
-    
-    [global::ProtoBuf.ProtoContract(Name=@"ChessType")]
-    public enum ChessType
-    {
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"None", Value=1)]
-      None = 1,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"White", Value=2)]
-      White = 2,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"Black", Value=3)]
-      Black = 3
-    }
-  
-    private global::ProtoBuf.IExtension extensionObject;
-    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
-  }
-  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ChessRow")]
   public partial class ChessRow : global::ProtoBuf.IExtensible
   {

@@ -8,11 +8,8 @@
  */
 package org.redstone.battle.room;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.redstone.db.model.Gamer;
 
@@ -24,33 +21,32 @@ import org.redstone.db.model.Gamer;
  *
  */
 public class BaseRoom {
-	private String id;
+	private int id;
 	private String gameType;
 	private String roomType;
-	private volatile int groupId = 0;
-	private Map<Integer, Map<String, Gamer>> groupMap;
-	private List<Gamer> gamers;
+	private Map<Integer, Map<String, Gamer>> campMap;
+	private Map<String, Gamer> gamers;
 	
-	public BaseRoom(String gameType,String roomType,int groupCount){
-		this.id = UUID.randomUUID().toString();
+	public BaseRoom(int roomId, String gameType,String roomType,int campCount){
+		this.id = roomId;
 		this.gameType = gameType;
 		this.roomType = roomType;
-		this.groupMap = new HashMap<Integer, Map<String, Gamer>>();
-		this.gamers = new ArrayList<Gamer>();
-		for(int i = 0; i < groupCount; i++){
-			groupMap.put(i, new HashMap<String, Gamer>());
+		this.campMap = new HashMap<Integer, Map<String, Gamer>>();
+		this.gamers = new HashMap<String, Gamer>();
+		for(int i = 0; i < campCount; i++){
+			campMap.put(i, new HashMap<String, Gamer>());
 		}
 	}
 	
 	public void addGamer(Gamer gamer){
-		Map<String, Gamer> minMap = getMinGroup();
+		Map<String, Gamer> minMap = getMinCamp();
 		minMap.put(gamer.getLogName(), gamer);
-		gamers.add(gamer);
+		gamers.put(gamer.getId(), gamer);
 	}
 	
-	public Map<String, Gamer> getMaxGroup(){
-		Map<String, Gamer>  maxMap = groupMap.get(0);
-		for(Map<String, Gamer> value : groupMap.values()){
+	public Map<String, Gamer> getMaxCamp(){
+		Map<String, Gamer>  maxMap = campMap.get(0);
+		for(Map<String, Gamer> value : campMap.values()){
 			if(value.size() > maxMap.size()){
 				maxMap = value;
 			}
@@ -58,9 +54,9 @@ public class BaseRoom {
 		return maxMap;
 	}
 	
-	public Map<String, Gamer> getMinGroup(){
-		Map<String, Gamer>  minMap = groupMap.get(0);
-		for(Map<String, Gamer> value : groupMap.values()){
+	public Map<String, Gamer> getMinCamp(){
+		Map<String, Gamer>  minMap = campMap.get(0);
+		for(Map<String, Gamer> value : campMap.values()){
 			if(value.size() < minMap.size()){
 				minMap = value;
 			}
@@ -68,7 +64,7 @@ public class BaseRoom {
 		return minMap;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -80,15 +76,11 @@ public class BaseRoom {
 		return roomType;
 	}
 
-	public int getGroupId() {
-		return groupId;
+	public Map<Integer, Map<String, Gamer>> getCampMap() {
+		return campMap;
 	}
 
-	public Map<Integer, Map<String, Gamer>> getGroupMap() {
-		return groupMap;
-	}
-
-	public List<Gamer> getGamers() {
+	public Map<String, Gamer> getGamers() {
 		return gamers;
 	}
 }

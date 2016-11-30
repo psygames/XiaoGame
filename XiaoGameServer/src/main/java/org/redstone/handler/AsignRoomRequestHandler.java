@@ -16,8 +16,8 @@ import java.util.Map;
 
 import org.redstone.battle.constant.GameType;
 import org.redstone.battle.constant.RoomType;
-import org.redstone.protobuf.msg.JoinBattleReply;
-import org.redstone.protobuf.msg.JoinBattleRequest;
+import org.redstone.protobuf.msg.AssignRoomReply;
+import org.redstone.protobuf.msg.AssignRoomRequest;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.MsgType;
 import org.redstone.protobuf.util.SessionUtils;
@@ -31,19 +31,19 @@ import org.redstone.protobuf.util.SocketUtils;
     *
     */
 
-public class JoinBattleRequestHandler extends BaseMsgHandler implements IMsgHandler{
+public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandler{
 	@Override
 	public ByteBuffer process(byte[] msgBody, String sessionId) {
 		try {
 			String deviceUID = SessionUtils.getDeviceUID(sessionId);
 			logger.info("玩家" + deviceUID + "加入ChinaBattle Gomoku");
 			
-			JoinBattleRequest joinBattleRequest = JoinBattleRequest.parseFrom(msgBody);
+			AssignRoomRequest joinBattleRequest = AssignRoomRequest.parseFrom(msgBody);
 			
 			
 			//请求battleserver
 			Map<String, Object> reqMap = new HashMap<String, Object>();
-			reqMap.put("msgType", MsgType.JoinBattleRequest);
+			reqMap.put("msgType", MsgType.AsignRoomRequest);
 			reqMap.put("deviceUID", deviceUID);
 			reqMap.put("sessionId", sessionId);
 			reqMap.put("gameType", GameType.Gomoku);
@@ -61,11 +61,11 @@ public class JoinBattleRequestHandler extends BaseMsgHandler implements IMsgHand
 			}
 			
 			
-			JoinBattleReply.Builder builder = JoinBattleReply.newBuilder();
+			AssignRoomReply.Builder builder = AssignRoomReply.newBuilder();
 			builder.setAddress("http://192.168.10.107:8180/battleServer");
 			builder.setRoomId(Integer.parseInt(socketRsp));
 			
-			byte[] msgType = DataUtils.numberToBytes(MsgType.JoinBattleReply.getMsgType());
+			byte[] msgType = DataUtils.numberToBytes(MsgType.AsignRoomReply.getMsgType());
 			byte[] reply = builder.build().toByteArray();
 			ByteBuffer buff = DataUtils.genBuff(msgType, reply);
 			

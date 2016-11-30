@@ -7,13 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from: JoinBattleRequest.proto
-namespace org.redstone.protobuf.msg
+// Generated from: AssignRoomRequest.proto
+namespace message
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"JoinBattleRequest")]
-  public partial class JoinBattleRequest : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AssignRoomRequest")]
+  public partial class AssignRoomRequest : global::ProtoBuf.IExtensible
   {
-    public JoinBattleRequest() {}
+    public AssignRoomRequest() {}
     
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

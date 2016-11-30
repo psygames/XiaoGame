@@ -7,13 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from: JoinBattleReply.proto
-namespace message
+// Generated from: AssignRoomReply.proto
+namespace org.redstone.protobuf.msg
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"JoinBattleReply")]
-  public partial class JoinBattleReply : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AssignRoomReply")]
+  public partial class AssignRoomReply : global::ProtoBuf.IExtensible
   {
-    public JoinBattleReply() {}
+    public AssignRoomReply() {}
     
     private string _address = "";
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"address", DataFormat = global::ProtoBuf.DataFormat.Default)]

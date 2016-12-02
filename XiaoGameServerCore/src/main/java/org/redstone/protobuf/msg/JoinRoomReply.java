@@ -119,13 +119,13 @@ public  final class JoinRoomReply extends
   public static final int CAMP_FIELD_NUMBER = 1;
   private int camp_;
   /**
-   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
   public boolean hasCamp() {
     return ((bitField0_ & 0x00000001) == 0x00000001);
   }
   /**
-   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
   public org.redstone.protobuf.msg.Enums.Camp getCamp() {
     org.redstone.protobuf.msg.Enums.Camp result = org.redstone.protobuf.msg.Enums.Camp.valueOf(camp_);
@@ -424,20 +424,20 @@ public  final class JoinRoomReply extends
 
     private int camp_ = 1;
     /**
-     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
     public boolean hasCamp() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
     public org.redstone.protobuf.msg.Enums.Camp getCamp() {
       org.redstone.protobuf.msg.Enums.Camp result = org.redstone.protobuf.msg.Enums.Camp.valueOf(camp_);
       return result == null ? org.redstone.protobuf.msg.Enums.Camp.NoneCamp : result;
     }
     /**
-     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
     public Builder setCamp(org.redstone.protobuf.msg.Enums.Camp value) {
       if (value == null) {
@@ -449,7 +449,7 @@ public  final class JoinRoomReply extends
       return this;
     }
     /**
-     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
     public Builder clearCamp() {
       bitField0_ = (bitField0_ & ~0x00000001);

@@ -8,11 +8,11 @@ public interface JoinRoomReplyOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
   boolean hasCamp();
   /**
-   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
   org.redstone.protobuf.msg.Enums.Camp getCamp();
 

@@ -17,9 +17,9 @@ namespace message
   {
     public JoinRoomReply() {}
     
-    private message.Enums.Camp _camp = message.Enums.Camp.;
+    private message.Enums.Camp _camp = message.Enums.Camp.NoneCamp;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"camp", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(message.Enums.Camp.)]
+    [global::System.ComponentModel.DefaultValue(message.Enums.Camp.NoneCamp)]
     public message.Enums.Camp camp
     {
       get { return _camp; }

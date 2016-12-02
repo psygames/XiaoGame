@@ -23,11 +23,11 @@ public final class JoinRoomReplyOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\023JoinRoomReply.proto\022\031org.redstone.prot" +
-      "obuf.msg\032\017BoardSync.proto\032\013Enums.proto\"\215" +
-      "\001\n\rJoinRoomReply\0223\n\004camp\030\001 \001(\0162%.org.red" +
-      "stone.protobuf.msg.Enums.Camp\022\016\n\006roomId\030" +
-      "\002 \001(\005\0227\n\tboardSync\030\003 \001(\0132$.org.redstone." +
-      "protobuf.msg.BoardSyncB\002P\001"
+      "obuf.msg\032\017BoardSync.proto\032\013Enums.proto\"\227" +
+      "\001\n\rJoinRoomReply\022=\n\004camp\030\001 \001(\0162%.org.red" +
+      "stone.protobuf.msg.Enums.Camp:\010NoneCamp\022" +
+      "\016\n\006roomId\030\002 \001(\005\0227\n\tboardSync\030\003 \001(\0132$.org" +
+      ".redstone.protobuf.msg.BoardSyncB\002P\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

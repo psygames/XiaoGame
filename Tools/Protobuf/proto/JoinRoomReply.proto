@@ -5,7 +5,7 @@ import "BoardSync.proto";
 import "Enums.proto";
 message JoinRoomReply
 {
-  optional Enums.Camp camp = 1;
+  optional Enums.Camp camp = 1 [default=NoneCamp];
   optional int32 roomId = 2;
   optional BoardSync boardSync = 3;
 }

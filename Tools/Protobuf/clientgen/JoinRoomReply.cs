@@ -17,9 +17,9 @@ namespace org.redstone.protobuf.msg
   {
     public JoinRoomReply() {}
     
-    private org.redstone.protobuf.msg.Enums.Camp _camp = org.redstone.protobuf.msg.Enums.Camp.;
+    private org.redstone.protobuf.msg.Enums.Camp _camp = org.redstone.protobuf.msg.Enums.Camp.NoneCamp;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"camp", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(org.redstone.protobuf.msg.Enums.Camp.)]
+    [global::System.ComponentModel.DefaultValue(org.redstone.protobuf.msg.Enums.Camp.NoneCamp)]
     public org.redstone.protobuf.msg.Enums.Camp camp
     {
       get { return _camp; }

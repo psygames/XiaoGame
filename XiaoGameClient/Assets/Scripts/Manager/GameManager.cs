@@ -2,49 +2,49 @@
 using System.Collections;
 namespace RedStone
 {
-    public class GameManager : Core.SingletonBehaviour<GameManager>
-    {
-        protected override void Awake()
-        {
-            base.Awake();
+	public class GameManager : Core.SingletonBehaviour<GameManager>
+	{
+		protected override void Awake()
+		{
+			base.Awake();
 
-            CreateInstance();
+			CreateInstance();
 
-            Init();
-        }
+			Init();
+		}
 
-        private void CreateInstance()
-        {
-            NetworkManager.CreateInstance();
-            ProxyManager.CreateInstance();
-            EventManager.CreateInstance();
-            UIManager.CreateInstance();
-        }
+		private void CreateInstance()
+		{
+			NetworkManager.CreateInstance();
+			ProxyManager.CreateInstance();
+			EventManager.CreateInstance();
+			UIManager.CreateInstance();
+		}
 
-        private void Init()
-        {
-            NetworkManager.instance.Init();
-            ProxyManager.instance.Init();
-            UIManager.instance.Init();
+		private void Init()
+		{
+			NetworkManager.instance.Init();
+			ProxyManager.instance.Init();
+			UIManager.instance.Init();
 
-            ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer("ws://192.168.10.106:8180/GameServer/test");
-        }
+			ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer("ws://192.168.10.106:8180/GameServer/gameServer");
+		}
 
-        private void Update()
-        {
-            NetworkManager.instance.Update();
-            ProxyManager.instance.Update();
-        }
+		private void Update()
+		{
+			NetworkManager.instance.Update();
+			ProxyManager.instance.Update();
+		}
 
-        private void OnDestroy()
-        {
-            ProxyManager.instance.Destroy();
-            EventManager.instance.ClearAll();
-        }
+		private void OnDestroy()
+		{
+			ProxyManager.instance.Destroy();
+			EventManager.instance.ClearAll();
+		}
 
-        private void OnApplicationQuit()
-        {
-            NetworkManager.instance.CloseAll();
-        }
-    }
+		private void OnApplicationQuit()
+		{
+			NetworkManager.instance.CloseAll();
+		}
+	}
 }

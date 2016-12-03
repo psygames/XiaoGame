@@ -39,7 +39,7 @@ public class JoinRoomRequestHandler extends BaseMsgHandler implements IMsgHandle
 	public ByteBuffer process(byte[] reqBody, String sessionId) {
 		try {
 			JoinRoomRequest joinRoomRequest = JoinRoomRequest.parseFrom(reqBody);
-			SessionUtils.addDeviceUID(sessionId, joinRoomRequest.getDeviceUID());
+			SessionUtils.addSessionDevice(sessionId, joinRoomRequest.getDeviceUID());
 			logger.info("设备" + joinRoomRequest.getDeviceUID() + "登录");
 			
 			Gamer gamer = new Gamer();

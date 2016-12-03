@@ -24,19 +24,18 @@ namespace RedStone
 			};
 		}
 
-		public void SetData(int x, int y, int w, int h, float spacex, float spacey)
+		public void SetData(int x, int y)
 		{
 			this.x = x;
 			this.y = y;
 
-			float posx = (x - w / 2) * spacex + 0.5f * spacex;
-			float posy = (y - h / 2) * spacey + 0.5f * spacey;
+			transform.localPosition = LogicHelper.Gomuku.GetChessPos(x, y);
 
-			point.SetActive(false);
 			if (x % 5 == 3 && y % 5 == 3)
 				point.SetActive(true);
+			else
+				point.SetActive(false);
 
-			transform.localPosition = new Vector2(posx, posy);
 		}
 
 	}

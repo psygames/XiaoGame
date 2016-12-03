@@ -41,7 +41,7 @@ namespace RedStone
 				ProxyManager.instance.GetProxy<HallProxy>().Login(deviceUID);
 			};
 
-			NetworkManager.instance.Connect(NetType.Hall, "ws://192.168.10.106:8180/XiaoGameServer/test");
+			NetworkManager.instance.Connect(NetType.Hall, "ws://192.168.10.106:8180/GameServer/test");
 		}
 
 		public void Login(string uuid)

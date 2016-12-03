@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace RedStone
 {
-	public enum Camp
+	public enum ECamp
 	{
 		None = 0,
 		White = 1, // 对应于 ChessType 可强转
@@ -14,22 +14,22 @@ namespace RedStone
 	{
 		private int m_uuid;
 		private string m_name;
-		private Camp m_camp;
+		private ECamp m_camp;
 
 		public int uuid { get { return m_uuid; } }
 		public string name { get { return m_name; } }
-		public Camp camp { get { return m_camp; } }
+		public ECamp camp { get { return m_camp; } }
 
 		public void SetData(message.LoginReply info)
 		{
 			m_uuid = 1;
 			m_name = info.name;
-			m_camp = Camp.None;
+			m_camp = ECamp.None;
 		}
 
 		public void UpdateCamp(message.Enums.Camp camp)
 		{
-			m_camp = (Camp)camp;
+			m_camp = (ECamp)camp;
 		}
 	}
 }

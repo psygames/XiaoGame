@@ -11,10 +11,12 @@ namespace RedStone
 		public Sprite white;
 		public Sprite black;
 
-
-		public void SetData()
-		{ 
-		
+		public void SetData(ChessData data)
+		{
+			if (data.type == message.Enums.ChessType.Black)
+				chess.sprite = black;
+			else if(data.type == message.Enums.ChessType.White)
+				chess.sprite = white;
 		}
 	}
 }

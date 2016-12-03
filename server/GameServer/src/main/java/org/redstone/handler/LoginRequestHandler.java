@@ -34,7 +34,7 @@ public class LoginRequestHandler extends BaseMsgHandler implements IMsgHandler{
 		try {
 			LoginRequest bean = LoginRequest.parseFrom(msgBody);
 			logger.info("设备" + bean.getDeviceUID() + "登录");
-			SessionUtils.addDeviceUID(sessionId, bean.getDeviceUID());
+			SessionUtils.addSessionDevice(sessionId, bean.getDeviceUID());
 			
 			LoginReply.Builder builder = LoginReply.newBuilder();
 			builder.setName("傻吊你好");

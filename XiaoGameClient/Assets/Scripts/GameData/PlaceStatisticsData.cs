@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace RedStone
 {
-	public class PlaceStatistics : DataBase
+	public class PlaceStatisticsData : DataBase
 	{
 		private int m_num;
 		private int m_x;

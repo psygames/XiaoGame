@@ -34,7 +34,7 @@ import org.redstone.protobuf.util.SocketUtils;
 public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandler{
 	public ByteBuffer process(byte[] msgBody, String sessionId) {
 		try {
-			String deviceUID = SessionUtils.getDeviceUID(sessionId);
+			String deviceUID = SessionUtils.getDevice(sessionId);
 			logger.info("玩家" + deviceUID + "加入ChinaBattle Gomoku");
 			
 			AssignRoomRequest joinBattleRequest = AssignRoomRequest.parseFrom(msgBody);
@@ -43,7 +43,7 @@ public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandl
 			//请求battleserver
 			Map<String, Object> reqMap = new HashMap<String, Object>();
 			reqMap.put("msgType", MsgType.AsignRoomRequest);
-			reqMap.put("deviceUID", deviceUID);
+			reqMap.put("gamer", DataUtils.toGson(SessionUtils.getGamerBySession(sessionId)));
 			reqMap.put("sessionId", sessionId);
 			reqMap.put("gameType", GameType.Gomoku);
 			reqMap.put("roomType", RoomType.Gomoku_Two);

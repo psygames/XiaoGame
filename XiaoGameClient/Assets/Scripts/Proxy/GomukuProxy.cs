@@ -7,10 +7,13 @@ namespace RedStone
 	public class GomukuProxy : ProxyBase
 	{
 		public Dictionary<int, ChessData> chesses { get { return m_chesses; } }
-		public List<PlaceStatistics> placeStatistics { get { return m_placeStatistics; } }
+		public List<PlaceStatisticsData> placeStatistics { get { return m_placeStatistics; } }
 
 		private Dictionary<int, ChessData> m_chesses = new Dictionary<int, ChessData>();
-		private List<PlaceStatistics> m_placeStatistics = new List<PlaceStatistics>();
+		private List<PlaceStatisticsData> m_placeStatistics = new List<PlaceStatisticsData>();
+
+		private ECamp m_whosTurn = ECamp.None;
+		public ECamp whosTursn { get { return m_whosTurn; } }
 
 		public GomukuProxy()
 		{
@@ -21,12 +24,14 @@ namespace RedStone
 		{
 			base.OnInit();
 
-			network.Register<message.BoardSync>(OnBoardSync);
+			network.Register<BoardSync>(OnBoardSync);
+			network.Register<NewTurnBroadcast>(OnNewTurn);
 		}
 
 		public override void OnDestroy()
 		{
-			network.UnRegister<message.BoardSync>(OnBoardSync);
+			network.UnRegister<BoardSync>(OnBoardSync);
+			network.UnRegister<NewTurnBroadcast>(OnNewTurn);
 
 			base.OnDestroy();
 		}
@@ -77,7 +82,7 @@ namespace RedStone
 			m_placeStatistics.Clear();
 			for (int i = 0; i < board.statistics.Count; i++)
 			{
-				PlaceStatistics sta = new PlaceStatistics();
+				PlaceStatisticsData sta = new PlaceStatisticsData();
 				sta.SetData(board.statistics[i].num, board.statistics[i].ratio);
 				m_placeStatistics.Add(sta);
 			}
@@ -85,9 +90,28 @@ namespace RedStone
 			EventManager.instance.Send(Event.Gomuku.BoardSync);
 		}
 
+		public void OnNewTurn(NewTurnBroadcast msg)
+		{
+			m_whosTurn = (ECamp)msg.camp;
+			SendEvent(Event.Gomuku.NewTurn, m_whosTurn);
+		}
+
+		public ChessData GetChess(int num)
+		{
+			ChessData data = null;
+			m_chesses.TryGetValue(num, out data);
+			return data;
+		}
+
 		public void PlaceChess(int num)
-		{ 
-			
+		{
+			PlaceRequest msg = new PlaceRequest();
+			msg.chessNum = num;
+			network.SendMessage<PlaceRequest, PlaceReply>(msg,
+			(reply) =>
+			{
+				//TODO: process
+			});
 		}
 
 		public override void OnUpdate()

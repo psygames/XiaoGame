@@ -56,7 +56,7 @@ public class ChinaBattleManage implements IBatteManage{
 			game.put(roomType, roomList);
 			synchronized (roomId) {
 				roomId ++;
-				room = new GomokuRoom(roomId, gameType, roomType, 2);//TODO
+				room = new GomokuRoom(roomId, gameType, roomType, 2, 12, 12);//TODO
 				allRoom.put(roomId, room);
 			}
 			roomList.add(room);

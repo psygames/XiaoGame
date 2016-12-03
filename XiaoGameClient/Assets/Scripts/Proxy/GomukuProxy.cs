@@ -10,6 +10,11 @@ namespace RedStone
 		private Dictionary<int, ChessData> m_chesses = new Dictionary<int, ChessData>();
 		private List<PlaceStatistics> m_placeStatistics = new List<PlaceStatistics>();
 
+		public GomukuProxy()
+		{
+			netType = NetType.Battle;
+		}
+
 		public override void OnInit()
 		{
 			base.OnInit();

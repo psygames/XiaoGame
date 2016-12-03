@@ -20,14 +20,13 @@ namespace RedStone
 
 		public void Init()
 		{
-			m_networks.Add(NetType.Hall, new Net.Network());
-			m_networks.Add(NetType.Battle, new Net.Network());
+			m_networks.Add(NetType.Hall, new Net.Network(new WebSocketConnection()));
+			m_networks.Add(NetType.Battle, new Net.Network(new WebSocketConnection()));
 
-			Connect(NetType.Hall, "ws://192.168.10.107:8080/XiaoGameServer/test");
 		}
 
 		public void Update()
-		{ 
+		{
 			var itr = m_networks.GetEnumerator();
 			while (itr.MoveNext())
 			{

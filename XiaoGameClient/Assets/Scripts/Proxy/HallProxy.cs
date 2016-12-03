@@ -9,8 +9,7 @@ namespace RedStone
 
 		public HallProxy()
 		{
-
-
+			netType = NetType.Hall;
 		}
 
 		public override void OnInit()

@@ -6,8 +6,10 @@ namespace RedStone
 	{
 		public Net.Network network
 		{
-			get { return NetworkManager.instance.Get(NetType.Hall); }
+			get { return NetworkManager.instance.Get(netType); }
 		}
+
+		public NetType netType = NetType.Hall;
 
 		public ProxyBase()
 		{

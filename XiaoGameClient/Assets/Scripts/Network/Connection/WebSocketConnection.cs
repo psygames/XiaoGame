@@ -40,15 +40,15 @@ namespace RedStone
 
 		public void Connect()
 		{
-			if (isInit() && !isConnecting())
+			if (isInit() && !isConnected())
 			{
-				m_socket.ConnectAsync();
+				m_socket.Connect();
 			}
 		}
 
 		public void Close()
 		{
-			if (isInit() && !isClosing())
+			if (isInit() && isConnecting())
 			{
 				m_socket.Close();
 			}

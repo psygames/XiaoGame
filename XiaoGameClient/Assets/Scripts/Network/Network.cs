@@ -13,9 +13,11 @@ namespace RedStone.Net
 		private Dictionary<string, int> m_protocolNum = new Dictionary<string, int>();
 		private Dictionary<int, string> m_numProtocal = new Dictionary<int, string>();
 
-		public Network()
+		protected Action<IConnection> onConnected = null;
+
+		public Network(IConnection connection)
 		{
-			m_connection = new WebSocketConnection();
+			m_connection = connection;
 		}
 
 		public void Init(string addr)
@@ -135,6 +137,8 @@ namespace RedStone.Net
 		private void OnOpen()
 		{
 			Debug.Log("socket opened");
+			if (onConnected != null)
+				onConnected.Invoke(m_connection);
 		}
 
 		private void OnError(string msg)

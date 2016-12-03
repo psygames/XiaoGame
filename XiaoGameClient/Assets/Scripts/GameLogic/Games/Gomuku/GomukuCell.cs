@@ -18,6 +18,8 @@ namespace RedStone
 		{
 			listener.onClick = (obj) =>
 			{
+				if (onClickCallback == null)
+					return;
 				onClickCallback.Invoke(x, y);
 			};
 		}

@@ -5,7 +5,7 @@ echo 协议文件路径
 set SOURCE_FOLDER=..\proto
 
 echo Java文件生成路径
-set JAVA_TARGET_PATH=..\..\..\XiaoGameServerCore\src\main\java
+set JAVA_TARGET_PATH=..\..\..\server\ServerCore\src\main\java
 
 echo Java编译器路径
 set JAVA_COMPILER_PATH=.\protoc.exe

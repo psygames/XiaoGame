@@ -37,3 +37,5 @@ ServerCore/.idea
 ServerCore/.settings/
 ServerCore/.classpath
 XiaoGameClient/obj/
+protobuf-net.csproj.meta
+websocket-sharp.csproj.meta

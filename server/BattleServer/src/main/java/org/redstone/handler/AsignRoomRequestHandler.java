@@ -42,21 +42,18 @@ public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandl
 	public ByteBuffer processSocket(Map<String, Object> reqMap) {
 		try {
 			
-			String deviceUID = reqMap.get("deviceUID").toString();
+			String jsonGamer = reqMap.get("jsonGamer").toString();
 			String gameType = reqMap.get("gameType").toString();
 			String roomType = reqMap.get("roomType").toString();
-			logger.info("玩家" + deviceUID + "加入ChinaBattle Gomoku");
 			
-			Gamer gamer = new Gamer();
-			gamer.setId(deviceUID);
+			Gamer gamer = DataUtils.json2T(jsonGamer, Gamer.class);
 			gamer.setState(Constant.Gamer_State_Joining);
 			BaseRoom room = ChinaBattleManage.getInstance().asignRoom(gameType, roomType, gamer);
+			logger.info("玩家" + gamer.getDeviceUID() + "加入ChinaBattle Gomoku");
 			
 			byte[] msgType = DataUtils.numberToBytes(MsgType.JoinRoomReply.getMsgType());
 			byte[] reply = DataUtils.numberToBytes(room.getId());;
-			ByteBuffer buff = ByteBuffer.allocate(msgType.length + reply.length);
-			buff.put(msgType);
-			buff.put(reply);
+			ByteBuffer buff = DataUtils.genBuff(msgType, reply);
 			
 			return buff;
 		} catch (Exception e) {

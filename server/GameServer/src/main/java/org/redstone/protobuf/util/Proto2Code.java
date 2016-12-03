@@ -15,8 +15,8 @@ import java.io.InputStreamReader;
  */
 public class Proto2Code {
 	public final static String CLASSPATH = Proto2Code.class.getClassLoader().getResource("").toString().replace("file:/", "");
-	public final static String SERVER_BAT_PATH = CLASSPATH + "../../../Tools/Protobuf/serverGen";
-	public final static String CLIENT_BAT_PATH = CLASSPATH + "../../../Tools/Protobuf/clientGen";
+	public final static String SERVER_BAT_PATH = CLASSPATH + "../../../../Tools/Protobuf/serverGen";
+	public final static String CLIENT_BAT_PATH = CLASSPATH + "../../../../Tools/Protobuf/clientGen";
 	public final static String separatorLine = "#####################################";
 
 	/**

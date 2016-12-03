@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public class CSharpFix {
 	public final String CLASSPATH = this.getClass().getClassLoader().getResource("").toString().replace("file:/", "");
-	public final String FROM_DIR = CLASSPATH + "../../../Tools/Protobuf/clientGen";
-	public final String DEST_DIR = CLASSPATH + "../../../XiaoGameClient/Assets/Scripts/Network/Protocol";
+	public final String FROM_DIR = CLASSPATH + "../../../../Tools/Protobuf/clientGen";
+	public final String DEST_DIR = CLASSPATH + "../../../../XiaoGameClient/Assets/Scripts/Network/Protocol";
 
 	public final Map<String, String> replaceMembs = new HashMap<String, String>() {
 		private static final long serialVersionUID = -3582164660929036163L;

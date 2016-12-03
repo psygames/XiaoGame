@@ -17,6 +17,7 @@ package org.redstone.db.model;
  */
 public class Gamer {
 	private String id;
+	private String deviceUID;
 	private String logName;
 	private String password;
 	private String nickName;
@@ -31,6 +32,12 @@ public class Gamer {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getDeviceUID() {
+		return deviceUID;
+	}
+	public void setDeviceUID(String deviceUID) {
+		this.deviceUID = deviceUID;
 	}
 	public String getLogName() {
 		return logName;

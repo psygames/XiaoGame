@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.redstone.db.model.Gamer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -98,6 +99,16 @@ public class DataUtils {
 			json = gson.fromJson(jsonStr, new TypeToken<HashMap<String, String>>() { }.getType());
 		} catch (Exception e) {
 			logger.error("转换json失败", e);
+		}
+		return json;
+	}
+	
+	public static <T> T json2T(String jsonStr, Class<T> cls){
+		T json = null;
+		try {
+			json = (T)gson.fromJson(jsonStr, cls);
+		} catch (Exception e) {
+			logger.error("转换" + cls.getName() + "失败", e);
 		}
 		return json;
 	}

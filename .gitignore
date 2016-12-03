@@ -22,9 +22,18 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-XiaoGameServer/.settings/
-XiaoGameServer/.classpath
 XiaoGameClient/Library/
 XiaoGameClient/Temp/
-XiaoGameServer.iml
-XiaoGameServer/.idea
+GameServer.iml
+GameServer/.idea
+GameServer/.settings/
+GameServer/.classpath
+BattleServer.iml
+BattleServer/.idea
+BattleServer/.settings/
+BattleServer/.classpath
+ServerCore.iml
+ServerCore/.idea
+ServerCore/.settings/
+ServerCore/.classpath
+

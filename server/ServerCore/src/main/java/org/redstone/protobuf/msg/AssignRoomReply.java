@@ -11,7 +11,7 @@ public  final class AssignRoomReply extends
     // @@protoc_insertion_point(message_implements:org.redstone.protobuf.msg.AssignRoomReply)
     AssignRoomReplyOrBuilder {
   // Use AssignRoomReply.newBuilder() to construct.
-private AssignRoomReply(com.google.protobuf.GeneratedMessage.Builder builder) {
+  private AssignRoomReply(com.google.protobuf.GeneratedMessage.Builder builder) {
     super(builder);
   }
   private AssignRoomReply() {
@@ -24,7 +24,7 @@ private AssignRoomReply(com.google.protobuf.GeneratedMessage.Builder builder) {
   getUnknownFields() {
     return this.unknownFields;
   }
-private AssignRoomReply(
+  private AssignRoomReply(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

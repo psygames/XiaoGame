@@ -5,5 +5,5 @@ import "Enums.proto";
 
 message NewTurnBroadcast
 {
-  optional Camp camp = 1[default = NoneCamp];
+  optional Enums.Camp camp = 1[default = NoneCamp];
 }

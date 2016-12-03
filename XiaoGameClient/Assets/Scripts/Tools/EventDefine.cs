@@ -7,6 +7,7 @@ namespace RedStone
 		{
 			public const string BoardSync = "BoardSync";
 			public const string NewTurn = "NewTurn";
-		}
+			public const string BattleResult = "BattleResult";
+        }
 	}
 }

@@ -5,17 +5,15 @@ namespace RedStone
 {
 	public class LoginView : ViewBase
 	{
-		void Start()
-		{
+        public UIEventListener playListener;
 
-		}
+        public override void OnInit()
+        {
+            base.OnInit();
+            playListener.onClick = OnClickPlay;
+        }
 
-		void Update()
-		{
-
-		}
-
-		public void OnLogin()
+		public void OnClickPlay(UIEventListener listener)
 		{
 			GetProxy<HallProxy>().AssignRoom();
 		}

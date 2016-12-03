@@ -7,7 +7,7 @@ namespace RedStone
 	{
 		private Dictionary<string, string> m_prefabs = new Dictionary<string, string>();
 
-		private Dictionary<string, GameObject> m_gameObjects = new Dictionary<string, GameObject>();
+		private Dictionary<string, ViewBase> m_views = new Dictionary<string, ViewBase>();
 
 		private Stack m_stack = new Stack();
 
@@ -18,6 +18,15 @@ namespace RedStone
 			uiRoot = GameObject.Find("UI Root").transform;
 			RegisteAll();
 			PreLoad();
+			InitAll();
+		}
+
+		public void InitAll()
+		{
+			foreach (var kv in m_views)
+			{
+				kv.Value.OnInit();
+			}
 		}
 
 		public void PreLoad()
@@ -27,7 +36,7 @@ namespace RedStone
 				Object obj = Resources.Load(MyPath.RES_UI + kv.Value);
 				GameObject go = Object.Instantiate(obj) as GameObject;
 				ViewBase _base = go.GetComponent<ViewBase>();
-				m_gameObjects.Add(_base.GetType().ToString(), go);
+				m_views.Add(_base.GetType().ToString(), _base);
 				go.transform.SetParent(uiRoot,false);
 				go.SetActive(false);
 			}
@@ -59,30 +68,30 @@ namespace RedStone
 			while (m_stack.Count > 0)
 			{
 				UIContent content = m_stack.Pop() as UIContent;
-				m_gameObjects[content.name].SetActive(false);
+				m_views[content.name].gameObject.SetActive(false);
 			}
 		}
 
 		public void Back()
 		{
 			UIContent content = m_stack.Pop() as UIContent;
-			m_gameObjects[content.name].SetActive(false);
+			m_views[content.name].gameObject.SetActive(false);
 
 
 			UIContent peek = m_stack.Peek() as UIContent;
-			m_gameObjects[peek.name].SetActive(true);
+			m_views[peek.name].gameObject.SetActive(true);
 		}
 
 		private void ShowGameObject(string name)
 		{
 			UIContent peek = m_stack.Peek() as UIContent;
-			m_gameObjects[peek.name].SetActive(true);
+			m_views[peek.name].gameObject.SetActive(true);
 
 			// hide others
 			foreach (UIContent obj in m_stack)
 			{
 				if (obj != peek)
-					m_gameObjects[obj.name].SetActive(false);
+					m_views[obj.name].gameObject.SetActive(false);
 			}
 		}
 	}

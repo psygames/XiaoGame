@@ -8,23 +8,23 @@ namespace RedStone
 	public class CellGenerator : MonoBehaviour
 	{
 		public GameObject template;
-		private int row = 12;
-		private int column = 12;
-		private Vector2 space = new Vector2(80, 80);
 		[HideInInspector]
 		public Action<int> onClickCallback;
 
 		public void Init()
 		{
+			int row = LogicHelper.Gomuku.row;
+			int column = LogicHelper.Gomuku.column;
 			for (int i = 0; i < row; i++)
 			{
 				for (int j = 0; j < column; j++)
 				{
 					GameObject go = Instantiate(template);
 					go.transform.SetParent(transform, false);
+					go.SetActive(true);
 
 					GomukuCell cell = go.GetComponent<GomukuCell>();
-					cell.SetData(i, j, row, column, space.x, space.y);
+					cell.SetData(i, j);
 					cell.onClickCallback = (a, b) => { onClickCallback.Invoke(a * column + b); };
 				}
 			}

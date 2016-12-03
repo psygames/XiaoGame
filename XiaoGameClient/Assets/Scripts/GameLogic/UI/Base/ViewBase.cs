@@ -29,7 +29,7 @@ namespace RedStone
 			EventManager.instance.UnRegister<T>(eventName, callback);
 		}
 
-		protected virtual void OnInit()
+		public virtual void OnInit()
 		{
 
 		}

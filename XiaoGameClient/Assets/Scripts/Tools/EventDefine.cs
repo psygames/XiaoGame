@@ -6,6 +6,7 @@ namespace RedStone
 		public class Gomuku
 		{
 			public const string BoardSync = "BoardSync";
+			public const string NewTurn = "NewTurn";
 		}
 	}
 }

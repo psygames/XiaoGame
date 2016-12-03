@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 import org.redstone.battle.battlemanage.ChinaBattleManage;
-import org.redstone.battle.constant.Constant;
+import org.redstone.battle.constant.GamerConstant;
 import org.redstone.battle.constant.GameType;
 import org.redstone.battle.constant.RoomType;
 import org.redstone.battle.room.BaseRoom;
@@ -47,12 +47,12 @@ public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandl
 			String roomType = reqMap.get("roomType").toString();
 			
 			Gamer gamer = DataUtils.json2T(jsonGamer, Gamer.class);
-			gamer.setState(Constant.Gamer_State_Joining);
+			gamer.setState(GamerConstant.Gamer_State_Joining);
 			BaseRoom room = ChinaBattleManage.getInstance().asignRoom(gameType, roomType, gamer);
 			logger.info("玩家" + gamer.getDeviceUID() + "加入ChinaBattle Gomoku");
 			
 			byte[] msgType = DataUtils.numberToBytes(MsgType.JoinRoomReply.getMsgType());
-			byte[] reply = DataUtils.numberToBytes(room.getId());;
+			byte[] reply = DataUtils.numberToBytes(room.getId());
 			ByteBuffer buff = DataUtils.genBuff(msgType, reply);
 			
 			return buff;

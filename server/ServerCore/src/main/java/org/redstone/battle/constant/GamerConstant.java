@@ -15,7 +15,7 @@ package org.redstone.battle.constant;
  * @date 2016年11月27日
  *
  */
-public class Constant {
+public class GamerConstant {
 	public static String Gamer_State_Logout = "0";
 	public static String Gamer_State_LogIn = "1";
 	public static String Gamer_State_Ready = "2";

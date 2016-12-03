@@ -17,7 +17,7 @@ import org.redstone.handler.IMsgHandler;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.HandlerUtils;
 
-@ServerEndpoint("/test")
+@ServerEndpoint("/gameServer")
 public class GameServer {
 	
 	Session session;

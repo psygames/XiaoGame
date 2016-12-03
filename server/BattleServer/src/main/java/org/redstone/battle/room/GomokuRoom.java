@@ -8,15 +8,6 @@
  */
 package org.redstone.battle.room;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.redstone.protobuf.msg.BoardSync;
-import org.redstone.protobuf.msg.ChessRow;
-import org.redstone.protobuf.msg.Enums.ChessType;
-
 /**
  * @ClassName: Room
  * @Description: TODO 
@@ -25,40 +16,20 @@ import org.redstone.protobuf.msg.Enums.ChessType;
  *
  */
 public class GomokuRoom extends BaseRoom{
-	private ChessType[][] cts;
-	private int boardX;
-	private int boardY;
 
 	/**
 	 * GomokuRoom.
 	 *
+	 * @param roomId
 	 * @param gameType
 	 * @param roomType
-	 * @param groupCount
+	 * @param campCount
+	 * @param turnDelay
+	 * @param upperLimit
 	 */
-	public GomokuRoom(int roomId, String gameType, String roomType, int groupCount, int boardX, int boardY) {
-		super(roomId, gameType, roomType, groupCount);
-		cts = new ChessType[boardX][boardY];
-		this.boardX = boardX;
-		this.boardY = boardY;
+	public GomokuRoom(int roomId, String gameType, String roomType, int campCount, int boardX, int boardY, long turnDelay, int upperLimit) {
+		super(roomId, gameType, roomType, campCount, boardX, boardY, turnDelay, upperLimit);
 	}
 	
-	public void addChess(int x, int y, ChessType ct){
-		cts[x][y] = ct;
-	}
 	
-	public void array2List(){
-		
-		//按行转换
-		BoardSync.Builder boardBuilder = BoardSync.newBuilder();
-		for(int y = 0; y < boardY; y++){
-			ChessRow.Builder rowBuilder = ChessRow.newBuilder();
-			for(int x = 0; x < boardX; x++){
-				rowBuilder.setTypes(x, cts[x][y]);
-			}
-			boardBuilder.setRows(y, rowBuilder);
-		}
-		
-		
-	}
 }

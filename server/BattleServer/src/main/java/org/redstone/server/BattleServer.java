@@ -16,25 +16,27 @@ import org.apache.log4j.Logger;
 import org.redstone.handler.IMsgHandler;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.HandlerUtils;
+import org.redstone.protobuf.util.SessionUtils;
 
 @ServerEndpoint("/battleServer")
 public class BattleServer {
 	
 	Session session;
-	static Map<String, String> sessionMap = new HashMap<String, String>();
+	public static Map<String, Session> sessionMap = new HashMap<String, Session>();
 	Basic remote;
 	private final Logger logger = Logger.getLogger(BattleServer.class);
 	@OnOpen
 	public void onOpen(Session s){
 		session = s;
 		remote = session.getBasicRemote();
-		sessionMap.put(session.getId(), "");
+		sessionMap.put(session.getId(), session);
 		logger.info(session.getId() + "登入battle");
 	}
 	
 	@OnClose
 	public void onClose(){
 		sessionMap.remove(session.getId());
+		SessionUtils.remove(session.getId());
 		logger.info(session.getId() + "退出battle");
 	}
 	

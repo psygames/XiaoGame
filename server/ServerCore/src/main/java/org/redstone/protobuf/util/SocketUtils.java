@@ -41,9 +41,9 @@ public class SocketUtils {
 		byte[] b = null;
 		String reqStr = null;
 		try {
-			logger.info(LOGID + "远程ip：192.168.10.107，远程端口: 40000");
-			socket = new Socket("192.168.10.107", 40000);
-			socket.setSoTimeout(30 * 1000);
+			logger.info(LOGID + "远程ip：192.168.10.106，远程端口: 40000");
+			socket = new Socket("192.168.10.106", 40000);
+			socket.setSoTimeout(5 * 1000);
 			dos = new DataOutputStream(socket.getOutputStream());
 			dos.write(msg);
 			dos.flush();
@@ -81,12 +81,13 @@ public class SocketUtils {
 			logger.error(LOGID + "未知主机", e);
 			throw e;
 		} catch (SocketException e) {
-			logger.error(LOGID + "等待返回超时60s", e);
+			logger.error(LOGID + "连接失败", e);
 			throw e;
 		} catch (UnsupportedEncodingException e) {
 			logger.error(LOGID + "编码不支持", e);
 			throw e;
 		} catch (SocketTimeoutException e) {
+			logger.error(LOGID + "等待返回超时5s", e);
 			throw e;
 		} finally {
 			if (socket != null) {

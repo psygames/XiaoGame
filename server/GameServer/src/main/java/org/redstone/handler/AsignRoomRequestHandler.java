@@ -34,7 +34,7 @@ import org.redstone.protobuf.util.SocketUtils;
 public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandler{
 	public ByteBuffer process(byte[] msgBody, String sessionId) {
 		try {
-			String deviceUID = SessionUtils.getDevice(sessionId);
+			String deviceUID = SessionUtils.getDeviceUID(sessionId);
 			logger.info("玩家" + deviceUID + "加入ChinaBattle Gomoku");
 			
 			AssignRoomRequest joinBattleRequest = AssignRoomRequest.parseFrom(msgBody);

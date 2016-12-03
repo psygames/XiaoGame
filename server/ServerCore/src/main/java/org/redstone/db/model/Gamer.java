@@ -93,4 +93,14 @@ public class Gamer {
 	public void setState(String state) {
 		this.state = state;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Gamer){
+			if(((Gamer) obj).getId().equals(this.id)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

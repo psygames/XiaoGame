@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.redstone.battle.battlemanage.ChinaBattleManage;
 import org.redstone.battle.constant.GameType;
+import org.redstone.battle.constant.GamerConstant;
 import org.redstone.battle.constant.RoomType;
 import org.redstone.battle.room.BaseRoom;
 import org.redstone.db.model.Gamer;
@@ -39,11 +40,16 @@ public class JoinRoomRequestHandler extends BaseMsgHandler implements IMsgHandle
 	public ByteBuffer process(byte[] reqBody, String sessionId) {
 		try {
 			JoinRoomRequest joinRoomRequest = JoinRoomRequest.parseFrom(reqBody);
+			Gamer gamer = new Gamer();
+			gamer.setDeviceUID(joinRoomRequest.getDeviceUID());
+			gamer.setState(GamerConstant.Gamer_State_Joining);
+			
 			SessionUtils.addSessionDevice(sessionId, joinRoomRequest.getDeviceUID());
+			SessionUtils.addDeviceGamer(sessionId, gamer);
+			SessionUtils.addDeviceSession(joinRoomRequest.getDeviceUID(), sessionId);
 			logger.info("设备" + joinRoomRequest.getDeviceUID() + "登录");
 			
-			Gamer gamer = new Gamer();
-			gamer.setId(joinRoomRequest.getDeviceUID());
+			
 			Map<String, Object> rtnMap = ChinaBattleManage.getInstance().joinRoom(gamer, joinRoomRequest.getRoomId());
 			
 			JoinRoomReply.Builder builder = JoinRoomReply.newBuilder();

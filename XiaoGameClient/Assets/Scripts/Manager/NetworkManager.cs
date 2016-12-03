@@ -22,7 +22,6 @@ namespace RedStone
 		{
 			m_networks.Add(NetType.Hall, new Net.Network(new WebSocketConnection()));
 			m_networks.Add(NetType.Battle, new Net.Network(new WebSocketConnection()));
-
 		}
 
 		public void Update()

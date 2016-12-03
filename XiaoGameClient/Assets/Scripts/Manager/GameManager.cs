@@ -26,14 +26,9 @@ namespace RedStone
 			NetworkManager.instance.Init();
 			ProxyManager.instance.Init();
 			UIManager.instance.Init();
+
 			UIManager.instance.Show<LoginView>();
-
-
-		}
-
-		private void Connect()
-		{ 
-			NetworkManager.instance.Connect(NetType.Hall, "ws://192.168.10.106:8180/XiaoGameServer/test");
+			ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer();
 		}
 
 		private void Update()

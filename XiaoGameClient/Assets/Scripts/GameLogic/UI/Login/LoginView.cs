@@ -17,7 +17,7 @@ namespace RedStone
 
 		public void OnLogin()
 		{
-			NetworkManager.instance.Connect(NetType.Battle, "ws://192.168.10.106:8080/XiaoGameBattleServer/battleServer");
+			GetProxy<HallProxy>().AssignRoom();
 		}
 	}
 }

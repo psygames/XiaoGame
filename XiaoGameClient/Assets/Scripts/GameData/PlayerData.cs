@@ -5,6 +5,7 @@ namespace RedStone
 {
 	public enum Camp
 	{
+		None = 0,
 		White = 1, // 对应于 ChessType 可强转
 		Black = 2,
 	}
@@ -23,8 +24,12 @@ namespace RedStone
 		{
 			m_uuid = 1;
 			m_name = info.name;
-			m_camp = Camp.White;
+			m_camp = Camp.None;
+		}
 
+		public void UpdateCamp(message.Enums.Camp camp)
+		{
+			m_camp = (Camp)camp;
 		}
 	}
 }

@@ -12,14 +12,9 @@ namespace RedStone
 		private int column = 12;
 		private Vector2 space = new Vector2(80, 80);
 		[HideInInspector]
-		public Action<int, int> onClickCallback;
+		public Action<int> onClickCallback;
 
-		void Awake()
-		{
-			Init();
-		}
-
-		void Init()
+		public void Init()
 		{
 			for (int i = 0; i < row; i++)
 			{
@@ -30,7 +25,7 @@ namespace RedStone
 
 					GomukuCell cell = go.GetComponent<GomukuCell>();
 					cell.SetData(i, j, row, column, space.x, space.y);
-					cell.onClickCallback = onClickCallback;
+					cell.onClickCallback = (a, b) => { onClickCallback.Invoke(a * column + b); };
 				}
 			}
 		}

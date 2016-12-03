@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using message;
+
 namespace RedStone
 {
 	public class GomukuProxy : ProxyBase
@@ -29,6 +31,32 @@ namespace RedStone
 			base.OnDestroy();
 		}
 
+		public void JoinRoom(int roomId)
+		{
+			JoinRoomRequest msg = new JoinRoomRequest();
+			msg.deviceUID = UUID.DEVICE;
+			msg.roomId = roomId;
+
+			network.SendMessage<JoinRoomRequest, JoinRoomReply>(msg,
+	   		(reply) =>
+			{
+				//TODO: reply.roomId 这个字段暂时没用啊？
+				GetProxy<HallProxy>().mainPlayerData.UpdateCamp(reply.camp);
+				OnBoardSync(reply.boardSync);
+			});
+		}
+
+		public void ConnectToBattleServer(string address, int roomId)
+		{
+			NetworkManager.instance.Get(NetType.Battle).onConnected =
+			(obj) =>
+			{
+				JoinRoom(roomId);
+			};
+
+			NetworkManager.instance.Connect(NetType.Battle, address);
+		}
+
 		public void OnBoardSync(message.BoardSync board)
 		{
 			for (int i = 0; i < board.rows.Count; i++)
@@ -55,6 +83,11 @@ namespace RedStone
 			}
 
 			EventManager.instance.Send(Event.Gomuku.BoardSync);
+		}
+
+		public void PlaceChess(int num)
+		{ 
+			
 		}
 
 		public override void OnUpdate()

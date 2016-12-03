@@ -13,7 +13,7 @@ namespace RedStone.Net
 		private Dictionary<string, int> m_protocolNum = new Dictionary<string, int>();
 		private Dictionary<int, string> m_numProtocal = new Dictionary<int, string>();
 
-		protected Action<IConnection> onConnected = null;
+		public Action<IConnection> onConnected = null;
 
 		public Network(IConnection connection)
 		{

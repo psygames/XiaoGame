@@ -13,14 +13,21 @@ namespace RedStone
 		{
 			base.OnInit();
 
+			generator.Init();
 			generator.onClickCallback = OnCellClick;
 
 			Register(Event.Gomuku.BoardSync, OnBoardSync);
 		}
 
-		private void OnCellClick(int x, int y)
+		public override void OnDestory()
 		{
-			Debug.Log(x + "   " + y);
+			UnRegister(Event.Gomuku.BoardSync, OnBoardSync);
+			base.OnDestory();
+		}
+
+		private void OnCellClick(int num)
+		{
+			//Debug.Log(x + "   " + y);
 		}
 
 		private void OnBoardSync()
@@ -34,7 +41,7 @@ namespace RedStone
 			List<PlaceStatistics> statistics = proxy.placeStatistics;
 			for (int i = 0; i < statistics.Count; i++)
 			{
-				
+
 			}
 		}
 

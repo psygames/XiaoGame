@@ -19,7 +19,22 @@ namespace RedStone
 			EventManager.instance.Register(eventName, callback);
 		}
 
+		public void UnRegister(string eventName, Action callback)
+		{
+			EventManager.instance.UnRegister(eventName, callback);
+		}
+
+		public void UnRegister<T>(string eventName, Action<T> callback)
+		{
+			EventManager.instance.UnRegister<T>(eventName, callback);
+		}
+
 		protected virtual void OnInit()
+		{
+
+		}
+
+		public virtual void OnDestory()
 		{
 
 		}

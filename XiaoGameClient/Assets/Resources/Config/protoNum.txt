@@ -8,3 +8,4 @@ PlaceReply = 1008
 NewTurnBroadcast = 1011
 JoinRoomRequest = 2001
 JoinRoomReply = 2002
+BattleResult = 2004

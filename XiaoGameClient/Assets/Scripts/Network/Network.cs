@@ -156,6 +156,7 @@ namespace RedStone.Net
 			byte[] body = new byte[data.Length - 2];
 			Array.Copy(data, 2, body, 0, data.Length - 2);
 			Type type = HeaderToType(header);
+			Debug.Log(type);
 			if (type == null)
 			{
 				Debug.Log("Wrong Type header : [" + header[0] + "," + header[1] + "]");
@@ -195,7 +196,10 @@ namespace RedStone.Net
 		private Type HeaderToType(byte[] header)
 		{
 			int num = BitConvert.ToUshort(header);
-			return Type.GetType(m_numProtocal[num]);
+			Type type = Type.GetType(m_numProtocal[num]);
+			if (type == null)
+				Debug.Log("null message num: " + num);
+			return type;
 		}
 
 		private byte[] TypeToHeader(Type t)

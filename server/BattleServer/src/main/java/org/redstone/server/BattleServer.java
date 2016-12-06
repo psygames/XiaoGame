@@ -13,6 +13,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import org.apache.log4j.Logger;
+import org.redstone.battle.battlemanage.ChinaBattleManage;
 import org.redstone.handler.IMsgHandler;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.HandlerUtils;
@@ -35,8 +36,9 @@ public class BattleServer {
 	
 	@OnClose
 	public void onClose(){
-		sessionMap.remove(session.getId());
+		ChinaBattleManage.remove(session.getId());
 		SessionUtils.remove(session.getId());
+		sessionMap.remove(session.getId());
 		logger.info(session.getId() + "退出battle");
 	}
 	
@@ -54,7 +56,9 @@ public class BattleServer {
 		logger.info("msgType=" + type);
 		IMsgHandler handler = HandlerUtils.getInstance().getHandler(type);
 		ByteBuffer sendBuff = handler.process(msgBody, session.getId());
-		sendBuff.flip();
-		session.getAsyncRemote().sendBinary(sendBuff);
+		if(sendBuff != null){
+			sendBuff.flip();
+			session.getAsyncRemote().sendBinary(sendBuff);
+		}
 	}
 }

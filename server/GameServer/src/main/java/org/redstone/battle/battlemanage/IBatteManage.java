@@ -8,8 +8,6 @@
  */
 package org.redstone.battle.battlemanage;
 
-import java.util.List;
-
 import org.redstone.battle.room.BaseRoom;
 import org.redstone.db.model.Gamer;
 
@@ -21,6 +19,6 @@ import org.redstone.db.model.Gamer;
  *
  */
 public interface IBatteManage {
-	BaseRoom asignRoomBySocket(String gameType, String roomType, List<Gamer> gamers);
+	void asignRoom(String gameType, String roomType, Gamer gamer);
 	byte[] process(byte[] reqData);
 }

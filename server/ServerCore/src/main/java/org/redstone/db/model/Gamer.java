@@ -97,7 +97,7 @@ public class Gamer {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Gamer){
-			if(((Gamer) obj).getId().equals(this.id)){
+			if(((Gamer) obj).getDeviceUID().equals(this.getDeviceUID())){
 				return true;
 			}
 		}

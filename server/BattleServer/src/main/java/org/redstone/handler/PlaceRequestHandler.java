@@ -43,7 +43,7 @@ public class PlaceRequestHandler  extends BaseMsgHandler implements IMsgHandler{
 			PlaceReply.Builder builder = PlaceReply.newBuilder();
 			builder.setResult(1);
 			
-			byte[] msgType = DataUtils.numberToBytes(MsgType.PlaceReply.getMsgType());
+			byte[] msgType = DataUtils.number2Bytes(MsgType.PlaceReply.getMsgType());
 			byte[] rspBody = builder.build().toByteArray();
 			ByteBuffer buff = DataUtils.genBuff(msgType, rspBody);
 			return buff;

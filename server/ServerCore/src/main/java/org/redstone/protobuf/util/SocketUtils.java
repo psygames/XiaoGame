@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -29,51 +30,60 @@ import org.apache.log4j.Logger;
 public class SocketUtils {
 	private static Logger logger = Logger.getLogger(SocketUtils.class);
 	private static final String LOGID = "【socket】";
+	
+	private static String ip = "192.168.10.106";
+	private static int port = 8888;
+	
+	public static void main(String[] args) throws Exception {
+		sendMsg(DataUtils.number2Bytes(3));
+	}
 	/**
 	 * 发送报文
 	 * @param msg
 	 * @throws Exception 
 	 */
-	public static String sendMsg(byte[] msg) throws Exception{
+	public static byte[] sendMsg(byte[] msg) throws Exception{
 		Socket socket = null;
 		DataInputStream dis = null;
 		DataOutputStream dos = null;
 		byte[] b = null;
-		String reqStr = null;
 		try {
-			logger.info(LOGID + "远程ip：192.168.10.106，远程端口: 40000");
-			socket = new Socket("192.168.10.106", 40000);
-			socket.setSoTimeout(5 * 1000);
+			logger.info(LOGID + "远程ip：192.168.10.106，远程端口: " + port);
+			socket = new Socket(ip, port);
+			socket.setSoTimeout(10 * 1000);
 			dos = new DataOutputStream(socket.getOutputStream());
 			dos.write(msg);
 			dos.flush();
 			dis = new DataInputStream(socket.getInputStream());
 			
+			//-------------------------------------读取报文长度--------------------------------------
 			long start1 = System.currentTimeMillis();
-			//先取前4个字节。最多等5 * 1000ms。
-			while(dis.available() < 4 && (System.currentTimeMillis()-start1) < 5 * 1000){
+			//先取前2个字节。最多等5 * 1000ms。
+			while(dis.available() < 2 && (System.currentTimeMillis()-start1) < 5 * 1000){
 				Thread.sleep(10);
 			}
-			if(dis.available()<4){
+			if(dis.available() < 2){
 				throw new SocketTimeoutException(LOGID + "未能读取到报文长度");
 			}
 			
-			byte[] strLen = new byte[4]; // 存放返回报文长度
+			byte[] strLen = new byte[2]; // 存放返回报文长度
 			int t = dis.read(strLen);
-			int length = Integer.parseInt(new String(strLen, "utf-8"));
-			logger.info(LOGID + "报文前四个字节表示报文长度" + new String(strLen,  "utf-8" + "====" + t));
+			short length = DataUtils.byteArray2T(strLen, Short.class);
+			logger.info(LOGID + "报文前2个字节表示报文长度" + new String(length + ""));
+			
+			if(length == 0){
+				return null;
+			}
+			
+			//-------------------------------------读取报文内容--------------------------------------
 			b = new byte[length];
 			long start2 = System.currentTimeMillis();
 			//判断返回流里面的有效字节，如果等于前面获取到的报文长度，说明对方报文已经都发送到了流里面。这时我们才能读取到完整的报文。最多等5000ms。
-			while(dis.available() < length && (System.currentTimeMillis()-start2) < 5000){
+			while(dis.available() < length && (System.currentTimeMillis()-start2) < 5 * 1000){
 				Thread.sleep(10);
 			}
 			t = dis.read(b);
-			reqStr = new String(b, "utf-8");
-			logger.info(LOGID + "实际长度" + t + "=====响应报文内容" + reqStr);
-			dis.close();
-			socket.close();
-			dos.close();
+			logger.info(LOGID + "实际长度" + t);
 		} catch (NumberFormatException e) {
 			logger.error(LOGID + "数字格式错误", e);
 			throw e;
@@ -87,23 +97,13 @@ public class SocketUtils {
 			logger.error(LOGID + "编码不支持", e);
 			throw e;
 		} catch (SocketTimeoutException e) {
-			logger.error(LOGID + "等待返回超时5s", e);
+			logger.error(LOGID + "等待返回超时10s", e);
 			throw e;
 		} finally {
-			if (socket != null) {
-				try {
-					socket.close();
-				} catch (IOException e) {
-					socket = null;
-				}
-			}
-			if (dos != null) {
-				dos = null;
-			}
-			if (dis != null) {
-				dis = null;
-			}
+			dis.close();
+			socket.close();
+			dos.close();
 		}
-		return reqStr;
+		return b;
 	}
 }

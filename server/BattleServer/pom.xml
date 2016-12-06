@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.redstone</groupId>
-  <artifactId>XiaoGameBattleServer</artifactId>
+  <artifactId>BattleServer</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
 
-  <name>XiaoGameBattleServer</name>
+  <name>BattleServer</name>
   <url>http://maven.apache.org</url>
 
   <properties>

@@ -13,28 +13,32 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import org.apache.log4j.Logger;
+import org.redstone.battle.battlemanage.ChinaBattleManage;
 import org.redstone.handler.IMsgHandler;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.HandlerUtils;
+import org.redstone.protobuf.util.SessionUtils;
 
 @ServerEndpoint("/gameServer")
 public class GameServer {
+	private final Logger logger = Logger.getLogger(GameServer.class);
 	
 	Session session;
-	static Map<String, String> sessionMap = new HashMap<String, String>();
+	public static Map<String, Session> sessionMap = new HashMap<String, Session>();
 	Basic remote;
-	private final Logger logger = Logger.getLogger(GameServer.class);
 	@OnOpen
 	public void onOpen(Session s){
 		session = s;
 		remote = session.getBasicRemote();
-		sessionMap.put(session.getId(), "");
+		sessionMap.put(session.getId(), s);
 		logger.info(session.getId() + "登入");
 	}
 	
 	@OnClose
 	public void onClose(){
 		sessionMap.remove(session.getId());
+		SessionUtils.remove(session.getId());
+		ChinaBattleManage.remove(session.getId());
 		logger.info(session.getId() + "退出");
 	}
 	
@@ -52,7 +56,9 @@ public class GameServer {
 		logger.info("msgType=" + type);
 		IMsgHandler handler = HandlerUtils.getInstance().getHandler(type);
 		ByteBuffer sendBuff = handler.process(msgBody, session.getId());
-		sendBuff.flip();
-		session.getAsyncRemote().sendBinary(sendBuff);
+		if(sendBuff != null){
+			sendBuff.flip();
+			session.getAsyncRemote().sendBinary(sendBuff);
+		}
 	}
 }

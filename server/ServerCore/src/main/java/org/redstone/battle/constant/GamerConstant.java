@@ -22,4 +22,8 @@ public class GamerConstant {
 	public static String Gamer_State_Joining = "3";
 	public static String Gamer_State_Joined = "4";
 	public static String Gamer_State_Dead = "5";
+	
+	
+	public static String Room_Crt = "Room_Crt";
+	public static String Room_Join = "Room_Join";
 }

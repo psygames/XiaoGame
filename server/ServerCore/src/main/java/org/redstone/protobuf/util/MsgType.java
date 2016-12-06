@@ -20,12 +20,13 @@ public enum MsgType {
 	LoginReply("LoginReply",(short)1002),
 	AsignRoomRequest("AsignRoomRequest",(short)1003),
 	AsignRoomReply("AsignRoomReply",(short)1004),
-	BoardSync("BoardSync",(short)1005),
+	BoardSync("BoardSync",(short)1006),
 	PlaceRequest("LoginRequest",(short)1007),
 	PlaceReply("PlaceReply",(short)1008),
-	NewTurnBroadcast("NewTurnBroadcast",(short)1011),
+	NewTurnBroadcast("NewTurnBroadcast",(short)1012),
 	JoinRoomRequest("JoinRoomRequest",(short)2001),
-	JoinRoomReply("JoinRoomReply",(short)2002);
+	JoinRoomReply("JoinRoomReply",(short)2002),
+	BattleResult("BattleResult",(short)2004);
 	
 	private String clsName;
 	private short msgType;

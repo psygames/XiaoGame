@@ -46,10 +46,10 @@ public class SessionUtils {
 	public static void addSessionDevice(String sessionId, String deviceUID){
 		sessionDeviceMap.put(sessionId, deviceUID);
 	}
-	public static void addDeviceGamer(String sessionId, Gamer gamer){
-		deviceGamerMap.put(sessionId, gamer);
+	public static void addDeviceGamer(String deviceUID, Gamer gamer){
+		deviceGamerMap.put(deviceUID, gamer);
 	}
-	public static void addDeviceSession(String sessionId, String deviceUID){
+	public static void addDeviceSession(String deviceUID, String sessionId){
 		deviceSessionMap.put(deviceUID, sessionId);
 	}
 	

@@ -13,6 +13,8 @@ package org.redstone.handler;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
+import org.redstone.battle.constant.GamerConstant;
+import org.redstone.db.model.Gamer;
 import org.redstone.protobuf.msg.LoginReply;
 import org.redstone.protobuf.msg.LoginRequest;
 import org.redstone.protobuf.util.DataUtils;
@@ -35,12 +37,18 @@ public class LoginRequestHandler extends BaseMsgHandler implements IMsgHandler{
 			LoginRequest bean = LoginRequest.parseFrom(msgBody);
 			logger.info("设备" + bean.getDeviceUID() + "登录");
 			SessionUtils.addSessionDevice(sessionId, bean.getDeviceUID());
+			Gamer gamer = new Gamer();
+			gamer.setId(bean.getDeviceUID());
+			gamer.setDeviceUID(bean.getDeviceUID());
+			gamer.setState(GamerConstant.Gamer_State_LogIn);
+			SessionUtils.addDeviceGamer(bean.getDeviceUID(), gamer);
+			SessionUtils.addDeviceSession(bean.getDeviceUID(), sessionId);
 			
 			LoginReply.Builder builder = LoginReply.newBuilder();
 			builder.setName("傻吊你好");
 			builder.setLevel(1);
 			
-			byte[] msgType = DataUtils.numberToBytes(MsgType.LoginReply.getMsgType());
+			byte[] msgType = DataUtils.number2Bytes(MsgType.LoginReply.getMsgType());
 			byte[] reply = builder.build().toByteArray();
 			ByteBuffer buff = ByteBuffer.allocate(msgType.length + reply.length);
 			buff.put(msgType);

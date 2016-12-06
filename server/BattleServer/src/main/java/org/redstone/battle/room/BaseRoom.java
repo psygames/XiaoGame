@@ -10,28 +10,33 @@ package org.redstone.battle.room;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.websocket.Session;
 
-import java.util.Map.Entry;
-
 import org.apache.log4j.Logger;
 import org.redstone.battle.battlemanage.ChinaBattleManage;
 import org.redstone.battle.constant.GamerConstant;
 import org.redstone.db.model.Gamer;
+import org.redstone.protobuf.msg.AssignRoomReply;
+import org.redstone.protobuf.msg.BattleResult;
 import org.redstone.protobuf.msg.BoardSync;
 import org.redstone.protobuf.msg.ChessRow;
+import org.redstone.protobuf.msg.Enums.Camp;
 import org.redstone.protobuf.msg.Enums.ChessType;
+import org.redstone.protobuf.msg.NewTurnBroadcast;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.MsgType;
 import org.redstone.protobuf.util.SessionUtils;
 import org.redstone.server.BattleServer;
+import org.redstone.service.GomokuService;
 
 /**
  * @ClassName: BaseRoom
@@ -48,7 +53,7 @@ public class BaseRoom {
 	Map<Integer, Map<String, Gamer>> campMap;//阵营-该阵营玩家(玩家Map  key=deviceUID, value=Gamer)
 	private Map<String, Integer> gamersCamp;//每个玩家-阵营
 	private Integer gamerCount;//玩家总数
-	Map<Integer, Integer> chessesCount;//回合棋子-人数
+	Map<Integer, Integer> chessesCount;//每回合所下棋子-每个棋子对应的人数
 	Map<String, Integer> gamerChesses;//玩家-棋子
 	int turnCamp;
 	long turnDelay;
@@ -67,7 +72,12 @@ public class BaseRoom {
 		this.boardX = boardX;
 		this.boardY = boardY;
 		
-		cts = new ChessType[boardX][boardY];
+		cts = new ChessType[this.boardX][this.boardY];
+		for(int i = 0; i < this.boardX; i ++){
+			for(int j = 0; j< this.boardY; j ++){
+				cts[i][j] = ChessType.None;
+			}
+		}
 		gamerCount = 0;
 		for(int i = 0; i < campCount; i++){
 			campMap.put(i, new HashMap<String, Gamer>());
@@ -93,11 +103,23 @@ public class BaseRoom {
 				gamerCount ++;
 				ChinaBattleManage.sessionRoom.put(gamer.getDeviceUID(), this);
 				logger.info("玩家" + gamer.getId() + "，加入游戏类型" + gameType + "，房间类型=" + roomType + "，房间id=" + id);
+				
+				ByteBuffer buff = assignRoomReply();
+				Session ss = BattleServer.sessionMap.get(SessionUtils.getSessionID(gamer.getDeviceUID()));
+				try {
+					ss.getBasicRemote().sendBinary(buff);
+				} catch (IOException e) {
+					logger.error("新回合通知所有玩家失败", e);
+					return false;
+				}
 				return true;
 			}
 		}
 		return false;
 	}
+	
+	
+	
 	
 	/**
 	 * 
@@ -179,7 +201,7 @@ public class BaseRoom {
 	 * @return void 
 	 * @throws
 	 */
-	public void turnCts() {
+	public boolean turnCts() {
 		Iterator<Entry<Integer, Integer>> it = chessesCount.entrySet().iterator();
 		Entry<Integer, Integer> max = it.next();
 		this.chess2None(max.getKey());
@@ -192,6 +214,14 @@ public class BaseRoom {
 		}
 		//将选择次数最多的棋子放入棋盘
 		this.addChess(max.getKey());
+		
+		
+		//计算是否赢了
+		int x = getX(max.getKey());
+		int y = getY(max.getKey());
+		ChessType ct = getChessType(turnCamp);
+		boolean isWin = GomokuService.check(x, y, ct, boardX, boardY);
+		return isWin;
 	}
 	
 	public void clearStatistics() {
@@ -202,7 +232,7 @@ public class BaseRoom {
 	public void addChess(int chessNum){
 		int x = getX(chessNum);
 		int y = getY(chessNum);
-		ChessType ct = getCampType(turnCamp);
+		ChessType ct = getChessType(turnCamp);
 		cts[x][y] = ct;
 	}
 	
@@ -220,30 +250,45 @@ public class BaseRoom {
 		return chessNum / boardY;
 	}
 	
-	public BoardSync array2List(){
+	public BoardSync genBoardSync(){
 		//按行转换
 		BoardSync.Builder boardBuilder = BoardSync.newBuilder();
 		for(int y = 0; y < boardY; y++){
 			ChessRow.Builder rowBuilder = ChessRow.newBuilder();
 			for(int x = 0; x < boardX; x++){
-				rowBuilder.setTypes(x, cts[x][y]);
+				rowBuilder.addTypes(cts[x][y]);
 			}
-			boardBuilder.setRows(y, rowBuilder);
+			boardBuilder.addRows(rowBuilder);
 		}
 		return boardBuilder.build();
 	}
 	
-	public ByteBuffer boardSync(){
-		BoardSync boardSync= array2List();
-		byte[] msgType = DataUtils.numberToBytes(MsgType.BoardSync.getMsgType());
+	public ByteBuffer boardSync2Buff(){
+		BoardSync boardSync= genBoardSync();
+		byte[] msgType = DataUtils.number2Bytes(MsgType.BoardSync.getMsgType());
 		byte[] rspBody = boardSync.toByteArray();
 		ByteBuffer buff = DataUtils.genBuff(msgType, rspBody);
 		return buff;
 	}
 	
-	public ChessType getCampType(int camp){
+	public ByteBuffer assignRoomReply(){
+		AssignRoomReply.Builder builder = AssignRoomReply.newBuilder();
+		builder.setAddress("ws://192.168.10.106:8080/BattleServer/battleServer");
+		builder.setRoomId(id);
+		byte[] msgType = DataUtils.number2Bytes(MsgType.AsignRoomReply.getMsgType());
+		byte[] rspBody = builder.build().toByteArray();
+		ByteBuffer buff = DataUtils.genBuff(msgType, rspBody);
+		return buff;
+	}
+	
+	public ChessType getChessType(int camp){
 		return ChessType.valueOf(camp);
 	}
+	
+	public Camp getCampType(int camp){
+		return Camp.valueOf(camp);
+	}
+	
 	
 	/**
 	 * 
@@ -260,12 +305,11 @@ public class BaseRoom {
 				
 				int count = gamerChesses.size();
 				//如果本回合下棋方所有人都下过了棋，下一回合；如果超时，下一回合
-				if(count == campMap.get(turnCamp).size() || System.currentTimeMillis() >= (turnBegin + turnDelay)){
-					if(!notifyAllGamers()){//通知失败
-						
-					}
+				if(count != 0 && (count == campMap.get(turnCamp).size() || System.currentTimeMillis() >= (turnBegin + turnDelay))){
+					notifyAllGamers();
 					newTurn();
 				}else{
+					//只通知本回合在下棋的一方，同步队友的下棋状况
 					notifyTurnCampGamers();
 				}
 			}
@@ -275,10 +319,16 @@ public class BaseRoom {
 	
 	public boolean notifyAllGamers(){
 		//计算本回合最终的落子
-		turnCts();
+		boolean isWin = turnCts();
 		
-		//通知信息
-		ByteBuffer buff = boardSync();
+		ByteBuffer buff = null;
+		if(isWin){
+			//如果赢了，广播所有人
+			buff = this.genBattleResultBuff(isWin);
+		}else{
+			//如果没赢，继续下一回合。广播下一回合获得下棋机会的阵营
+			buff = this.genNewTurnBroadcastBuff();
+		}
 		//房间中所有玩家
 		for(Integer camp : campMap.keySet()){
 			Map<String, Gamer> gamersMap = campMap.get(camp);
@@ -292,42 +342,66 @@ public class BaseRoom {
 				}
 			}
 		}
-		
-		//回合开始时间
-		turnBegin = System.currentTimeMillis();
 		return true;
+	}
+	
+	public ByteBuffer genBattleResultBuff(boolean isWin){
+		BattleResult.Builder builder = BattleResult.newBuilder();
+		builder.setIsWin(isWin);
+		byte[] msgType = DataUtils.number2Bytes(MsgType.BattleResult.getMsgType());
+		byte[] rspBody = builder.build().toByteArray();
+		ByteBuffer buff = DataUtils.genBuff(msgType, rspBody);
+		return buff;
+	}
+	
+	public ByteBuffer genNewTurnBroadcastBuff(){
+		NewTurnBroadcast.Builder builder = NewTurnBroadcast.newBuilder();
+		builder.setCamp(this.getCampType(turnCamp));
+		byte[] msgType = DataUtils.number2Bytes(MsgType.NewTurnBroadcast.getMsgType());
+		byte[] rspBody = builder.build().toByteArray();
+		ByteBuffer buff = DataUtils.genBuff(msgType, rspBody);
+		return buff;
 	}
 	
 	/**
 	 * 
-	 * @Description: 通知本回合下棋方所有玩家 
+	 * @Description: 通知当前回合下棋方所有玩家 
 	 * @param   
 	 * @return boolean 
 	 * @throws
 	 */
 	public boolean notifyTurnCampGamers(){
 		//通知信息
-		ByteBuffer buff = boardSync();
+		ByteBuffer buff = boardSync2Buff();
 		//通知本回合所属阵营的玩家
 		Map<String, Gamer> gamersMap = campMap.get(turnCamp);
 		for(String deviceUID : gamersMap.keySet()){
 			Session ss = BattleServer.sessionMap.get(SessionUtils.getSessionID(deviceUID));
 			try {
 				ss.getBasicRemote().sendBinary(buff);
+				logger.info("通知当前回合下棋方玩家" + deviceUID + "成功");
 			} catch (IOException e) {
-				logger.error("新回合通知所有玩家失败", e);
+				logger.error("通知当前回合下棋方玩家失败" + deviceUID + "失败", e);
 				return false;
 			}
 		}
 		return true;
 	}
 	
+	/**
+	 * @Description: 新的回合，清空回合棋子暂存map，下棋机会流转到下一阵营，回合开始时间重置
+	 * @param      
+	 * @return void 
+	 * @throws
+	 */
 	public void newTurn(){
 		//清空上回合的统计信息
 		clearStatistics();
 		
 		//下棋方
 		turnCamp = (turnCamp + 1) / campMap.keySet().size();
+		
+		turnBegin = System.currentTimeMillis();
 	}
 	
 	
@@ -359,7 +433,7 @@ public class BaseRoom {
 		return chessesCount;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -385,6 +459,16 @@ public class BaseRoom {
 
 	public Integer getGamerCount() {
 		return gamerCount;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof BaseRoom){
+			if(((BaseRoom) obj).getId() == (this.getId())){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

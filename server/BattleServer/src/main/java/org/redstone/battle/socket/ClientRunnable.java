@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
@@ -39,63 +40,61 @@ public class ClientRunnable implements Runnable, Serializable {
 			return;
 		}
 		while (true) {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			// 请求数据
+			byte[] reqData = null;
 			try {
 				// 接收报文长度
-				int dataLen = dis.readShort();
+				long start1 = System.currentTimeMillis();
+				//先取前4个字节。最多等3 * 1000ms。
+				while(dis.available() < 4 && (System.currentTimeMillis()-start1) < 3 * 1000){
+					Thread.sleep(10);
+				}
+				if(dis.available()<4){
+					throw new SocketTimeoutException("未能读取到报文长度");
+				}
+				byte[] strLen = new byte[2]; // 存放返回报文长度
+				int t = dis.read(strLen);
 				// 接收报文
-				byte[] buff = new byte[1024];
-				int totalLen = 0;
-				do {
-					int recvLen = dis.read(buff);
-					baos.write(buff, 0, recvLen);
-					totalLen += recvLen;
-				} while(totalLen<dataLen);
-			} catch(EOFException ee) {
+				
+				Short length = DataUtils.byteArray2T(strLen, Short.class);
+				log.info("报文前2个字节表示报文长度" + new String(length + ""));
+				reqData = new byte[length];
+				long start2 = System.currentTimeMillis();
+				//判断返回流里面的有效字节，如果等于前面获取到的报文长度，说明对方报文已经都发送到了流里面。这时我们才能读取到完整的报文。最多等5000ms。
+				while(dis.available() < length && (System.currentTimeMillis()-start2) < 5000){
+					Thread.sleep(10);
+				}
+				t = dis.read(reqData);
+				log.info("实际长度" + t);
+				
+			} catch(Exception ee) {
 				log.debug("Client"+client.getRemoteSocketAddress()+" recv data end.", ee);
 				break;
-			} catch(IOException e) {
-				log.error("Client"+client.getRemoteSocketAddress()+" recv data exception.", e);
-				break;
-			}
-			// 请求数据
-			byte[] reqData = baos.toByteArray();
+			} 
 			// 执行业务处理
 			String reqStr = null;
-			byte[] resData = null;
+			ByteBuffer sendBuff = null;
 			try {
 				reqStr = new String(reqData,"utf-8");
 				Map<String,Object> jsonToMap = DataUtils.jsonToMap(reqStr);
-				short type = (Short)jsonToMap.get("msgType");
+				short type = Short.parseShort((String) jsonToMap.get("msgType"));
 				IMsgHandler handler = HandlerUtils.getInstance().getHandler(type);
 				log.info("msgType=" + type + " handler=" + handler.getClass().getName() + " method=processSocket jsondata=" + jsonToMap);
-				ByteBuffer sendBuff = handler.processSocket(jsonToMap);
-				sendBuff.flip();
-				resData = sendBuff.array();
+				sendBuff = handler.processSocket(jsonToMap);
 			} catch (Exception e) {
 				log.error(e);
 			}
 			
 			// 返回业务处理结果
 			try {
-				ByteArrayOutputStream resBaos = new ByteArrayOutputStream();
-				DataOutputStream resDos = new DataOutputStream(resBaos);
-				// 报文头 2字节
-				resDos.writeShort(resData.length);
-				// 报文
-				resDos.write(resData);
 				// 发送
-				dos.write(resBaos.toByteArray());
+				sendBuff.flip();
+				dos.write(sendBuff.array());
 				dos.flush();
 			} catch(IOException e) {
 				log.error("Client"+client.getRemoteSocketAddress()+" send data exception.",e);
 				break;
 			}
-		}
-		// 等待2秒
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e1) {
 		}
 		// 关闭
 		try {

@@ -11,6 +11,7 @@ package org.redstone.protobuf.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class DataUtils {
 		return null;
 	}
 	
-	public static byte[] numberToBytes(Object obj) {
+	public static byte[] number2Bytes(Object obj) {
 		try {
 			Method md = obj.getClass().getMethod("longValue");
 			Long tmp = (Long) md.invoke(obj);
@@ -75,7 +76,7 @@ public class DataUtils {
 
 	public static void main(String[] args) {
 		for (int i = 128; i < 129; i++) {
-			byte[] b = numberToBytes(i);
+			byte[] b = number2Bytes(i);
 			Integer it = byteArray2T(b, Integer.class);
 			if (it != i) {
 				System.out.println(it + "  " + i);
@@ -101,6 +102,15 @@ public class DataUtils {
 			logger.error("转换json失败", e);
 		}
 		return json;
+	}
+	
+	public static Object jsonToType(String jsonStr, Type type){
+		try {
+			return gson.fromJson(jsonStr, type);
+		} catch (Exception e) {
+			logger.error("转换json失败", e);
+		}
+		return null;
 	}
 	
 	public static <T> T json2T(String jsonStr, Class<T> cls){

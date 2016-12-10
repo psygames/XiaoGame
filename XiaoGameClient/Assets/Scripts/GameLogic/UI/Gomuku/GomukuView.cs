@@ -14,6 +14,8 @@ namespace RedStone
 		public PlaceStatistics selfPlace;
 		public GomukuChess selfTake;
 		public Text nameText;
+		public Text whoseTurnText
+;
 		public GomukuBattleResult result;
 
 
@@ -22,7 +24,10 @@ namespace RedStone
 
 		private int m_curPlaceNum = -1;
 		private bool m_isPlaced = false;
-		private bool canPlace { get { return !m_isPlaced; } }
+
+		private PlayerData playerData { get { return GetProxy<HallProxy>().mainPlayerData; } }
+		private bool isOurTurn { get { return proxy.whosTursn == playerData.camp; } }
+		private bool canPlace { get { return !m_isPlaced && isOurTurn; } }
 		private bool isShowSelfPlace { get { return m_curPlaceNum >= 0 && m_isPlaced; } }
 
 		private GomukuProxy proxy { get { return GetProxy<GomukuProxy>(); } }
@@ -111,9 +116,16 @@ namespace RedStone
 
 		private void UpdateSelfTake()
 		{
-			PlayerData playerData = GetProxy<HallProxy>().mainPlayerData;
 			selfTake.SetType((message.Enums.ChessType)playerData.camp);
 			nameText.text = playerData.name;
+		}
+
+		private void UpdateWhoseTurn()
+		{
+			if (isOurTurn)
+				whoseTurnText.text = "我方";
+			else
+				whoseTurnText.text = "敌方";
 		}
 	}
 }

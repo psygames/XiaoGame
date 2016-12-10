@@ -28,7 +28,7 @@ namespace RedStone
 		private PlayerData playerData { get { return GetProxy<HallProxy>().mainPlayerData; } }
 		private bool isOurTurn { get { return proxy.whosTursn == playerData.camp; } }
 		private bool canPlace { get { return !m_isPlaced && isOurTurn; } }
-		private bool isShowSelfPlace { get { return m_curPlaceNum >= 0 && m_isPlaced; } }
+		private bool isShowSelfPlace { get { return m_curPlaceNum >= 0 && m_isPlaced && isOurTurn; } }
 
 		private GomukuProxy proxy { get { return GetProxy<GomukuProxy>(); } }
 
@@ -66,6 +66,7 @@ namespace RedStone
 			}
 
 			m_isPlaced = true;
+			m_curPlaceNum = num;
 			proxy.PlaceChess(num);
 		}
 

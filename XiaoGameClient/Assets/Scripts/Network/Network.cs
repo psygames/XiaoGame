@@ -92,7 +92,7 @@ namespace RedStone.Net
 			}
 			catch (Exception ex)
 			{
-				Log("序列化失败: " + ex.ToString());
+				LogError("序列化失败: " + ex.ToString());
 				return null;
 			}
 
@@ -139,7 +139,7 @@ namespace RedStone.Net
 
 		private void OnError(string msg)
 		{
-			Log("socket error: " + msg);
+			LogError("socket error: " + msg);
 		}
 
 		public void Update()
@@ -165,7 +165,7 @@ namespace RedStone.Net
 
 			if (type == null)
 			{
-				Log("Wrong Type header : [" + header[0] + "," + header[1] + "]");
+				LogError("Wrong Type header : [" + header[0] + "," + header[1] + "]");
 				return;
 			}
 			try
@@ -175,7 +175,7 @@ namespace RedStone.Net
 			}
 			catch (Exception e)
 			{
-				Log(type + " : DeSerialize Failed \n" + e);
+				LogError(type + " : DeSerialize Failed \n" + e);
 			}
 		}
 
@@ -203,10 +203,14 @@ namespace RedStone.Net
 		{
 			int num = BitConvert.ToUshort(header);
 			if (!m_numProtocal.ContainsKey(num))
-				Log("not found protonum: " + num);
+			{
+				LogError("not found protonum: " + num);
+				return null;
+			}
+
 			Type type = Type.GetType(m_numProtocal[num]);
 			if (type == null)
-				Log("null message num: " + num);
+				LogError("null message num: " + num);
 			return type;
 		}
 
@@ -234,6 +238,11 @@ namespace RedStone.Net
 		private void Log(string text)
 		{
 			Debug.Log(m_type + "   " + text);
+		}
+
+		private void LogError(string text)
+		{
+			Debug.LogError(m_type + "   " + text);
 		}
 	}
 }

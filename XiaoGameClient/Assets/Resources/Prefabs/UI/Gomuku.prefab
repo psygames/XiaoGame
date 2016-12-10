@@ -956,6 +956,7 @@ MonoBehaviour:
   selfPlace: {fileID: 114000013534254046}
   selfTake: {fileID: 114000011880646520}
   nameText: {fileID: 114000012193499940}
+  whoseTurnText: {fileID: 114000013866930832}
   result: {fileID: 114000012787427086}
 --- !u!114 &114000012193499940
 MonoBehaviour:

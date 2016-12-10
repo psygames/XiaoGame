@@ -28,12 +28,12 @@ namespace RedStone
 		public override void OnOpen()
 		{
 			base.OnOpen();
-			string url = "http://img1.3lian.com/2015/w3/17/d/62.jpg";
-			ResourceManager.instance.Load<Texture>(url, (obj) =>
-			{
-				bg.texture = obj;
-				bg.SetNativeSize();
-			});
+			//string url = "http://img1.3lian.com/2015/w3/17/d/62.jpg";
+			//ResourceManager.instance.Load<Texture>(url, (obj) =>
+			//{
+			//	bg.texture = obj;
+			//	bg.SetNativeSize();
+			//});
 		}
 
 		public void OnAssignRoomReply()

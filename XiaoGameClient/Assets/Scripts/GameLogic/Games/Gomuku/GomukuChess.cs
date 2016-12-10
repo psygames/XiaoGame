@@ -27,17 +27,16 @@ namespace RedStone
 			if (type == message.Enums.ChessType.Black)
 			{
 				chess.sprite = black;
-				chess.color = Color.white;
+				gameObject.SetActive(true);
 			}
 			else if (type == message.Enums.ChessType.White)
 			{
 				chess.sprite = white;
-				chess.color = Color.white;
+				gameObject.SetActive(true);
 			}
 			else
 			{
-				chess.sprite = white;
-				chess.color = new Color(1, 1, 1, 0.5f);
+				gameObject.SetActive(false);
 			}
 		}
 	}

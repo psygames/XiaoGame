@@ -157,6 +157,7 @@ namespace RedStone.Net
 			if (data.Length < 2)
 			{
 				LogError("receive data length: " + data.Length);
+				return;
 			}
 
 			byte[] header = new byte[2];

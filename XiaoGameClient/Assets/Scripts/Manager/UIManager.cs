@@ -37,7 +37,7 @@ namespace RedStone
 				GameObject go = Object.Instantiate(obj) as GameObject;
 				ViewBase _base = go.GetComponent<ViewBase>();
 				m_views.Add(_base.GetType().ToString(), _base);
-				go.transform.SetParent(uiRoot,false);
+				go.transform.SetParent(uiRoot, false);
 				go.SetActive(false);
 			}
 		}
@@ -86,7 +86,7 @@ namespace RedStone
 		{
 			UIContent peek = m_stack.Peek() as UIContent;
 			m_views[peek.name].gameObject.SetActive(true);
-
+			m_views[peek.name].OnOpen();
 			// hide others
 			foreach (UIContent obj in m_stack)
 			{

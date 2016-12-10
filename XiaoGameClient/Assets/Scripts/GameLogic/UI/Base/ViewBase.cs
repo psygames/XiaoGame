@@ -38,5 +38,15 @@ namespace RedStone
 		{
 
 		}
+
+		public virtual void OnOpen()
+		{ 
+		
+		}
+
+		public virtual void OnClose()
+		{ 
+		
+		}
 	}
 }

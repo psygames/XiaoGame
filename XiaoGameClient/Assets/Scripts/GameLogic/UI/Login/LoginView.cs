@@ -8,6 +8,7 @@ namespace RedStone
 	{
 		public UIEventListener playListener;
 		public Text matchingText;
+		public RawImage bg;
 		private bool isMatching = false;
 
 		public override void OnInit()
@@ -22,6 +23,17 @@ namespace RedStone
 			UnRegister(Event.Gomuku.AssignRoomReply, OnAssignRoomReply);
 
 			base.OnDestory();
+		}
+
+		public override void OnOpen()
+		{
+			base.OnOpen();
+			string url = "http://img1.3lian.com/2015/w3/17/d/62.jpg";
+			ResourceManager.instance.Load<Texture>(url, (obj) =>
+			{
+				bg.texture = obj;
+				bg.SetNativeSize();
+			});
 		}
 
 		public void OnAssignRoomReply()
@@ -47,7 +59,7 @@ namespace RedStone
 				playListener.gameObject.SetActive(false);
 				matchingText.gameObject.SetActive(true);
 			}
-			else 
+			else
 			{
 				playListener.gameObject.SetActive(true);
 				matchingText.gameObject.SetActive(false);

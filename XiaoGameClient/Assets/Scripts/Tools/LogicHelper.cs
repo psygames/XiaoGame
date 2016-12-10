@@ -6,7 +6,7 @@ public static class LogicHelper
 	{
 		public const int row = 12;
 		public const int column = 12;
-		public const int cellSize = 80;
+		public const int cellSize = 120;
 		public static Vector2 GetChessPos(int num)
 		{
 			return GetChessPos(num / column, num % column);

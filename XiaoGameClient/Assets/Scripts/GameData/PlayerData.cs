@@ -19,6 +19,17 @@ namespace RedStone
 		public int uuid { get { return m_uuid; } }
 		public string name { get { return m_name; } }
 		public ECamp camp { get { return m_camp; } }
+		public ECamp enemyCamp
+		{
+			get
+			{
+				if (m_camp == ECamp.White)
+					return ECamp.Black;
+				else if (m_camp == ECamp.Black)
+					return ECamp.White;
+				return ECamp.None;
+			}
+		}
 
 		public void SetData(message.LoginReply info)
 		{

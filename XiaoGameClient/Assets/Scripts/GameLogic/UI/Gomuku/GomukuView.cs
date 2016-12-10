@@ -106,6 +106,7 @@ namespace RedStone
 		{
 			UpdateCurPlace();
 			UpdateSelfTake();
+			UpdateWhoseTurn();
 		}
 
 		private void UpdateCurPlace()
@@ -122,10 +123,12 @@ namespace RedStone
 
 		private void UpdateWhoseTurn()
 		{
-			if (isOurTurn)
+			if (proxy.whosTursn == playerData.camp)
 				whoseTurnText.text = "我方";
-			else
+			else if (proxy.whosTursn == playerData.enemyCamp)
 				whoseTurnText.text = "敌方";
+			else
+				whoseTurnText.text = "回合未开始";
 		}
 	}
 }

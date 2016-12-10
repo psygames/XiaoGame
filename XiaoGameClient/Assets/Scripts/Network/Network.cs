@@ -154,6 +154,11 @@ namespace RedStone.Net
 
 		private void ProcessData(byte[] data)
 		{
+			if (data.Length < 2)
+			{
+				LogError("receive data length: " + data.Length);
+			}
+
 			byte[] header = new byte[2];
 			Array.Copy(data, header, 2);
 

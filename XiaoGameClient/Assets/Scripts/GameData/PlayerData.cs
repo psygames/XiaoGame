@@ -5,9 +5,9 @@ namespace RedStone
 {
 	public enum ECamp
 	{
-		None = 0,
-		White = 1, // 对应于 ChessType 可强转
-		Black = 2,
+		None = 1,
+		White = 2, // 对应于 ChessType 可强转
+		Black = 3,
 	}
 
 	public class PlayerData : DataBase

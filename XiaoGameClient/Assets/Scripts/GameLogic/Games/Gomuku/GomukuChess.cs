@@ -23,6 +23,8 @@ namespace RedStone
 				chess.sprite = black;
 			else if (data.type == message.Enums.ChessType.White)
 				chess.sprite = white;
+			else
+				chess.sprite = black;
 		}
 	}
 }

@@ -21,7 +21,6 @@ namespace RedStone
 			m_x = x;
 			m_y = y;
 			m_type = type;
-
 		}
 	}
 }

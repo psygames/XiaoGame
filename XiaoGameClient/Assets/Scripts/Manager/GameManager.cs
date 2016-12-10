@@ -8,6 +8,8 @@ namespace RedStone
 		{
 			base.Awake();
 
+			Debug.Log("DeviceUID:" + SystemInfo.deviceUniqueIdentifier);
+
 			CreateInstance();
 
 			Init();

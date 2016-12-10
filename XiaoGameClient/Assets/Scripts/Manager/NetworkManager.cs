@@ -77,7 +77,6 @@ namespace RedStone
 		{
 			m_networks[type].UnRegister(callback);
 		}
-
 	}
 }
 

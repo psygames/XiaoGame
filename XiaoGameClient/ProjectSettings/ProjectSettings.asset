@@ -357,6 +357,7 @@ PlayerSettings:
   spritePackerPolicy: 
   scriptingDefineSymbols:
     1: __CONSTRAINED__;UNITY;FEAT_SAFE
+    13: __CONSTRAINED__;UNITY;FEAT_SAFE
   metroPackageName: TestWebSocket
   metroPackageVersion: 
   metroCertificatePath: 

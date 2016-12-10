@@ -20,8 +20,13 @@ namespace RedStone
 
 		public void Init()
 		{
+#if UNITY_WEBGL && !UNITY_EDITOR
+			m_networks.Add(NetType.Hall, new Net.Network(new WebGLWebSocketConnection(), NetType.Hall));
+			m_networks.Add(NetType.Battle, new Net.Network(new WebGLWebSocketConnection(), NetType.Battle));
+#else
 			m_networks.Add(NetType.Hall, new Net.Network(new WebSocketConnection(), NetType.Hall));
 			m_networks.Add(NetType.Battle, new Net.Network(new WebSocketConnection(), NetType.Battle));
+#endif
 		}
 
 		public void Update()

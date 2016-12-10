@@ -112,15 +112,8 @@ namespace RedStone
 		private void UpdateSelfTake()
 		{
 			PlayerData playerData = GetProxy<HallProxy>().mainPlayerData;
-			if (playerData.camp == ECamp.Black)
-				selfTake.chess.sprite = selfTake.black;
-			else if (playerData.camp == ECamp.Black)
-				selfTake.chess.sprite = selfTake.white;
-			else
-				selfTake.gameObject.SetActive(false);
-
+			selfTake.SetType((message.Enums.ChessType)playerData.camp);
 			nameText.text = playerData.name;
 		}
-
 	}
 }

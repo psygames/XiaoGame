@@ -19,12 +19,26 @@ namespace RedStone
 		public void SetData(ChessData data)
 		{
 			SetNum(data.num);
-			if (data.type == message.Enums.ChessType.Black)
+			SetType(data.type);
+		}
+
+		public void SetType(message.Enums.ChessType type)
+		{
+			if (type == message.Enums.ChessType.Black)
+			{
 				chess.sprite = black;
-			else if (data.type == message.Enums.ChessType.White)
+				chess.color = Color.white;
+			}
+			else if (type == message.Enums.ChessType.White)
+			{
 				chess.sprite = white;
+				chess.color = Color.white;
+			}
 			else
-				chess.sprite = black;
+			{
+				chess.sprite = white;
+				chess.color = new Color(1, 1, 1, 0.5f);
+			}
 		}
 	}
 }

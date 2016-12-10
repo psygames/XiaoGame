@@ -20,8 +20,8 @@ namespace RedStone
 
 		public void Init()
 		{
-			m_networks.Add(NetType.Hall, new Net.Network(new WebSocketConnection()));
-			m_networks.Add(NetType.Battle, new Net.Network(new WebSocketConnection()));
+			m_networks.Add(NetType.Hall, new Net.Network(new WebSocketConnection(), NetType.Hall));
+			m_networks.Add(NetType.Battle, new Net.Network(new WebSocketConnection(), NetType.Battle));
 		}
 
 		public void Update()

@@ -8,6 +8,7 @@ namespace RedStone.Net
 	public class Network
 	{
 		private IConnection m_connection;
+		private NetType m_type;
 		private List<byte[]> m_receiveQueue = new List<byte[]>();
 
 		private Dictionary<string, int> m_protocolNum = new Dictionary<string, int>();
@@ -15,9 +16,10 @@ namespace RedStone.Net
 
 		public Action<IConnection> onConnected = null;
 
-		public Network(IConnection connection)
+		public Network(IConnection connection, NetType type)
 		{
 			m_connection = connection;
+			m_type = type;
 		}
 
 		public void Init(string addr)
@@ -33,6 +35,7 @@ namespace RedStone.Net
 
 		public void Close()
 		{
+			Log("send close --> ");
 			m_connection.Close();
 		}
 
@@ -42,6 +45,7 @@ namespace RedStone.Net
 			byte[] data = SerializeProto<T>(message);
 			AddHeader(ref data, typeof(T));
 			Send(data);
+			Log("Send ---> " + typeof(T));
 		}
 
 		public void SendMessage<T1, T2>(T1 message, Action<T2> callback)
@@ -88,7 +92,7 @@ namespace RedStone.Net
 			}
 			catch (Exception ex)
 			{
-				Debug.Log("序列化失败: " + ex.ToString());
+				Log("序列化失败: " + ex.ToString());
 				return null;
 			}
 
@@ -123,19 +127,19 @@ namespace RedStone.Net
 
 		private void OnClose()
 		{
-			Debug.Log("socket closed");
+			Log("socket closed");
 		}
 
 		private void OnOpen()
 		{
-			Debug.Log("socket opened");
+			Log("socket opened");
 			if (onConnected != null)
 				onConnected.Invoke(m_connection);
 		}
 
 		private void OnError(string msg)
 		{
-			Debug.Log("socket error: " + msg);
+			Log("socket error: " + msg);
 		}
 
 		public void Update()
@@ -156,10 +160,12 @@ namespace RedStone.Net
 			byte[] body = new byte[data.Length - 2];
 			Array.Copy(data, 2, body, 0, data.Length - 2);
 			Type type = HeaderToType(header);
-			Debug.Log(type);
+
+			Log("Recevie ---> " + type);
+
 			if (type == null)
 			{
-				Debug.Log("Wrong Type header : [" + header[0] + "," + header[1] + "]");
+				Log("Wrong Type header : [" + header[0] + "," + header[1] + "]");
 				return;
 			}
 			try
@@ -169,7 +175,7 @@ namespace RedStone.Net
 			}
 			catch (Exception e)
 			{
-				Debug.Log(type + " : DeSerialize Failed \n" + e);
+				Log(type + " : DeSerialize Failed \n" + e);
 			}
 		}
 
@@ -196,9 +202,11 @@ namespace RedStone.Net
 		private Type HeaderToType(byte[] header)
 		{
 			int num = BitConvert.ToUshort(header);
+			if (!m_numProtocal.ContainsKey(num))
+				Log("not found protonum: " + num);
 			Type type = Type.GetType(m_numProtocal[num]);
 			if (type == null)
-				Debug.Log("null message num: " + num);
+				Log("null message num: " + num);
 			return type;
 		}
 
@@ -221,6 +229,11 @@ namespace RedStone.Net
 		{
 			string name = typeof(T).ToString();
 			EventManager.instance.UnRegister<T>(name, callback);
+		}
+
+		private void Log(string text)
+		{
+			Debug.Log(m_type + "   " + text);
 		}
 	}
 }

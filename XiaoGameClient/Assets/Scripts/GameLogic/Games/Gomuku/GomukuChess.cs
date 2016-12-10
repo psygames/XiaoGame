@@ -11,11 +11,17 @@ namespace RedStone
 		public Sprite white;
 		public Sprite black;
 
+		public void SetNum(int num)
+		{
+			transform.localPosition = LogicHelper.Gomuku.GetChessPos(num);
+		}
+
 		public void SetData(ChessData data)
 		{
+			SetNum(data.num);
 			if (data.type == message.Enums.ChessType.Black)
 				chess.sprite = black;
-			else if(data.type == message.Enums.ChessType.White)
+			else if (data.type == message.Enums.ChessType.White)
 				chess.sprite = white;
 		}
 	}

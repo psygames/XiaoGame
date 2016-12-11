@@ -5,7 +5,7 @@ namespace RedStone
 	{
 		public class Gomuku
 		{
-			public const string BoardSync = "BoardSync";
+			public const string PlaceStatisticSync = "PlaceStatisticSync";
 			public const string NewTurn = "NewTurn";
 			public const string BattleResult = "BattleResult";
 			public const string AssignRoomReply = "AssignRoomReply";

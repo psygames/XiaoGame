@@ -83,9 +83,6 @@ namespace RedStone
 					chess.SetData(num, i, j, board.rows[i].types[j]);
 				}
 			}
-
-
-			EventManager.instance.Send(Event.Gomuku.BoardSync);
 		}
 
 		public void OnPlaceStatisticsSync(message.PlaceStatisticsSync msg)
@@ -97,6 +94,8 @@ namespace RedStone
 				sta.SetData(msg.statistics[i].num, msg.statistics[i].ratio);
 				m_placeStatistics.Add(sta);
 			}
+
+			EventManager.instance.Send(Event.Gomuku.PlaceStatisticSync);
 		}
 
 		public void OnNewTurn(NewTurnBroadcast msg)

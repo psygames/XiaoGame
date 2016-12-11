@@ -44,14 +44,14 @@ namespace RedStone
 			result.onClickCallback = OnCloseClick;
 			result.gameObject.SetActive(false);
 
-			Register(Event.Gomuku.BoardSync, OnBoardSync);
+			Register(Event.Gomuku.PlaceStatisticSync, OnPlaceStatisticSync);
 			Register<ECamp>(Event.Gomuku.NewTurn, OnNewTurn);
 			Register<ECamp>(Event.Gomuku.BattleResult, OnBattleResult);
 		}
 
 		public override void OnDestory()
 		{
-			UnRegister(Event.Gomuku.BoardSync, OnBoardSync);
+			UnRegister(Event.Gomuku.PlaceStatisticSync, OnPlaceStatisticSync);
 			UnRegister<ECamp>(Event.Gomuku.NewTurn, OnNewTurn);
 			UnRegister<ECamp>(Event.Gomuku.BattleResult, OnBattleResult);
 
@@ -82,16 +82,16 @@ namespace RedStone
 		private void OnNewTurn(ECamp camp)
 		{
 			m_isPlaced = false;
-		}
 
-		private void OnBoardSync()
-		{
 			GameObjectHelper.SetListContent(chessTemplate, chessRoot, m_chesses, proxy.chesses.Values,
 			(index, item, data) =>
 			{
 				item.SetData(data);
 			});
+		}
 
+		private void OnPlaceStatisticSync()
+		{
 			GameObjectHelper.SetListContent(statisticsTemplate, statisticsRoot, m_statisticsChesses, proxy.placeStatistics,
 			(index, item, data) =>
 			{

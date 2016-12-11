@@ -310,6 +310,7 @@ public class BaseRoom {
 			placeBuilder.addStatistics(chessBuilder.build());
 		}
 		return placeBuilder.build();
+		
 	}
 	
 	public ByteBuffer placeStatisticsSync2Buff(){

@@ -26,7 +26,7 @@ namespace RedStone
 		private bool m_isPlaced = false;
 
 		private PlayerData playerData { get { return GetProxy<HallProxy>().mainPlayerData; } }
-		private bool isOurTurn { get { return proxy.whosTursn == playerData.camp; } }
+		private bool isOurTurn { get { return proxy.whosTursn == playerData.camp && playerData.camp != ECamp.None; } }
 		private bool canPlace { get { return !m_isPlaced && isOurTurn; } }
 		private bool isShowSelfPlace { get { return m_curPlaceNum >= 0 && m_isPlaced && isOurTurn; } }
 

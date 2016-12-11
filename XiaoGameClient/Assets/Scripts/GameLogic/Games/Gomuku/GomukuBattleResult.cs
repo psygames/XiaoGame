@@ -23,10 +23,16 @@ namespace RedStone
 
         public void SetData(bool isWin)
         {
-            if (isWin)
-                resultText.text = "WIN";
-            else
-                resultText.text = "LOSE";
+			if (isWin)
+			{
+				resultText.text = "WIN";
+				resultText.color = Color.red;
+			}
+			else
+			{
+				resultText.text = "LOSE";
+				resultText.color = Color.gray;
+			}
         }
     }
 }

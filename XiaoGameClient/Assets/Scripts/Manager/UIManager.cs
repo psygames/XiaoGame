@@ -65,7 +65,7 @@ namespace RedStone
 			string name = typeof(T).ToString();
 			if (GetView<T>().isBottom)
 			{
-				m_stack.Clear();
+				CloseAll();
 			}
 			UIContent content = new UIContent(name);
 			m_stack.Push(content);
@@ -78,6 +78,7 @@ namespace RedStone
 			{
 				UIContent content = m_stack.Pop() as UIContent;
 				m_views[content.name].gameObject.SetActive(false);
+				m_views[content.name].OnClose();
 			}
 		}
 
@@ -85,6 +86,7 @@ namespace RedStone
 		{
 			UIContent content = m_stack.Pop() as UIContent;
 			m_views[content.name].gameObject.SetActive(false);
+			m_views[content.name].OnClose();
 
 
 			UIContent peek = m_stack.Peek() as UIContent;
@@ -100,7 +102,10 @@ namespace RedStone
 			foreach (UIContent obj in m_stack)
 			{
 				if (obj != peek)
+				{
 					m_views[obj.name].gameObject.SetActive(false);
+					m_views[obj.name].OnClose();
+				}
 			}
 		}
 	}

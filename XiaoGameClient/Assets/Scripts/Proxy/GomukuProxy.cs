@@ -76,7 +76,7 @@ namespace RedStone
 						chess = new ChessData();
 						m_chesses.Add(num, chess);
 					}
-					chess.SetData(num, i, j, board.rows[i].types[i]);
+					chess.SetData(num, i, j, board.rows[i].types[j]);
 				}
 			}
 

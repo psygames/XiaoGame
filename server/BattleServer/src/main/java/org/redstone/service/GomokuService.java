@@ -64,7 +64,7 @@ public class GomokuService {
 		startX = x - num + 1 >= 0 ? x - num + 1 : 0;
 		xOffset = 1;
 		endY = y - num + 1 >= 0 ? y - num + 1 : 0;
-		startY = y + num - 1 <= boardMaxY ? y + num + 1 : boardMaxY;
+		startY = y + num - 1 <= boardMaxY ? y + num - 1 : boardMaxY;
 		yOffset = -1;
 		if(fiveCheck(endX, startX, xOffset, endY, startY, yOffset, chessType, cts)){
 			return true;
@@ -107,9 +107,20 @@ public class GomokuService {
 			
 			
 			//y递增
-			if(y != endY){
-				y += yOffset;
-				continue;
+			if(yOffset < 0){
+				if(y >= endY){
+					y += yOffset;
+					continue;
+				}else{
+					return false;
+				}
+			}else{
+				if(y <= endY){
+					y += yOffset;
+					continue;
+				}else{
+					return false;
+				}
 			}
 		}
 		return false;

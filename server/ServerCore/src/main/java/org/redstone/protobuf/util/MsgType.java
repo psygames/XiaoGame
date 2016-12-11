@@ -26,7 +26,12 @@ public enum MsgType {
 	NewTurnBroadcast("NewTurnBroadcast",(short)1012),
 	JoinRoomRequest("JoinRoomRequest",(short)2001),
 	JoinRoomReply("JoinRoomReply",(short)2002),
-	BattleResult("BattleResult",(short)2004);
+	BattleResult("BattleResult",(short)2004),
+	
+	
+	
+	
+	OutRoomRequestSocket("OutRoomRequestSocket",(short)101);
 	
 	private String clsName;
 	private short msgType;

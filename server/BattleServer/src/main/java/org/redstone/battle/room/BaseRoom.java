@@ -231,6 +231,9 @@ public class BaseRoom {
 	 */
 	public boolean turnCts() {
 		Iterator<Entry<Integer, Integer>> it = chessesCount.entrySet().iterator();
+		if(!it.hasNext()){
+			return false;
+		}
 		Entry<Integer, Integer> max = it.next();
 		this.chess2None(max.getKey());
 		while(it.hasNext()){
@@ -344,7 +347,9 @@ public class BaseRoom {
 				int count = gamerChesses.size();
 				logger.info("该回合当前已选择的棋子数量" + count);
 				//如果本回合下棋方所有人都下过了棋，下一回合；如果超时，下一回合
-				if(count != 0 && (count == campGamers.get(turnCamp).size() || System.currentTimeMillis() >= (turnBegin + turnDelay))){
+				logger.info("turnBegin + turnDelay=" + (turnBegin + turnDelay) + ", System.currentTimeMillis()=" + System.currentTimeMillis());
+				logger.info("count=" + count + ", campGamers.get(turnCamp).size()=" + campGamers.get(turnCamp).size());
+				if((count != 0 && count == campGamers.get(turnCamp).size()) || System.currentTimeMillis() >= (turnBegin + turnDelay)){
 					logger.info("该回合结束，进入下一回合");
 					notifyAllGamers();
 					newTurn();
@@ -354,7 +359,7 @@ public class BaseRoom {
 					notifyTurnCampGamers();
 				}
 			}
-		}, 1 * 1000, 1 * 1000);
+		}, 1 * 1000, 500);
 	}
 	
 	public void stopTimer(){
@@ -383,6 +388,9 @@ public class BaseRoom {
 		//房间中所有玩家
 		for(Camp camp : campGamers.keySet()){
 			Map<String, Gamer> gamersMap = campGamers.get(camp);
+			if(gamersMap == null || gamersMap.size() == 0){
+				continue;
+			}
 			for(String deviceUID : gamersMap.keySet()){
 				Session ss = BattleServer.sessionMap.get(SessionUtils.getSessionID(deviceUID));
 				try {
@@ -392,12 +400,37 @@ public class BaseRoom {
 					}
 					logger.info("新回合，通知玩家" + deviceUID + "，字节长度" + buff.array().length);
 					ss.getBasicRemote().sendBinary(buff);
-				} catch (IOException e) {
+				} catch (Exception e) {
 					logger.error("通知所有玩家失败", e);
 					return false;
 				}
 			}
 		}
+		
+		if(isWin){
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				logger.error(e1);
+			}
+			for(Camp camp : campGamers.keySet()){
+				Map<String, Gamer> gamersMap = campGamers.get(camp);
+				if(gamersMap == null || gamersMap.size() == 0){
+					continue;
+				}
+				for(String deviceUID : gamersMap.keySet()){
+					Session ss = BattleServer.sessionMap.get(SessionUtils.getSessionID(deviceUID));
+					try {
+						logger.info("游戏结束，关闭session");
+						ss.close();
+					} catch (Exception e) {
+						logger.error("通知所有玩家失败", e);
+						return false;
+					}
+				}
+			}
+		}
+		
 		return true;
 	}
 	
@@ -438,6 +471,13 @@ public class BaseRoom {
 		byte[] rspBody = builder.build().toByteArray();
 		ByteBuffer buff = DataUtils.genBuff(msgType, rspBody);
 		return buff;
+	}
+	
+	public NewTurnBroadcast genNewTurnBroadcast(){
+		NewTurnBroadcast.Builder builder = NewTurnBroadcast.newBuilder();
+		builder.setCamp(turnCamp);
+		builder.setBoardSync(this.genBoardSync());
+		return builder.build();
 	}
 	
 	/**
@@ -482,7 +522,8 @@ public class BaseRoom {
 		//清空上回合的统计信息
 		clearStatistics();
 		
-		turnBegin = System.currentTimeMillis();
+		Long tmp = System.currentTimeMillis();
+		turnBegin = tmp;
 	}
 	
 	
@@ -492,14 +533,13 @@ public class BaseRoom {
 		if(gamersCamp.containsKey(deviceUID)){
 			camp = gamersCamp.get(deviceUID);
 			gamersCamp.remove(deviceUID);
-			logger.info("房间id=" + id + "，gamersCamp=" + gamersCamp);
+			logger.info("退出房间,房间id=" + id + "，gamersCamp=" + gamersCamp);
 			
 			Map<String, Gamer> gamers = campGamers.get(camp);
 			if(gamers.containsKey(deviceUID)){
 				gamers.remove(deviceUID);
 				campGamers.put(camp, gamers);
-				logger.info("房间id=" + id + "，gamers=" + gamers);
-				logger.info("房间id=" + id + "，campMap=" + campGamers);
+				logger.info("退出房间,房间id=" + id + "，gamers=" + gamers + "，campMap=" + campGamers);
 			}
 			
 			if(gamerChesses.containsKey(deviceUID)){
@@ -508,11 +548,11 @@ public class BaseRoom {
 					chessesCount.put(chessNum, chessesCount.get(chessNum)-1);
 				}
 				gamerChesses.remove(deviceUID);
-				logger.info("房间id=" + id + "，gamerChesses=" + gamerChesses);
+				logger.info("退出房间,房间id=" + id + "，gamerChesses=" + gamerChesses);
 			}
 			gamerCount --;
 		}
-		logger.info("房间id=" + id + "，当前玩家数量" + gamerCount);
+		logger.info("退出房间,房间id=" + id + "，当前玩家数量" + gamerCount);
 		if(gamerCount <= 0){
 			this.stopTimer();
 		}

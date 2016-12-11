@@ -64,7 +64,7 @@ public class ChinaBattleManage implements IBatteManage{
 				roomList = game.get(roomType);
 				for(Integer rmId : roomList){
 					BaseRoom rm = allRooms.get(rmId);
-					if(rm.getUpperLimit() > rm.getGamerCount()){
+					if(rm != null && rm.getUpperLimit() > rm.getGamerCount()){
 						List<Gamer> gamerList = new ArrayList<Gamer>();
 						gamerList.add(gamer);
 						Integer roomId = this.joinRoomBySocket(gamerList, rm.getId());
@@ -153,7 +153,7 @@ public class ChinaBattleManage implements IBatteManage{
 			byte[] reqBodyBytes = socketReq.getBytes(Default_Charset);
 			ByteBuffer reqBuff = DataUtils.genBuff(reqHeadBytes, reqBodyBytes);
 			reqBuff.flip();
-			socketRsp = SocketUtils.sendMsg(reqBuff.array());
+			socketRsp = SocketUtils.sendMsg(reqBuff.array(), SocketUtils.Battle_Server_ip, SocketUtils.Battle_Server_Port, true);
 			if(socketRsp == null){
 				return null;
 			}
@@ -188,7 +188,7 @@ public class ChinaBattleManage implements IBatteManage{
 			byte[] reqBodyBytes = socketReq.getBytes(Default_Charset);
 			ByteBuffer reqBuff = DataUtils.genBuff(reqHeadBytes, reqBodyBytes);
 			reqBuff.flip();
-			socketRsp = SocketUtils.sendMsg(reqBuff.array());
+			socketRsp = SocketUtils.sendMsg(reqBuff.array(), SocketUtils.Battle_Server_ip, SocketUtils.Battle_Server_Port, true);
 			if(socketRsp == null){
 				return null;
 			}
@@ -209,13 +209,13 @@ public class ChinaBattleManage implements IBatteManage{
 	 */
 	synchronized public void put2TmpMap(String gameType, String roomType, Gamer gamer){
 		Map<String, List<Gamer>> rooms = tmpGamerMap.get(gameType);
+		logger.info("rooms=" + rooms);
 		if(rooms == null){
 			gamer.setState(GamerConstant.Gamer_State_Ready);
 			rooms = new HashMap<String, List<Gamer>>();
 			rooms.put(roomType, new ArrayList<Gamer>(){
 				private static final long serialVersionUID = 1L;
 				{this.add(gamer);}});
-			tmpGamerMap.put(gameType, rooms);
 		}else{
 			List<Gamer> gamerList = rooms.get(roomType);
 			if(gamerList == null){
@@ -225,7 +225,9 @@ public class ChinaBattleManage implements IBatteManage{
 				gamer.setState(GamerConstant.Gamer_State_Ready);
 				gamerList.add(gamer);
 			}
+			rooms.put(roomType, gamerList);
 		}
+		tmpGamerMap.put(gameType, rooms);
 	}
 	
 	/**
@@ -240,6 +242,9 @@ public class ChinaBattleManage implements IBatteManage{
 			for(String roomType : gamersMap.keySet()){
 				if(gamersMap.get(roomType).size() >= 2){
 					this.createRoom(gameType, roomType, gamersMap.get(roomType));
+					gamersMap.remove(roomType);
+					tmpGamerMap.put(gameType, gamersMap);
+					logger.info("创建完房间，清空临时列表gameType=" + gameType + ",gamersMap=" + gamersMap);
 				}
 			}
 		}
@@ -258,6 +263,7 @@ public class ChinaBattleManage implements IBatteManage{
 			room.remove(SessionUtils.getDeviceUID(sessionId));
 			
 			if(room.getGamerCount() <= 0){
+				logger.info("roomId=" + room.getId() + "，房间人数为0，回收房间");
 				if(allRooms.containsKey(room.getId())){
 					allRooms.remove(room.getId());
 				}
@@ -302,6 +308,45 @@ public class ChinaBattleManage implements IBatteManage{
 		}
 		room = null;
 	}
+	
+	
+	public  void removeBySocket(Integer roomId, String deviceUIDs){
+		BaseRoom room = allRooms.get(roomId);
+		String[] devArr = deviceUIDs.split("\\|");
+		logger.info("deviceUIDs=" + deviceUIDs);
+		logger.info("游戏结束，玩家退出战场，清理gameserver房间信息，roomId=" + roomId + "，退出人数为" + devArr.length);
+		for(String deviceUID : devArr){
+			room.remove(deviceUID);
+		}
+		
+		if(room.getGamerCount() <= 0){
+			logger.info("roomId=" + roomId + "，房间人数为0，回收房间，清理战场中信息");
+			if(allRooms.containsKey(room.getId())){
+				allRooms.remove(room.getId());
+			}
+			if(gameMap.containsKey(room.getGameType())){
+				Map<String, List<Integer>> roomMaps = gameMap.get(room.getGameType());
+				if(roomMaps.containsKey(room.getRoomType())){
+					List<Integer> list = roomMaps.get(room.getRoomType());
+					if(list.contains(room)){
+						list.remove(room);
+						roomMaps.put(room.getRoomType(), list);
+						gameMap.put(room.getGameType(), roomMaps);
+					}
+				}
+			}
+			
+			if(deviceRooms.containsValue(room.getId())){
+				for(Entry<String, Integer> entry : deviceRooms.entrySet()){
+					if(entry.getValue().intValue() == room.getId().intValue()){
+						deviceRooms.remove(entry.getKey());
+						break;
+					}
+				}
+			}
+		}
+	}
+	
 	
 
 	@Override

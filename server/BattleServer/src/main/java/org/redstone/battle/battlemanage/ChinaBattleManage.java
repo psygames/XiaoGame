@@ -8,6 +8,7 @@
  */
 package org.redstone.battle.battlemanage;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,13 +17,17 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
+import org.redstone.battle.constant.GameType;
 import org.redstone.battle.constant.GamerConstant;
 import org.redstone.battle.constant.RoomType;
 import org.redstone.battle.room.BaseRoom;
 import org.redstone.battle.room.GomokuRoom;
 import org.redstone.db.model.Gamer;
 import org.redstone.protobuf.msg.Enums.Camp;
+import org.redstone.protobuf.util.DataUtils;
+import org.redstone.protobuf.util.MsgType;
 import org.redstone.protobuf.util.SessionUtils;
+import org.redstone.protobuf.util.SocketUtils;
 
 /**
  * @ClassName: ChinaBattleManage
@@ -33,6 +38,7 @@ import org.redstone.protobuf.util.SessionUtils;
  */
 public class ChinaBattleManage implements IBatteManage{
 	private static Logger logger = Logger.getLogger(ChinaBattleManage.class);
+	private static String Default_Charset = "utf-8";
 	
 	private static Map<String, Map<String, List<Integer>>> gameMap = new ConcurrentHashMap<String, Map<String, List<Integer>>>();
 	private static Map<Integer, BaseRoom> allRooms = new ConcurrentHashMap<Integer, BaseRoom>();
@@ -137,7 +143,7 @@ public class ChinaBattleManage implements IBatteManage{
 		Camp camp = room.getGamersCamp().get(gamer.getDeviceUID());
 		rtnMap.put("camp", camp);
 		rtnMap.put("roomId", room.getId());
-		rtnMap.put("newTurn", room.genNewTurnBroadcastBuff());
+		rtnMap.put("newTurn", room.genNewTurnBroadcast());
 		logger.info("玩家" + gamer.getDeviceUID()+ "，加入游戏，房间id=" + room.getId() + "，阵营" + camp + "加入成功");
 		allRooms.put(roomId, room);
 		
@@ -151,10 +157,12 @@ public class ChinaBattleManage implements IBatteManage{
 	 * @return void 
 	 * @throws
 	 */
-	public  void remove(String sessionId){
+	synchronized public  void remove(String sessionId){
 		BaseRoom room = getRoomBySessionId(sessionId);
 		if(room != null){
 			room.remove(SessionUtils.getDeviceUID(sessionId));
+			//通知gameserver 清除房间
+			this.outRoomBySocket(room.getId(), SessionUtils.getDeviceUID(sessionId));
 			if(room.getGamerCount() <= 0){
 				if(allRooms.containsKey(room.getId())){
 					allRooms.remove(room.getId());
@@ -180,8 +188,29 @@ public class ChinaBattleManage implements IBatteManage{
 						}
 					}
 				}
+				logger.info("房间人数为0，room置为null");
 				room = null;
 			}
+		}
+	}
+	
+	synchronized public void outRoomBySocket(Integer roomId, String deviceUIDs){
+		//通知gameserver，玩家退出
+		Map<String, Object> reqMap = new HashMap<String, Object>();
+		reqMap.put("msgType", MsgType.OutRoomRequestSocket.getMsgType());
+		reqMap.put("roomId", roomId + "");
+		reqMap.put("deviceUIDs", deviceUIDs);
+		
+		String socketReq = DataUtils.toGson(reqMap);
+		logger.info("玩家退出房间，参数：" + socketReq);
+		try {
+			byte[] reqHeadBytes = DataUtils.number2Bytes((short)socketReq.length());
+			byte[] reqBodyBytes = socketReq.getBytes(Default_Charset);
+			ByteBuffer reqBuff = DataUtils.genBuff(reqHeadBytes, reqBodyBytes);
+			reqBuff.flip();
+			SocketUtils.sendMsg(reqBuff.array(), SocketUtils.Game_Server_ip, SocketUtils.Game_Server_Port, false);
+		} catch (Exception e) {
+			logger.error("socket异常", e);
 		}
 	}
 	

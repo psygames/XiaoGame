@@ -17,6 +17,7 @@ import org.redstone.battle.constant.GamerConstant;
 import org.redstone.db.model.Gamer;
 import org.redstone.protobuf.msg.LoginReply;
 import org.redstone.protobuf.msg.LoginRequest;
+import org.redstone.protobuf.util.ChineseNameUtils;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.MsgType;
 import org.redstone.protobuf.util.SessionUtils;
@@ -45,7 +46,7 @@ public class LoginRequestHandler extends BaseMsgHandler implements IMsgHandler{
 			SessionUtils.addDeviceSession(bean.getDeviceUID(), sessionId);
 			
 			LoginReply.Builder builder = LoginReply.newBuilder();
-			builder.setName(bean.getDeviceUID().substring(0, 5) + "你好");
+			builder.setName(ChineseNameUtils.genName());
 			builder.setLevel(1);
 			
 			byte[] msgType = DataUtils.number2Bytes(MsgType.LoginReply.getMsgType());

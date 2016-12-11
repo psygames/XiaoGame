@@ -1,12 +1,9 @@
 package org.redstone.battle.socket;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
@@ -88,7 +85,7 @@ public class ClientRunnable implements Runnable, Serializable {
 			// 返回业务处理结果
 			try {
 				// 发送
-				if(sendBuff == null || sendBuff.array().length == 0){
+				if(sendBuff == null){
 					break;
 				}
 				sendBuff.flip();

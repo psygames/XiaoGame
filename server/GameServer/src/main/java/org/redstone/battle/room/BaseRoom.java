@@ -164,9 +164,11 @@ public class BaseRoom {
 		if(gamersCamp.containsKey(deviceUID)){
 			camp = gamersCamp.get(deviceUID);
 			gamersCamp.remove(deviceUID);
+			logger.info("gamersCamp中移除玩家" + deviceUID + "当前gamersCamp=" + gamersCamp);
 			
 			Map<String, Gamer> gamers = campGamers.get(camp);
 			if(gamers.containsKey(deviceUID)){
+				logger.info("gamersCamp中移除玩家" + deviceUID + "当前campGamers=" + campGamers + "，所属阵营gamers=" + gamers);
 				gamers.remove(deviceUID);
 				campGamers.put(camp, gamers);
 				logger.info("房间id=" + id + "，gamers=" + gamers);

@@ -8,30 +8,25 @@ import java.util.concurrent.Executors;
 import org.apache.log4j.Logger;
 import org.redstone.protobuf.util.SocketUtils;
 
-public class BattleServerSocket {
+public class GameServerSocket {
 	static{
 		init();
 	}
 	
 	public  static void init() {
 		new ServerThread().start();
-		
-	}
-	public static void main(String[] args) {
-		//init();
-		System.out.println(BattleServerSocket.class);
 	}
 }
 
 class ServerThread extends Thread{
-	private static final Logger logger = Logger.getLogger(BattleServerSocket.class);
-	private static int port = SocketUtils.Battle_Server_Port;;
+	private static final Logger logger = Logger.getLogger(GameServerSocket.class);
+	private static int port = SocketUtils.Game_Server_Port;
 	ServerSocket server;
 	@Override
 	public void run() {
 		ExecutorService executorService = Executors.newCachedThreadPool();
 		try {
-			logger.info("BattleServerSocket [" + port + "] started.");
+			logger.info("GameServerSocket [" + port + "] started.");
 			server = new ServerSocket(port);
 			while (true) {
 				Socket client;

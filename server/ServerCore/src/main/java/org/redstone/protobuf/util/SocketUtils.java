@@ -31,18 +31,21 @@ public class SocketUtils {
 	private static Logger logger = Logger.getLogger(SocketUtils.class);
 	private static final String LOGID = "【socket】";
 	
-	private static String ip = "192.168.10.106";
-	private static int port = 8888;
+	public static String Game_Server_ip = "192.168.10.106";
+	public static int Game_Server_Port = 8889;
+	
+	public static String Battle_Server_ip = "192.168.10.106";
+	public static int Battle_Server_Port = 8888;
 	
 	public static void main(String[] args) throws Exception {
-		sendMsg(DataUtils.number2Bytes(3));
+		sendMsg(DataUtils.number2Bytes(3), Battle_Server_ip, Battle_Server_Port, false);
 	}
 	/**
 	 * 发送报文
 	 * @param msg
 	 * @throws Exception 
 	 */
-	public static byte[] sendMsg(byte[] msg) throws Exception{
+	public static byte[] sendMsg(byte[] msg, String ip, int port, boolean isRtn) throws Exception{
 		Socket socket = null;
 		DataInputStream dis = null;
 		DataOutputStream dos = null;
@@ -54,8 +57,11 @@ public class SocketUtils {
 			dos = new DataOutputStream(socket.getOutputStream());
 			dos.write(msg);
 			dos.flush();
-			dis = new DataInputStream(socket.getInputStream());
 			
+			if(!isRtn){//是否需要返回值
+				return null;
+			}
+			dis = new DataInputStream(socket.getInputStream());
 			//-------------------------------------读取报文长度--------------------------------------
 			long start1 = System.currentTimeMillis();
 			//先取前2个字节。最多等5 * 1000ms。
@@ -100,9 +106,15 @@ public class SocketUtils {
 			logger.error(LOGID + "等待返回超时10s", e);
 			throw e;
 		} finally {
-			dis.close();
-			socket.close();
-			dos.close();
+			if(dis != null){
+				dis.close();
+			}
+			if(socket != null){
+				socket.close();
+			}
+			if(dos != null){
+				dos.close();
+			}
 		}
 		return b;
 	}

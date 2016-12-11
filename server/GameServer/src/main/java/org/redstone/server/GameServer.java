@@ -36,9 +36,9 @@ public class GameServer {
 	
 	@OnClose
 	public void onClose(){
+		ChinaBattleManage.getInstance().remove(session.getId());
 		sessionMap.remove(session.getId());
 		SessionUtils.remove(session.getId());
-		ChinaBattleManage.getInstance().remove(session.getId());
 		logger.info(session.getId() + "退出");
 	}
 	

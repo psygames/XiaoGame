@@ -26,12 +26,14 @@ namespace RedStone
 
 			network.Register<BoardSync>(OnBoardSync);
 			network.Register<NewTurnBroadcast>(OnNewTurn);
+			network.Register<BattleResult>(OnBattleResult);
 		}
 
 		public override void OnDestroy()
 		{
 			network.UnRegister<BoardSync>(OnBoardSync);
 			network.UnRegister<NewTurnBroadcast>(OnNewTurn);
+			network.UnRegister<BattleResult>(OnBattleResult);
 
 			base.OnDestroy();
 		}
@@ -93,6 +95,7 @@ namespace RedStone
 
 		public void OnNewTurn(NewTurnBroadcast msg)
 		{
+			UnityEngine.Debug.Log(msg.camp);
 			m_whosTurn = (ECamp)msg.camp;
 			SendEvent(Event.Gomuku.NewTurn, m_whosTurn);
 		}

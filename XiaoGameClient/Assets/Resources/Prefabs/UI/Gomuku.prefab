@@ -369,7 +369,7 @@ GameObject:
   - 224: {fileID: 224000010917772156}
   - 114: {fileID: 114000012787427086}
   m_Layer: 5
-  m_Name: GomukuBattleResult
+  m_Name: result
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

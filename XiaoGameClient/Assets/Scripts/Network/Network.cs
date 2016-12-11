@@ -18,13 +18,13 @@ namespace RedStone.Net
 
 		public Network(IConnection connection, NetType type)
 		{
+			ProtocalNumInit();
 			m_connection = connection;
 			m_type = type;
 		}
 
 		public void Init(string addr)
 		{
-			ProtocalNumInit();
 			m_connection.Init(addr, OnMessage, OnOpen, OnClose, OnError);
 		}
 

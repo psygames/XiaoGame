@@ -27,6 +27,7 @@ namespace RedStone
 			network.Register<BoardSync>(OnBoardSync);
 			network.Register<NewTurnBroadcast>(OnNewTurn);
 			network.Register<BattleResult>(OnBattleResult);
+			network.Register<PlaceStatisticsSync>(OnPlaceStatisticsSync);
 		}
 
 		public override void OnDestroy()
@@ -34,6 +35,7 @@ namespace RedStone
 			network.UnRegister<BoardSync>(OnBoardSync);
 			network.UnRegister<NewTurnBroadcast>(OnNewTurn);
 			network.UnRegister<BattleResult>(OnBattleResult);
+			network.UnRegister<PlaceStatisticsSync>(OnPlaceStatisticsSync);
 
 			base.OnDestroy();
 		}
@@ -49,7 +51,7 @@ namespace RedStone
 			{
 				//TODO: reply.roomId 这个字段暂时没用啊？
 				GetProxy<HallProxy>().mainPlayerData.UpdateCamp(reply.camp);
-				OnBoardSync(reply.boardSync);
+				OnNewTurn(reply.newTurn);
 			});
 		}
 
@@ -82,27 +84,31 @@ namespace RedStone
 				}
 			}
 
-			m_placeStatistics.Clear();
-			for (int i = 0; i < board.statistics.Count; i++)
-			{
-				PlaceStatisticsData sta = new PlaceStatisticsData();
-				sta.SetData(board.statistics[i].num, board.statistics[i].ratio);
-				m_placeStatistics.Add(sta);
-			}
 
 			EventManager.instance.Send(Event.Gomuku.BoardSync);
 		}
 
+		public void OnPlaceStatisticsSync(message.PlaceStatisticsSync msg)
+		{
+			m_placeStatistics.Clear();
+			for (int i = 0; i < msg.statistics.Count; i++)
+			{
+				PlaceStatisticsData sta = new PlaceStatisticsData();
+				sta.SetData(msg.statistics[i].num, msg.statistics[i].ratio);
+				m_placeStatistics.Add(sta);
+			}
+		}
+
 		public void OnNewTurn(NewTurnBroadcast msg)
 		{
-			UnityEngine.Debug.Log(msg.camp);
 			m_whosTurn = (ECamp)msg.camp;
+			OnBoardSync(msg.boardSync);
 			SendEvent(Event.Gomuku.NewTurn, m_whosTurn);
 		}
 
 		public void OnBattleResult(BattleResult msg)
 		{
-			SendEvent(Event.Gomuku.BattleResult, msg.isWin);
+			SendEvent(Event.Gomuku.BattleResult, (ECamp)msg.camp);
 		}
 
 		public ChessData GetChess(int num)

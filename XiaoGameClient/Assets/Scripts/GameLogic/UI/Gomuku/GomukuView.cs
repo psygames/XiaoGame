@@ -46,14 +46,14 @@ namespace RedStone
 
 			Register(Event.Gomuku.BoardSync, OnBoardSync);
 			Register<ECamp>(Event.Gomuku.NewTurn, OnNewTurn);
-			Register<bool>(Event.Gomuku.BattleResult, OnBattleResult);
+			Register<ECamp>(Event.Gomuku.BattleResult, OnBattleResult);
 		}
 
 		public override void OnDestory()
 		{
 			UnRegister(Event.Gomuku.BoardSync, OnBoardSync);
 			UnRegister<ECamp>(Event.Gomuku.NewTurn, OnNewTurn);
-			UnRegister<bool>(Event.Gomuku.BattleResult, OnBattleResult);
+			UnRegister<ECamp>(Event.Gomuku.BattleResult, OnBattleResult);
 
 			base.OnDestory();
 		}
@@ -99,10 +99,10 @@ namespace RedStone
 			});
 		}
 
-		private void OnBattleResult(bool isWin)
+		private void OnBattleResult(ECamp camp)
 		{
 			result.gameObject.SetActive(true);
-			result.SetData(isWin);
+			result.SetData(camp);
 		}
 
 		private void Update()

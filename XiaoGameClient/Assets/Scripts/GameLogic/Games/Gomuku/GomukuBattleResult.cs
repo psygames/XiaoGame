@@ -21,9 +21,9 @@ namespace RedStone
             };
         }
 
-        public void SetData(bool isWin)
+		public void SetData(ECamp camp)
         {
-			if (isWin)
+			if (camp == ProxyManager.instance.GetProxy<HallProxy>().mainPlayerData.camp)
 			{
 				resultText.text = "WIN";
 				resultText.color = Color.red;

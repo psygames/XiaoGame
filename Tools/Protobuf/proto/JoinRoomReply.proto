@@ -1,11 +1,12 @@
 syntax = "proto2";
 option java_multiple_files = true;
 package org.redstone.protobuf.msg;
-import "BoardSync.proto";
+import "NewTurnBroadcast.proto";
 import "Enums.proto";
+
 message JoinRoomReply
 {
   optional Enums.Camp camp = 1 [default=NoneCamp];
   optional int32 roomId = 2;
-  optional BoardSync boardSync = 3;
+  optional NewTurnBroadcast newTurn = 4;
 }

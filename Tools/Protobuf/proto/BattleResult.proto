@@ -1,8 +1,9 @@
 syntax = "proto2";
 option java_multiple_files = true;
 package org.redstone.protobuf.msg;
+import "Enums.proto";
 
 message BattleResult
 {
-  optional bool isWin = 1;
+  optional Enums.Camp camp = 1 [default=NoneCamp];
 }

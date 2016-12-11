@@ -7,7 +7,7 @@ namespace RedStone
 	public class LoginView : ViewBase
 	{
 		public UIEventListener playListener;
-		public Text matchingText;
+		public GameObject matchingObj;
 		public RawImage bg;
 		private bool isMatching = false;
 
@@ -58,12 +58,12 @@ namespace RedStone
 			if (isMatching)
 			{
 				playListener.gameObject.SetActive(false);
-				matchingText.gameObject.SetActive(true);
+				matchingObj.SetActive(true);
 			}
 			else
 			{
 				playListener.gameObject.SetActive(true);
-				matchingText.gameObject.SetActive(false);
+				matchingObj.SetActive(false);
 			}
 		}
 	}

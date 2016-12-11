@@ -32,6 +32,7 @@ namespace RedStone
 
 		private void OnGUI()
 		{
+			return;
 			GUIStyle fontStyle = new GUIStyle();
 			fontStyle.normal.background = null;    //设置背景填充  
 			fontStyle.normal.textColor = new Color(1, 0, 0);   //设置字体颜色  

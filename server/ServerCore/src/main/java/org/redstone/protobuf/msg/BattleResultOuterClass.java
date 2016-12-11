@@ -23,8 +23,9 @@ public final class BattleResultOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022BattleResult.proto\022\031org.redstone.proto" +
-      "buf.msg\"\035\n\014BattleResult\022\r\n\005isWin\030\001 \001(\010B\002" +
-      "P\001"
+      "buf.msg\032\013Enums.proto\"M\n\014BattleResult\022=\n\004" +
+      "camp\030\001 \001(\0162%.org.redstone.protobuf.msg.E" +
+      "nums.Camp:\010NoneCampB\002P\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -37,13 +38,15 @@ public final class BattleResultOuterClass {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          org.redstone.protobuf.msg.EnumsOuterClass.getDescriptor(),
         }, assigner);
     internal_static_org_redstone_protobuf_msg_BattleResult_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_org_redstone_protobuf_msg_BattleResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_redstone_protobuf_msg_BattleResult_descriptor,
-        new java.lang.String[] { "IsWin", });
+        new java.lang.String[] { "Camp", });
+    org.redstone.protobuf.msg.EnumsOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

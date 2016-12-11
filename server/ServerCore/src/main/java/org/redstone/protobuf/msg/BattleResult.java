@@ -15,7 +15,7 @@ public  final class BattleResult extends
     super(builder);
   }
   private BattleResult() {
-    isWin_ = false;
+    camp_ = 1;
   }
 
   @java.lang.Override
@@ -47,8 +47,14 @@ public  final class BattleResult extends
             break;
           }
           case 8: {
-            bitField0_ |= 0x00000001;
-            isWin_ = input.readBool();
+            int rawValue = input.readEnum();
+            org.redstone.protobuf.msg.Enums.Camp value = org.redstone.protobuf.msg.Enums.Camp.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(1, rawValue);
+            } else {
+              bitField0_ |= 0x00000001;
+              camp_ = rawValue;
+            }
             break;
           }
         }
@@ -91,19 +97,20 @@ public  final class BattleResult extends
   }
 
   private int bitField0_;
-  public static final int ISWIN_FIELD_NUMBER = 1;
-  private boolean isWin_;
+  public static final int CAMP_FIELD_NUMBER = 1;
+  private int camp_;
   /**
-   * <code>optional bool isWin = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
-  public boolean hasIsWin() {
+  public boolean hasCamp() {
     return ((bitField0_ & 0x00000001) == 0x00000001);
   }
   /**
-   * <code>optional bool isWin = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
-  public boolean getIsWin() {
-    return isWin_;
+  public org.redstone.protobuf.msg.Enums.Camp getCamp() {
+    org.redstone.protobuf.msg.Enums.Camp result = org.redstone.protobuf.msg.Enums.Camp.valueOf(camp_);
+    return result == null ? org.redstone.protobuf.msg.Enums.Camp.NoneCamp : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -120,7 +127,7 @@ public  final class BattleResult extends
                       throws java.io.IOException {
     getSerializedSize();
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
-      output.writeBool(1, isWin_);
+      output.writeEnum(1, camp_);
     }
     unknownFields.writeTo(output);
   }
@@ -133,7 +140,7 @@ public  final class BattleResult extends
     size = 0;
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(1, isWin_);
+        .computeEnumSize(1, camp_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSerializedSize = size;
@@ -242,7 +249,7 @@ public  final class BattleResult extends
     }
     public Builder clear() {
       super.clear();
-      isWin_ = false;
+      camp_ = 1;
       bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
@@ -271,7 +278,7 @@ public  final class BattleResult extends
       if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
         to_bitField0_ |= 0x00000001;
       }
-      result.isWin_ = isWin_;
+      result.camp_ = camp_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -288,8 +295,8 @@ public  final class BattleResult extends
 
     public Builder mergeFrom(org.redstone.protobuf.msg.BattleResult other) {
       if (other == org.redstone.protobuf.msg.BattleResult.getDefaultInstance()) return this;
-      if (other.hasIsWin()) {
-        setIsWin(other.getIsWin());
+      if (other.hasCamp()) {
+        setCamp(other.getCamp());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -319,34 +326,38 @@ public  final class BattleResult extends
     }
     private int bitField0_;
 
-    private boolean isWin_ ;
+    private int camp_ = 1;
     /**
-     * <code>optional bool isWin = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
-    public boolean hasIsWin() {
+    public boolean hasCamp() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional bool isWin = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
-    public boolean getIsWin() {
-      return isWin_;
+    public org.redstone.protobuf.msg.Enums.Camp getCamp() {
+      org.redstone.protobuf.msg.Enums.Camp result = org.redstone.protobuf.msg.Enums.Camp.valueOf(camp_);
+      return result == null ? org.redstone.protobuf.msg.Enums.Camp.NoneCamp : result;
     }
     /**
-     * <code>optional bool isWin = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
-    public Builder setIsWin(boolean value) {
+    public Builder setCamp(org.redstone.protobuf.msg.Enums.Camp value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
       bitField0_ |= 0x00000001;
-      isWin_ = value;
+      camp_ = value.getNumber();
       onChanged();
       return this;
     }
     /**
-     * <code>optional bool isWin = 1;</code>
+     * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
      */
-    public Builder clearIsWin() {
+    public Builder clearCamp() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      isWin_ = false;
+      camp_ = 1;
       onChanged();
       return this;
     }

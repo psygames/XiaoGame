@@ -8,6 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: BattleResult.proto
+// Note: requires additional types generated from: Enums.proto
 namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BattleResult")]
@@ -15,13 +16,13 @@ namespace message
   {
     public BattleResult() {}
     
-    private bool _isWin = default(bool);
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"isWin", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(default(bool))]
-    public bool isWin
+    private message.Enums.Camp _camp = message.Enums.Camp.NoneCamp;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"camp", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(message.Enums.Camp.NoneCamp)]
+    public message.Enums.Camp camp
     {
-      get { return _isWin; }
-      set { _isWin = value; }
+      get { return _camp; }
+      set { _camp = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

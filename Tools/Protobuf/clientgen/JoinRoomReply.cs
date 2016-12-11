@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: JoinRoomReply.proto
-// Note: requires additional types generated from: BoardSync.proto
+// Note: requires additional types generated from: NewTurnBroadcast.proto
 // Note: requires additional types generated from: Enums.proto
 namespace org.redstone.protobuf.msg
 {
@@ -33,13 +33,13 @@ namespace org.redstone.protobuf.msg
       get { return _roomId; }
       set { _roomId = value; }
     }
-    private org.redstone.protobuf.msg.BoardSync _boardSync = null;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"boardSync", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    private org.redstone.protobuf.msg.NewTurnBroadcast _newTurn = null;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"newTurn", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
-    public org.redstone.protobuf.msg.BoardSync boardSync
+    public org.redstone.protobuf.msg.NewTurnBroadcast newTurn
     {
-      get { return _boardSync; }
-      set { _boardSync = value; }
+      get { return _newTurn; }
+      set { _newTurn = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

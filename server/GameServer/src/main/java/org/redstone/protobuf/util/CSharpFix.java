@@ -43,6 +43,9 @@ public class CSharpFix {
 		File destFile = new File(destDir);
 		for (File f : destFile.listFiles())
         {
+			if(f.getName().endsWith(".meta")){
+				continue;
+			}
 			String content = FileTool.readText(f.getPath());
 			content = format(content);
 			FileTool.writeText(destDir + "/" + f.getName(), content);

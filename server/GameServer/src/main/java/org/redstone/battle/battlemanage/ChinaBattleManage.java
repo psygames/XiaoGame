@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
@@ -39,10 +40,10 @@ public class ChinaBattleManage implements IBatteManage{
 	private static Logger logger = Logger.getLogger(ChinaBattleManage.class);
 	private static String Default_Charset = "utf-8";
 	
-	private static Map<String, Map<String, List<BaseRoom>>> gameMap = new ConcurrentHashMap<String, Map<String, List<BaseRoom>>>();
+	private static Map<String, Map<String, List<Integer>>> gameMap = new ConcurrentHashMap<String, Map<String, List<Integer>>>();
 	private static Map<String, Map<String, List<Gamer>>> tmpGamerMap = new ConcurrentHashMap<String, Map<String, List<Gamer>>>();
-	private static Map<Integer, BaseRoom> allRoom = new ConcurrentHashMap<Integer, BaseRoom>();
-	public static Map<String, BaseRoom> sessionRoom = new ConcurrentHashMap<String, BaseRoom>();
+	private static Map<Integer, BaseRoom> allRooms = new ConcurrentHashMap<Integer, BaseRoom>();
+	public static Map<String, Integer> deviceRooms = new ConcurrentHashMap<String, Integer>();
 	
 	private static ChinaBattleManage chinaBattleManage;
 	public static ChinaBattleManage getInstance(){
@@ -53,15 +54,16 @@ public class ChinaBattleManage implements IBatteManage{
 	}
 	
 	public void asignRoom(String gameType, String roomType, Gamer gamer) {
-		Map<String, List<BaseRoom>> game;//游戏
-		List<BaseRoom> roomList;
+		Map<String, List<Integer>> game;//游戏
+		List<Integer> roomList;
 		BaseRoom room = null;//游戏房间
 		if(gameMap.containsKey(gameType)){
 			game = gameMap.get(gameType);
 			if(game.containsKey(roomType)){
 				//房间已存在，并且未达到人数上线
 				roomList = game.get(roomType);
-				for(BaseRoom rm : roomList){
+				for(Integer rmId : roomList){
+					BaseRoom rm = allRooms.get(rmId);
 					if(rm.getUpperLimit() > rm.getGamerCount()){
 						List<Gamer> gamerList = new ArrayList<Gamer>();
 						gamerList.add(gamer);
@@ -95,33 +97,42 @@ public class ChinaBattleManage implements IBatteManage{
 	 * @throws
 	 */
 	synchronized public void createRoom(String gameType, String roomType, List<Gamer> gamerList){
-		Map<String, List<BaseRoom>> game;//游戏
-		List<BaseRoom> roomList;
+		logger.info("创建房间");
+		Map<String, List<Integer>> game;//游戏
+		List<Integer> roomList;
 		BaseRoom room = null;//游戏房间
 		if(!gameMap.containsKey(gameType)){
-			game = new HashMap<String, List<BaseRoom>>();
+			logger.info("战场中未找到 " + gameType + "，新增该类型加入战场");
+			game = new HashMap<String, List<Integer>>();
 			gameMap.put(gameType, game);
 		}else {
+			logger.info("战场中已存在游戏 " + gameType + "，直接取出");
 			game = gameMap.get(gameType);
 		}
 		if(!game.containsKey(roomType)){
-			roomList = new ArrayList<BaseRoom>();
+			logger.info("游戏 " + gameType + "，不存在房间类型为" + roomType + "，新增");
+			roomList = new ArrayList<Integer>();
 			game.put(roomType, roomList);
-			
-			if(GameType.Gomoku.equals(gameType)){
-				//请求socket得到房间,根据人数计算创建房间的数量
-				int roomNum = gamerList.size() % GomokuRoom.UPPER_LIMIT == 0 ? gamerList.size() / GomokuRoom.UPPER_LIMIT : gamerList.size() / GomokuRoom.UPPER_LIMIT + 1;
-				int balanceLength = gamerList.size();
-				for(int i = 0; i < roomNum; i++){
-					int toIndex = balanceLength > GomokuRoom.UPPER_LIMIT ? GomokuRoom.UPPER_LIMIT : balanceLength;
-					List<Gamer> segList = gamerList.subList(i, toIndex);
-					Integer roomId  = this.assignRoomBySocket(segList);
-					room = new GomokuRoom(roomId, gameType, roomType, GomokuRoom.CAMP_COUNT, GomokuRoom.TURN_DELAY,
-							GomokuRoom.UPPER_LIMIT, GomokuRoom.Default_MAXX, GomokuRoom.Default_MAXY);
-					allRoom.put(roomId, room);
-					roomList.add(room);
-					room.addGamer(segList);
-				}
+		}else{
+			logger.info("游戏 " + gameType + "，存在房间类型为" + roomType + "，取出");
+			roomList = game.get(roomType);
+		}
+		
+		if(GameType.Gomoku.equals(gameType)){
+			//请求socket得到房间,根据人数计算创建房间的数量
+			int roomNum = gamerList.size() % GomokuRoom.UPPER_LIMIT == 0 ? gamerList.size() / GomokuRoom.UPPER_LIMIT : gamerList.size() / GomokuRoom.UPPER_LIMIT + 1;
+			int balanceLength = gamerList.size();
+			logger.info("需要创建的房间数量" + roomNum + ", 总人数" + balanceLength);
+			for (int i = 0; i < roomNum; i++) {
+				int toIndex = balanceLength > GomokuRoom.UPPER_LIMIT ? GomokuRoom.UPPER_LIMIT : balanceLength;
+				List<Gamer> segList = gamerList.subList(i, toIndex);
+				Integer roomId  = this.assignRoomBySocket(segList);
+				room = new GomokuRoom(roomId, gameType, roomType, GomokuRoom.CAMP_COUNT, GomokuRoom.TURN_DELAY,
+						GomokuRoom.UPPER_LIMIT, GomokuRoom.Default_MAXX, GomokuRoom.Default_MAXY);
+				roomList.add(room.getId());
+				room.addGamer(segList);
+				allRooms.put(roomId, room);
+				logger.info("第" + (i + 1) + "个房间创建成功，房间id=" + roomId);
 			}
 		}
 	}
@@ -135,6 +146,7 @@ public class ChinaBattleManage implements IBatteManage{
 		reqMap.put("roomType", RoomType.Gomoku_Two);
 		reqMap.put("operType", GamerConstant.Room_Crt);
 		String socketReq = DataUtils.toGson(reqMap);
+		logger.info("请求创建房间，参数：" + socketReq);
 		byte[] socketRsp = null;
 		try {
 			byte[] reqHeadBytes = DataUtils.number2Bytes((short)socketReq.length());
@@ -233,27 +245,39 @@ public class ChinaBattleManage implements IBatteManage{
 		}
 	}
 	
-	public BaseRoom getRoom(String sessionId){
-		Gamer gamer = SessionUtils.getGamerBySession(sessionId);
-		BaseRoom room = sessionRoom.get(gamer.getDeviceUID());
+	public  BaseRoom getRoomBySessionId(String sessionId){
+		String deviceUID = SessionUtils.getDeviceUID(sessionId);
+		Integer roomId = deviceRooms.get(deviceUID);
+		BaseRoom room = allRooms.get(roomId);
 		return room;
 	}
 	
-	public static void remove(String sessionId){
-		BaseRoom room = sessionRoom.get(sessionId);
+	public  void remove(String sessionId){
+		BaseRoom room = getRoomBySessionId(sessionId);
 		if(room != null){
 			room.remove(SessionUtils.getDeviceUID(sessionId));
 			
 			if(room.getGamerCount() <= 0){
-				if(allRoom.containsKey(room.getId())){
-					allRoom.remove(room.getId());
+				if(allRooms.containsKey(room.getId())){
+					allRooms.remove(room.getId());
 				}
 				if(gameMap.containsKey(room.getGameType())){
-					Map<String, List<BaseRoom>> roomMaps = gameMap.get(room.getGameType());
+					Map<String, List<Integer>> roomMaps = gameMap.get(room.getGameType());
 					if(roomMaps.containsKey(room.getRoomType())){
-						List<BaseRoom> list = roomMaps.get(room.getRoomType());
+						List<Integer> list = roomMaps.get(room.getRoomType());
 						if(list.contains(room)){
 							list.remove(room);
+							roomMaps.put(room.getRoomType(), list);
+							gameMap.put(room.getGameType(), roomMaps);
+						}
+					}
+				}
+				
+				if(deviceRooms.containsValue(room.getId())){
+					for(Entry<String, Integer> entry : deviceRooms.entrySet()){
+						if(entry.getValue().intValue() == room.getId().intValue()){
+							deviceRooms.remove(entry.getKey());
+							break;
 						}
 					}
 				}
@@ -269,11 +293,14 @@ public class ChinaBattleManage implements IBatteManage{
 					List<Gamer> list = gamersMap.get(roomType);
 					if(list.contains(gamer)){
 						list.remove(gamer);	
+						gamersMap.put(roomType, list);
+						tmpGamerMap.put(gameType, gamersMap);
+						break;
 					}
 				}
 			}
 		}
-		
+		room = null;
 	}
 	
 

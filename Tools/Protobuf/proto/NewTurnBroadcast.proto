@@ -11,7 +11,6 @@ message ChessRow
 message BoardSync
 {
   repeated ChessRow rows= 1;
-  repeated ChessPlaceStatistics statistics= 2;
 }
 
 message NewTurnBroadcast

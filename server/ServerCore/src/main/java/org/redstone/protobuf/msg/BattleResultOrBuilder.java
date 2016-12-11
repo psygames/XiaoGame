@@ -8,11 +8,11 @@ public interface BattleResultOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional bool isWin = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
-  boolean hasIsWin();
+  boolean hasCamp();
   /**
-   * <code>optional bool isWin = 1;</code>
+   * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
-  boolean getIsWin();
+  org.redstone.protobuf.msg.Enums.Camp getCamp();
 }

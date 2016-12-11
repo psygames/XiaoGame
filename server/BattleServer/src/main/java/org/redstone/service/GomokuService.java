@@ -8,7 +8,9 @@
  */
 package org.redstone.service;
 
+import org.apache.log4j.Logger;
 import org.redstone.protobuf.msg.Enums.ChessType;
+
 
 /**
  * @ClassName: GomokuService
@@ -18,63 +20,75 @@ import org.redstone.protobuf.msg.Enums.ChessType;
  *
  */
 public class GomokuService {
+	private static Logger logger = Logger.getLogger(GomokuService.class);
 	private static int num = 5;
-	public static boolean check(int x, int y, ChessType chessType, int boardMaxX, int boardMaxY){
+	public static boolean check(int x, int y, ChessType chessType, int boardMaxX, int boardMaxY, ChessType[][] cts){
+		boardMaxX = boardMaxX -1;
+		boardMaxY = boardMaxY -1;
+		
 		//横向
-		int maxX = x + num -1 <= boardMaxX ? x + num -1 : boardMaxX;
-		int minX = x - num -1 >= 0 ? x - num -1 : 0;
+		int endX = x + num - 1 <= boardMaxX ? x + num -1 : boardMaxX;
+		int startX = x - num + 1 >= 0 ? x - num + 1 : 0;
 		int xOffset = 1;
-		int maxY = y;
-		int minY = y;
+		int endY = y;
+		int startY = y;
 		int yOffset = 0;
-		if(fiveCheck(maxX, minX, xOffset, maxY, minY, yOffset, chessType)){
+		if(fiveCheck(endX, startX, xOffset, endY, startY, yOffset, chessType, cts)){
 			return true;
 		}
 		
 		//纵向
-		maxX = x;
-		minX = x;
+		endX = x;
+		startX = x;
 		xOffset = 0;
-		maxY = y + num -1 <= boardMaxY ? y + num -1 : boardMaxY;
-		minY = y - num -1 >= 0 ? y - num -1 : 0;
+		endY = y + num -1 <= boardMaxY ? y + num -1 : boardMaxY;
+		startY = y - num + 1 >= 0 ? y - num + 1 : 0;
 		yOffset = 1;
-		if(fiveCheck(maxX, minX, xOffset, maxY, minY, yOffset, chessType)){
+		if(fiveCheck(endX, startX, xOffset, endY, startY, yOffset, chessType, cts)){
 			return true;
 		}
 		
 		//东北-西南
-		maxX = x + num -1 <= boardMaxX ? x + num -1 : boardMaxX;
-		minX = x - num -1 >= 0 ? x - num -1 : 0;
+		endX = x + num -1 <= boardMaxX ? x + num -1 : boardMaxX;
+		startX = x - num + 1 >= 0 ? x - num + 1 : 0;
 		xOffset = 1;
-		maxY = y + num -1 <= boardMaxY ? y + num -1 : boardMaxY;
-		minY = y - num -1 >= 0 ? y - num -1 : 0;
+		endY = y + num -1 <= boardMaxY ? y + num -1 : boardMaxY;
+		startY = y - num + 1 >= 0 ? y - num + 1 : 0;
 		yOffset = 1;
-		if(fiveCheck(maxX, minX, xOffset, maxY, minY, yOffset, chessType)){
+		if(fiveCheck(endX, startX, xOffset, endY, startY, yOffset, chessType, cts)){
 			return true;
 		}
 		
 		//西北-东南
-		maxX = x + num -1 <= boardMaxX ? x + num -1 : boardMaxX;
-		minX = x - num -1 >= 0 ? x - num -1 : 0;
+		endX = x + num -1 <= boardMaxX ? x + num -1 : boardMaxX;
+		startX = x - num + 1 >= 0 ? x - num + 1 : 0;
 		xOffset = 1;
-		maxY = y + num -1 <= boardMaxY ? y + num -1 : boardMaxY;
-		minY = y + num -1 <= boardMaxY ? y + num -1 : boardMaxY;
+		endY = y - num + 1 >= 0 ? y - num + 1 : 0;
+		startY = y + num - 1 <= boardMaxY ? y + num + 1 : boardMaxY;
 		yOffset = -1;
-		if(fiveCheck(maxX, minX, xOffset, maxY, minY, yOffset, chessType)){
+		if(fiveCheck(endX, startX, xOffset, endY, startY, yOffset, chessType, cts)){
 			return true;
 		}
 		
 		return false;
 	}
 	
+	public static int getMin(int p, int n){
+		return p - n + 1 >= 0 ? p - n + 1 : 0;
+	}
+	public static int getMax(int p, int n, int max){
+		return p + n -1 <= max ? p + n -1 : max;
+	}
 	
-	public static boolean fiveCheck(int maxX, int minX, int xOffset, int maxY, int minY, int yOffset, ChessType chessType){
-		int y = minY;
+	
+	public static boolean fiveCheck(int endX, int startX, int xOffset, int endY, int startY, int yOffset, ChessType chessType, ChessType[][] cts){
+		logger.info("maxX=" + endX + ",maxY=" + endY + ",xOffset=" + xOffset + ",maxY=" + endY + ",minY=" + startY
+				+ ",yOffset=" + yOffset + ",chessType=" + chessType);
+		int y = startY;
 		int count = 0;
-		ChessType[][] cts = new ChessType[12][12];
-		for(int x = minX; x <= maxX; x += xOffset){
+		for(int x = startX; x <= endX; x += xOffset){
 			//判断x，y点是否是要求的chessType，并计数。如果达到了num个返回true
-			if(cts[x][y].compareTo(chessType) != 0){
+			if(!cts[x][y].equals(chessType)){
 				count = 0;
 			}else{
 				count ++;
@@ -84,16 +98,16 @@ public class GomokuService {
 			}
 			
 			//如果递增的方向不可能再组成 num个连续的子，则直接返回false
-			if(xOffset != 0 && maxX - x + count < num){
+			if(xOffset != 0 && endX - x + count < num){
 				return false;
 			}
-			if(yOffset != 0 && maxY - y + count < num){
+			if(yOffset != 0 && endY - y + count < num){
 				return false;
 			}
 			
 			
 			//y递增
-			if(y < maxY){
+			if(y != endY){
 				y += yOffset;
 				continue;
 			}

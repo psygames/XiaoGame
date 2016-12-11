@@ -26,15 +26,15 @@ public interface JoinRoomReplyOrBuilder extends
   int getRoomId();
 
   /**
-   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 3;</code>
+   * <code>optional .org.redstone.protobuf.msg.NewTurnBroadcast newTurn = 4;</code>
    */
-  boolean hasBoardSync();
+  boolean hasNewTurn();
   /**
-   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 3;</code>
+   * <code>optional .org.redstone.protobuf.msg.NewTurnBroadcast newTurn = 4;</code>
    */
-  org.redstone.protobuf.msg.BoardSync getBoardSync();
+  org.redstone.protobuf.msg.NewTurnBroadcast getNewTurn();
   /**
-   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 3;</code>
+   * <code>optional .org.redstone.protobuf.msg.NewTurnBroadcast newTurn = 4;</code>
    */
-  org.redstone.protobuf.msg.BoardSyncOrBuilder getBoardSyncOrBuilder();
+  org.redstone.protobuf.msg.NewTurnBroadcastOrBuilder getNewTurnOrBuilder();
 }

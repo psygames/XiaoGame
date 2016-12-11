@@ -23,11 +23,12 @@ public final class JoinRoomReplyOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\023JoinRoomReply.proto\022\031org.redstone.prot" +
-      "obuf.msg\032\017BoardSync.proto\032\013Enums.proto\"\227" +
-      "\001\n\rJoinRoomReply\022=\n\004camp\030\001 \001(\0162%.org.red" +
-      "stone.protobuf.msg.Enums.Camp:\010NoneCamp\022" +
-      "\016\n\006roomId\030\002 \001(\005\0227\n\tboardSync\030\003 \001(\0132$.org" +
-      ".redstone.protobuf.msg.BoardSyncB\002P\001"
+      "obuf.msg\032\026NewTurnBroadcast.proto\032\013Enums." +
+      "proto\"\234\001\n\rJoinRoomReply\022=\n\004camp\030\001 \001(\0162%." +
+      "org.redstone.protobuf.msg.Enums.Camp:\010No" +
+      "neCamp\022\016\n\006roomId\030\002 \001(\005\022<\n\007newTurn\030\004 \001(\0132" +
+      "+.org.redstone.protobuf.msg.NewTurnBroad" +
+      "castB\002P\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -40,7 +41,7 @@ public final class JoinRoomReplyOuterClass {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          org.redstone.protobuf.msg.BoardSyncOuterClass.getDescriptor(),
+          org.redstone.protobuf.msg.NewTurnBroadcastOuterClass.getDescriptor(),
           org.redstone.protobuf.msg.EnumsOuterClass.getDescriptor(),
         }, assigner);
     internal_static_org_redstone_protobuf_msg_JoinRoomReply_descriptor =
@@ -48,8 +49,8 @@ public final class JoinRoomReplyOuterClass {
     internal_static_org_redstone_protobuf_msg_JoinRoomReply_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_redstone_protobuf_msg_JoinRoomReply_descriptor,
-        new java.lang.String[] { "Camp", "RoomId", "BoardSync", });
-    org.redstone.protobuf.msg.BoardSyncOuterClass.getDescriptor();
+        new java.lang.String[] { "Camp", "RoomId", "NewTurn", });
+    org.redstone.protobuf.msg.NewTurnBroadcastOuterClass.getDescriptor();
     org.redstone.protobuf.msg.EnumsOuterClass.getDescriptor();
   }
 

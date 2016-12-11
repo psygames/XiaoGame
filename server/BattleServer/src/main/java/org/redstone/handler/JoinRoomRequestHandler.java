@@ -20,6 +20,7 @@ import org.redstone.protobuf.msg.Enums.Camp;
 import org.redstone.protobuf.msg.BoardSync;
 import org.redstone.protobuf.msg.JoinRoomReply;
 import org.redstone.protobuf.msg.JoinRoomRequest;
+import org.redstone.protobuf.msg.NewTurnBroadcast;
 import org.redstone.protobuf.util.DataUtils;
 import org.redstone.protobuf.util.MsgType;
 import org.redstone.protobuf.util.SessionUtils;
@@ -52,7 +53,7 @@ public class JoinRoomRequestHandler extends BaseMsgHandler implements IMsgHandle
 				JoinRoomReply.Builder builder = JoinRoomReply.newBuilder();
 				builder.setRoomId(joinRoomRequest.getRoomId());
 				builder.setCamp((Camp)rtnMap.get("camp"));
-				builder.setBoardSync((BoardSync)rtnMap.get("boardSync"));
+				builder.setNewTurn((NewTurnBroadcast)rtnMap.get("newTurn"));
 				
 				byte[] msgType = DataUtils.number2Bytes(MsgType.JoinRoomReply.getMsgType());
 				byte[] rspBody = builder.build().toByteArray();
@@ -60,7 +61,7 @@ public class JoinRoomRequestHandler extends BaseMsgHandler implements IMsgHandle
 				return buff;
 			}
 		} catch (Exception e) {
-			logger.error("解析加入房間请求异常", e);
+			logger.error("加入房間请求处理异常", e);
 		}
 		return null;
 	}

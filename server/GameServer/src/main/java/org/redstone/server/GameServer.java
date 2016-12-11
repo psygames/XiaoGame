@@ -30,7 +30,7 @@ public class GameServer {
 	public void onOpen(Session s){
 		session = s;
 		remote = session.getBasicRemote();
-		sessionMap.put(session.getId(), s);
+		sessionMap.put(s.getId(), s);
 		logger.info(session.getId() + "登入");
 	}
 	
@@ -38,7 +38,7 @@ public class GameServer {
 	public void onClose(){
 		sessionMap.remove(session.getId());
 		SessionUtils.remove(session.getId());
-		ChinaBattleManage.remove(session.getId());
+		ChinaBattleManage.getInstance().remove(session.getId());
 		logger.info(session.getId() + "退出");
 	}
 	

@@ -15,4 +15,17 @@ public interface NewTurnBroadcastOrBuilder extends
    * <code>optional .org.redstone.protobuf.msg.Enums.Camp camp = 1 [default = NoneCamp];</code>
    */
   org.redstone.protobuf.msg.Enums.Camp getCamp();
+
+  /**
+   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+   */
+  boolean hasBoardSync();
+  /**
+   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+   */
+  org.redstone.protobuf.msg.BoardSync getBoardSync();
+  /**
+   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+   */
+  org.redstone.protobuf.msg.BoardSyncOrBuilder getBoardSyncOrBuilder();
 }

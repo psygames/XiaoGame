@@ -45,7 +45,7 @@ public class LoginRequestHandler extends BaseMsgHandler implements IMsgHandler{
 			SessionUtils.addDeviceSession(bean.getDeviceUID(), sessionId);
 			
 			LoginReply.Builder builder = LoginReply.newBuilder();
-			builder.setName("傻吊你好");
+			builder.setName(bean.getDeviceUID().substring(0, 5) + "你好");
 			builder.setLevel(1);
 			
 			byte[] msgType = DataUtils.number2Bytes(MsgType.LoginReply.getMsgType());
@@ -56,7 +56,7 @@ public class LoginRequestHandler extends BaseMsgHandler implements IMsgHandler{
 			
 			return buff;
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("解析登录请求异常", e);
+			logger.error("登录请求处理异常", e);
 		}
 		return null;
 	}

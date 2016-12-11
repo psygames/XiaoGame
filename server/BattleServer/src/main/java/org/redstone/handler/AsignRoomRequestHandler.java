@@ -55,9 +55,11 @@ public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandl
 			BaseRoom room = null;
 			Integer roomId = null;
 			if(GamerConstant.Room_Join.equals(operType)){
+				logger.info("AsignRoomRequestHandler：请求加入房间，operType=" + operType);
 				roomId = Integer.parseInt(reqMap.get("roomId").toString());
 				room = ChinaBattleManage.getInstance().joinRoomBySocket(gamers.get(0), roomId);
 			}else{
+				logger.info("AsignRoomRequestHandler：请求创建房间，operType=" + operType);
 				room = ChinaBattleManage.getInstance().asignRoomBySocket(gameType, roomType, gamers);
 				roomId = room.getId();
 			}
@@ -66,13 +68,13 @@ public class AsignRoomRequestHandler extends BaseMsgHandler implements IMsgHandl
 				byte[] reply = DataUtils.number2Bytes(roomId);
 				byte[] length = DataUtils.number2Bytes(new Integer(reply.length).shortValue());
 				ByteBuffer buff = DataUtils.genBuff(length, reply);
-				logger.info("加入房间成功，返回gameserver，报文内容 " + reply.length + "," + roomId);
+				logger.info("请求房间成功，返回gameserver，报文内容 " + reply.length + "," + roomId);
 				return buff;
 			}else{
 				byte[] reply = new byte[0];
 				byte[] length = DataUtils.number2Bytes(new Integer(reply.length).shortValue());
 				ByteBuffer buff = DataUtils.genBuff(length, reply);
-				logger.info("加入房间失败，返回gameserver，报文内容 " + reply.length);
+				logger.info("请求房间失败，返回gameserver，报文内容 " + reply.length);
 				return buff;
 			}
 		} catch (Exception e) {

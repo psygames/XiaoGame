@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 import org.redstone.battle.battlemanage.ChinaBattleManage;
+import org.redstone.battle.room.BaseRoom;
 import org.redstone.battle.room.GomokuRoom;
 import org.redstone.protobuf.msg.PlaceReply;
 import org.redstone.protobuf.msg.PlaceRequest;
@@ -31,14 +32,12 @@ public class PlaceRequestHandler  extends BaseMsgHandler implements IMsgHandler{
 	@Override
 	public ByteBuffer process(byte[] msgBody, String sessionId) {
 		try {
-			GomokuRoom room = (GomokuRoom)ChinaBattleManage.sessionRoom.get(sessionId);
-			
+			BaseRoom room = ChinaBattleManage.getInstance().getRoomBySessionId(sessionId);
 			PlaceRequest placeRequest = PlaceRequest.parseFrom(msgBody);
 			
 			int chessNum = placeRequest.getChessNum();
-			
 			room.putStatistics(SessionUtils.getDeviceUID(sessionId), chessNum);
-			//room.addChess(chessNum, SessionUtils.getDevice(sessionId));
+			ChinaBattleManage.syncRoom(room);
 			
 			PlaceReply.Builder builder = PlaceReply.newBuilder();
 			builder.setResult(1);

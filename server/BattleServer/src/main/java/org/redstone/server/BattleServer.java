@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -23,23 +24,22 @@ import org.redstone.protobuf.util.SessionUtils;
 public class BattleServer {
 	
 	Session session;
-	public static Map<String, Session> sessionMap = new HashMap<String, Session>();
+	public static Map<String, Session> sessionMap = new ConcurrentHashMap<String, Session>();
 	Basic remote;
 	private final Logger logger = Logger.getLogger(BattleServer.class);
 	@OnOpen
 	public void onOpen(Session s){
 		session = s;
-		remote = session.getBasicRemote();
-		sessionMap.put(session.getId(), session);
-		logger.info(session.getId() + "登入battle");
+		sessionMap.put(s.getId(), s);
+		logger.info(s.getId() + "登入battle，当前sessionId=" + s.getId() + ",当前sessionMap=" + sessionMap);
 	}
 	
 	@OnClose
 	public void onClose(){
-		ChinaBattleManage.remove(session.getId());
+		ChinaBattleManage.getInstance().remove(session.getId());
 		SessionUtils.remove(session.getId());
 		sessionMap.remove(session.getId());
-		logger.info(session.getId() + "退出battle");
+		logger.info(session.getId() + "退出battle，当前sessionMap=" + sessionMap);
 	}
 	
 	@OnMessage

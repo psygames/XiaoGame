@@ -40,7 +40,7 @@ public class BaseRoom {
 	private int id;
 	private String gameType;
 	private String roomType;
-	Map<Integer, Map<String, Gamer>> campMap;//阵营-该阵营玩家(玩家Map  key=deviceUID, value=Gamer)
+	Map<Integer, Map<String, Gamer>> campGamers;//阵营-该阵营玩家(玩家Map  key=deviceUID, value=Gamer)
 	private Map<String, Integer> gamersCamp;//每个玩家-阵营
 	private Integer gamerCount;//玩家总数
 	private int upperLimit;
@@ -48,12 +48,12 @@ public class BaseRoom {
 		this.id = roomId;
 		this.gameType = gameType;
 		this.roomType = roomType;
-		this.campMap = new HashMap<Integer, Map<String, Gamer>>();
+		this.campGamers = new HashMap<Integer, Map<String, Gamer>>();
 		this.gamersCamp = new HashMap<String, Integer>();
 		this.upperLimit = upperLimit;
 		gamerCount = 0;
 		for(int i = 0; i < campCount; i++){
-			campMap.put(i, new HashMap<String, Gamer>());
+			campGamers.put(i, new HashMap<String, Gamer>());
 		}
 	}
 	
@@ -72,13 +72,13 @@ public class BaseRoom {
 				minMap.getValue().put(gamer.getDeviceUID(), gamer);
 				gamersCamp.put(gamer.getDeviceUID(), minMap.getKey());
 				gamerCount ++;
-				ChinaBattleManage.sessionRoom.put(gamer.getDeviceUID(), this);
+				ChinaBattleManage.deviceRooms.put(gamer.getDeviceUID(), id);
 				ByteBuffer buff = assignRoomReply();
 				Session ss = GameServer.sessionMap.get(SessionUtils.getSessionID(gamer.getDeviceUID()));
 				try {
 					buff.flip();
 					ss.getBasicRemote().sendBinary(buff);
-					logger.info("sessionId=" + ss.getId() + "，加入游戏类型" + gameType + "，房间类型=" + roomType + "，房间id=" + id);
+					logger.info("deviceUID=" + gamer.getDeviceUID() + "，加入游戏类型" + gameType + "，房间类型=" + roomType + "，房间id=" + id);
 				} catch (IOException e) {
 					logger.error("玩家加入房间，通知失败", e);
 					return false;
@@ -125,7 +125,7 @@ public class BaseRoom {
 	 * @throws
 	 */
 	public Entry<Integer, Map<String, Gamer>> getMaxCamp(){
-		Iterator<Entry<Integer, Map<String, Gamer>>> it = campMap.entrySet().iterator();
+		Iterator<Entry<Integer, Map<String, Gamer>>> it = campGamers.entrySet().iterator();
 		Entry<Integer, Map<String, Gamer>>  maxMap = null;
 		if(it.hasNext()){
 			maxMap = it.next();
@@ -145,7 +145,7 @@ public class BaseRoom {
 	 * @throws
 	 */
 	public Entry<Integer, Map<String, Gamer>> getMinCamp(){
-		Iterator<Entry<Integer, Map<String, Gamer>>> it = campMap.entrySet().iterator();
+		Iterator<Entry<Integer, Map<String, Gamer>>> it = campGamers.entrySet().iterator();
 		Entry<Integer, Map<String, Gamer>>  minMap = null;
 		if(it.hasNext()){
 			minMap = it.next();
@@ -165,13 +165,16 @@ public class BaseRoom {
 			camp = gamersCamp.get(deviceUID);
 			gamersCamp.remove(deviceUID);
 			
-			Map<String, Gamer> gamers = campMap.get(camp);
+			Map<String, Gamer> gamers = campGamers.get(camp);
 			if(gamers.containsKey(deviceUID)){
 				gamers.remove(deviceUID);
+				campGamers.put(camp, gamers);
+				logger.info("房间id=" + id + "，gamers=" + gamers);
+				logger.info("房间id=" + id + "，campMap=" + campGamers);
 			}
 			gamerCount --;
 		}
-		
+		logger.info("房间id=" + id + "，当前玩家数量" + gamerCount);
 	}
 
 	public Integer getId() {
@@ -187,7 +190,7 @@ public class BaseRoom {
 	}
 
 	public Map<Integer, Map<String, Gamer>> getCampMap() {
-		return campMap;
+		return campGamers;
 	}
 
 	public Map<String, Integer> getGamersCamp() {

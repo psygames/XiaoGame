@@ -57,6 +57,19 @@ public  final class NewTurnBroadcast extends
             }
             break;
           }
+          case 18: {
+            org.redstone.protobuf.msg.BoardSync.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+              subBuilder = boardSync_.toBuilder();
+            }
+            boardSync_ = input.readMessage(org.redstone.protobuf.msg.BoardSync.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(boardSync_);
+              boardSync_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000002;
+            break;
+          }
         }
       }
     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -113,6 +126,27 @@ public  final class NewTurnBroadcast extends
     return result == null ? org.redstone.protobuf.msg.Enums.Camp.NoneCamp : result;
   }
 
+  public static final int BOARDSYNC_FIELD_NUMBER = 2;
+  private org.redstone.protobuf.msg.BoardSync boardSync_;
+  /**
+   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+   */
+  public boolean hasBoardSync() {
+    return ((bitField0_ & 0x00000002) == 0x00000002);
+  }
+  /**
+   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+   */
+  public org.redstone.protobuf.msg.BoardSync getBoardSync() {
+    return boardSync_ == null ? org.redstone.protobuf.msg.BoardSync.getDefaultInstance() : boardSync_;
+  }
+  /**
+   * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+   */
+  public org.redstone.protobuf.msg.BoardSyncOrBuilder getBoardSyncOrBuilder() {
+    return boardSync_ == null ? org.redstone.protobuf.msg.BoardSync.getDefaultInstance() : boardSync_;
+  }
+
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -129,6 +163,9 @@ public  final class NewTurnBroadcast extends
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
       output.writeEnum(1, camp_);
     }
+    if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      output.writeMessage(2, getBoardSync());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -141,6 +178,10 @@ public  final class NewTurnBroadcast extends
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, camp_);
+    }
+    if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, getBoardSync());
     }
     size += unknownFields.getSerializedSize();
     memoizedSerializedSize = size;
@@ -245,12 +286,19 @@ public  final class NewTurnBroadcast extends
     }
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        getBoardSyncFieldBuilder();
       }
     }
     public Builder clear() {
       super.clear();
       camp_ = 1;
       bitField0_ = (bitField0_ & ~0x00000001);
+      if (boardSyncBuilder_ == null) {
+        boardSync_ = null;
+      } else {
+        boardSyncBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -279,6 +327,14 @@ public  final class NewTurnBroadcast extends
         to_bitField0_ |= 0x00000001;
       }
       result.camp_ = camp_;
+      if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+        to_bitField0_ |= 0x00000002;
+      }
+      if (boardSyncBuilder_ == null) {
+        result.boardSync_ = boardSync_;
+      } else {
+        result.boardSync_ = boardSyncBuilder_.build();
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -297,6 +353,9 @@ public  final class NewTurnBroadcast extends
       if (other == org.redstone.protobuf.msg.NewTurnBroadcast.getDefaultInstance()) return this;
       if (other.hasCamp()) {
         setCamp(other.getCamp());
+      }
+      if (other.hasBoardSync()) {
+        mergeBoardSync(other.getBoardSync());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -360,6 +419,124 @@ public  final class NewTurnBroadcast extends
       camp_ = 1;
       onChanged();
       return this;
+    }
+
+    private org.redstone.protobuf.msg.BoardSync boardSync_ = null;
+    private com.google.protobuf.SingleFieldBuilder<
+        org.redstone.protobuf.msg.BoardSync, org.redstone.protobuf.msg.BoardSync.Builder, org.redstone.protobuf.msg.BoardSyncOrBuilder> boardSyncBuilder_;
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public boolean hasBoardSync() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public org.redstone.protobuf.msg.BoardSync getBoardSync() {
+      if (boardSyncBuilder_ == null) {
+        return boardSync_ == null ? org.redstone.protobuf.msg.BoardSync.getDefaultInstance() : boardSync_;
+      } else {
+        return boardSyncBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public Builder setBoardSync(org.redstone.protobuf.msg.BoardSync value) {
+      if (boardSyncBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        boardSync_ = value;
+        onChanged();
+      } else {
+        boardSyncBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000002;
+      return this;
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public Builder setBoardSync(
+        org.redstone.protobuf.msg.BoardSync.Builder builderForValue) {
+      if (boardSyncBuilder_ == null) {
+        boardSync_ = builderForValue.build();
+        onChanged();
+      } else {
+        boardSyncBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000002;
+      return this;
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public Builder mergeBoardSync(org.redstone.protobuf.msg.BoardSync value) {
+      if (boardSyncBuilder_ == null) {
+        if (((bitField0_ & 0x00000002) == 0x00000002) &&
+            boardSync_ != null &&
+            boardSync_ != org.redstone.protobuf.msg.BoardSync.getDefaultInstance()) {
+          boardSync_ =
+            org.redstone.protobuf.msg.BoardSync.newBuilder(boardSync_).mergeFrom(value).buildPartial();
+        } else {
+          boardSync_ = value;
+        }
+        onChanged();
+      } else {
+        boardSyncBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000002;
+      return this;
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public Builder clearBoardSync() {
+      if (boardSyncBuilder_ == null) {
+        boardSync_ = null;
+        onChanged();
+      } else {
+        boardSyncBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000002);
+      return this;
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public org.redstone.protobuf.msg.BoardSync.Builder getBoardSyncBuilder() {
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return getBoardSyncFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    public org.redstone.protobuf.msg.BoardSyncOrBuilder getBoardSyncOrBuilder() {
+      if (boardSyncBuilder_ != null) {
+        return boardSyncBuilder_.getMessageOrBuilder();
+      } else {
+        return boardSync_ == null ?
+            org.redstone.protobuf.msg.BoardSync.getDefaultInstance() : boardSync_;
+      }
+    }
+    /**
+     * <code>optional .org.redstone.protobuf.msg.BoardSync boardSync = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        org.redstone.protobuf.msg.BoardSync, org.redstone.protobuf.msg.BoardSync.Builder, org.redstone.protobuf.msg.BoardSyncOrBuilder> 
+        getBoardSyncFieldBuilder() {
+      if (boardSyncBuilder_ == null) {
+        boardSyncBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            org.redstone.protobuf.msg.BoardSync, org.redstone.protobuf.msg.BoardSync.Builder, org.redstone.protobuf.msg.BoardSyncOrBuilder>(
+                getBoardSync(),
+                getParentForChildren(),
+                isClean());
+        boardSync_ = null;
+      }
+      return boardSyncBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:org.redstone.protobuf.msg.NewTurnBroadcast)

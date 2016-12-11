@@ -128,11 +128,20 @@ namespace RedStone
 		private void UpdateWhoseTurn()
 		{
 			if (isOurTurn)
-				whoseTurnText.text = "我方";
+			{
+				whoseTurnText.color = Color.green;
+				whoseTurnText.text = "我方下棋";
+			}
 			else if (proxy.whosTursn == playerData.enemyCamp)
-				whoseTurnText.text = "敌方";
+			{
+				whoseTurnText.color = Color.white;
+				whoseTurnText.text = "敌方下棋";
+			}
 			else
+			{
+				whoseTurnText.color = Color.gray;
 				whoseTurnText.text = "回合未开始";
+			}
 		}
 
 		private void UpdatePlaceStatistic()

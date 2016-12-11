@@ -36,6 +36,8 @@ namespace RedStone
 		{
 			base.OnInit();
 
+			isBottom = true;
+
 			generator.Init();
 			generator.onClickCallback = OnCellClick;
 

@@ -14,6 +14,7 @@ namespace RedStone
 		public override void OnInit()
 		{
 			base.OnInit();
+			isBottom = true;
 			playListener.onClick = OnClickPlay;
 			Register(Event.Gomuku.AssignRoomReply, OnAssignRoomReply);
 		}

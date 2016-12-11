@@ -4,6 +4,8 @@ namespace RedStone
 {
 	public class ViewBase : MonoBehaviour
 	{
+		public bool isBottom = false;
+
 		public T GetProxy<T>() where T : ProxyBase
 		{
 			return ProxyManager.instance.GetProxy<T>();

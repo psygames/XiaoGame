@@ -55,9 +55,18 @@ namespace RedStone
 			m_prefabs.Add(name, prefabPath);
 		}
 
+		private ViewBase GetView<T>()
+		{
+			return m_views[typeof(T).ToString()];
+		}
+
 		public void Show<T>()
 		{
 			string name = typeof(T).ToString();
+			if (GetView<T>().isBottom)
+			{
+				m_stack.Clear();
+			}
 			UIContent content = new UIContent(name);
 			m_stack.Push(content);
 			ShowGameObject(name);

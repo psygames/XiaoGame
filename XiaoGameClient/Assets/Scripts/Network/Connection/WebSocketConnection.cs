@@ -48,7 +48,7 @@ namespace RedStone
 
 		public void Close()
 		{
-			if (isInit() && isConnecting())
+			if (isInit() && isConnected())
 			{
 				m_socket.Close();
 			}

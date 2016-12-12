@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -471,6 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931a1f507e67148f692a1bc6d5f6d138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverAddress: ws://139.196.5.96:8180/GameServer/gameServer
 --- !u!4 &2035131731
 Transform:
   m_ObjectHideFlags: 0

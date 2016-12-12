@@ -4,6 +4,7 @@ namespace RedStone
 {
 	public class GameManager : Core.SingletonBehaviour<GameManager>
 	{
+        private string serverAddress = "ws://139.196.5.96:8180/GameServer/gameServer";
 		protected override void Awake()
 		{
 			base.Awake();
@@ -27,7 +28,7 @@ namespace RedStone
 			ProxyManager.instance.Init();
 			UIManager.instance.Init();
 
-			ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer("ws://192.168.10.106:8180/GameServer/gameServer");
+			ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer(serverAddress);
 		}
 
 		private void OnGUI()

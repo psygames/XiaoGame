@@ -92,7 +92,7 @@ public class BaseRoom {
 	
 	public ByteBuffer assignRoomReply(){
 		AssignRoomReply.Builder builder = AssignRoomReply.newBuilder();
-		builder.setAddress("ws://192.168.10.106:8080/BattleServer/battleServer");
+		builder.setAddress("ws://139.196.5.96:8080/BattleServer/battleServer");
 		builder.setRoomId(id);
 		byte[] msgType = DataUtils.number2Bytes(MsgType.AsignRoomReply.getMsgType());
 		byte[] rspBody = builder.build().toByteArray();

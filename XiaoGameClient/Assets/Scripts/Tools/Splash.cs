@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Splash : MonoBehaviour
 {
+	public RawImage img;
 	public float duration = 1f;
 	private float m_cd = 0;
 
@@ -22,5 +24,6 @@ public class Splash : MonoBehaviour
 			transform.parent.GetChild(i).GetComponent<RectTransform>().SetSiblingIndex(i+2);
 		}
 		transform.GetComponent<RectTransform> ().SetSiblingIndex (1);
+		img.color = Color.Lerp (Color.white,Color.red,m_cd / duration);
 	}
 }

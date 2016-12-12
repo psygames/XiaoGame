@@ -31,10 +31,10 @@ public class SocketUtils {
 	private static Logger logger = Logger.getLogger(SocketUtils.class);
 	private static final String LOGID = "【socket】";
 	
-	public static String Game_Server_ip = "192.168.10.106";
+	public static String Game_Server_ip = "127.0.0.1";
 	public static int Game_Server_Port = 8889;
 	
-	public static String Battle_Server_ip = "192.168.10.106";
+	public static String Battle_Server_ip = "127.0.0.1";
 	public static int Battle_Server_Port = 8888;
 	
 	public static void main(String[] args) throws Exception {
@@ -51,7 +51,7 @@ public class SocketUtils {
 		DataOutputStream dos = null;
 		byte[] b = null;
 		try {
-			logger.info(LOGID + "远程ip：192.168.10.106，远程端口: " + port);
+			logger.info(LOGID + "远程ip：139.196.5.96，远程端口: " + port);
 			socket = new Socket(ip, port);
 			socket.setSoTimeout(10 * 1000);
 			dos = new DataOutputStream(socket.getOutputStream());

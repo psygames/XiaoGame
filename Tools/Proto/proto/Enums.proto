@@ -1,0 +1,19 @@
+syntax = "proto2";
+option java_multiple_files = true;
+package org.redstone.protobuf.msg;
+
+message Enums
+{
+	enum ChessType
+	{
+	  None = 1;
+	  White = 2;
+	  Black = 3;
+	}
+	enum Camp
+	{
+	  NoneCamp = 1;
+	  WhiteCamp = 2;
+	  BlackCamp = 3;
+	}
+}

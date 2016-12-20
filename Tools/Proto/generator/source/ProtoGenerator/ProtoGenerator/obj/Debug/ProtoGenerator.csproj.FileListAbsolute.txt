@@ -1,0 +1,4 @@
+G:\git\XiaoGame\Tools\Proto\generator\source\ProtoGenerator\ProtoGenerator\bin\Debug\ProtoGenerator.exe
+G:\git\XiaoGame\Tools\Proto\generator\source\ProtoGenerator\ProtoGenerator\bin\Debug\ProtoGenerator.pdb
+G:\git\XiaoGame\Tools\Proto\generator\source\ProtoGenerator\ProtoGenerator\obj\Debug\ProtoGenerator.exe
+G:\git\XiaoGame\Tools\Proto\generator\source\ProtoGenerator\ProtoGenerator\obj\Debug\ProtoGenerator.pdb

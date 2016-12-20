@@ -1,0 +1,20 @@
+syntax = "proto2";
+option java_multiple_files = true;
+package org.redstone.protobuf.msg;
+import "Enums.proto";
+
+message ChessRow
+{
+  repeated Enums.ChessType types= 1 ;
+}
+
+message BoardSync
+{
+  repeated ChessRow rows= 1;
+}
+
+message NewTurnBroadcast
+{
+  optional Enums.Camp camp = 1[default = NoneCamp];
+  optional BoardSync boardSync = 2;
+}

@@ -27,7 +27,7 @@ namespace RedStone.Net
 			m_connection.Init(addr, OnMessage, OnOpen, OnClose, OnError);
 		}
 
-		public void Connect()
+		public void Listen()
 		{
 			m_connection.Connect();
 		}

@@ -31,7 +31,7 @@ namespace RedStone
         public void Connect(NetType type, string addr)
         {
             m_networks[type].Init(addr);
-            m_networks[type].Connect();
+            m_networks[type].Listen();
         }
 
         public void CloseAll()

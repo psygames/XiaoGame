@@ -10,17 +10,17 @@
 // Generated from: JoinRoomReply.proto
 // Note: requires additional types generated from: NewTurnBroadcast.proto
 // Note: requires additional types generated from: Enums.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"JoinRoomReply")]
   public partial class JoinRoomReply : global::ProtoBuf.IExtensible
   {
     public JoinRoomReply() {}
     
-    private org.redstone.protobuf.msg.Enums.Camp _camp = org.redstone.protobuf.msg.Enums.Camp.NoneCamp;
+    private message.Enums.Camp _camp = message.Enums.Camp.NoneCamp;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"camp", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(org.redstone.protobuf.msg.Enums.Camp.NoneCamp)]
-    public org.redstone.protobuf.msg.Enums.Camp camp
+    [global::System.ComponentModel.DefaultValue(message.Enums.Camp.NoneCamp)]
+    public message.Enums.Camp camp
     {
       get { return _camp; }
       set { _camp = value; }
@@ -33,10 +33,10 @@ namespace org.redstone.protobuf.msg
       get { return _roomId; }
       set { _roomId = value; }
     }
-    private org.redstone.protobuf.msg.NewTurnBroadcast _newTurn = null;
+    private message.NewTurnBroadcast _newTurn = null;
     [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"newTurn", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
-    public org.redstone.protobuf.msg.NewTurnBroadcast newTurn
+    public message.NewTurnBroadcast newTurn
     {
       get { return _newTurn; }
       set { _newTurn = value; }

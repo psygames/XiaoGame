@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F5C1E57D-C6A0-4FEF-8982-6B9D6A6A55BB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MainServer</RootNamespace>
+    <AssemblyName>MainServer</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Singleton\Singleton.cs" />
+    <Compile Include="GameData\ChessData.cs" />
+    <Compile Include="GameData\DataBase.cs" />
+    <Compile Include="GameData\PlaceStatisticsData.cs" />
+    <Compile Include="GameData\PlayerData.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\EventManager.cs" />
+    <Compile Include="Manager\GameManager.cs" />
+    <Compile Include="Manager\NetworkManager.cs" />
+    <Compile Include="Manager\ProxyManager.cs" />
+    <Compile Include="Math\MathHelper.cs" />
+    <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Network\Connection\IConnection.cs" />
+    <Compile Include="Network\Connection\WebSocketConnection.cs" />
+    <Compile Include="Network\NetType.cs" />
+    <Compile Include="Network\Network.cs" />
+    <Compile Include="Network\Protocol\AssignRoomReply.cs" />
+    <Compile Include="Network\Protocol\AssignRoomRequest.cs" />
+    <Compile Include="Network\Protocol\BattleResult.cs" />
+    <Compile Include="Network\Protocol\Enums.cs" />
+    <Compile Include="Network\Protocol\JoinRoomReply.cs" />
+    <Compile Include="Network\Protocol\JoinRoomRequest.cs" />
+    <Compile Include="Network\Protocol\LoginReply.cs" />
+    <Compile Include="Network\Protocol\LoginRequest.cs" />
+    <Compile Include="Network\Protocol\NewTurnBroadcast.cs" />
+    <Compile Include="Network\Protocol\PlaceReply.cs" />
+    <Compile Include="Network\Protocol\PlaceRequest.cs" />
+    <Compile Include="Network\Protocol\PlaceStatisticsSync.cs" />
+    <Compile Include="Plugins\protobuf-net\BclHelpers.cs" />
+    <Compile Include="Plugins\protobuf-net\BufferExtension.cs" />
+    <Compile Include="Plugins\protobuf-net\BufferPool.cs" />
+    <Compile Include="Plugins\protobuf-net\CallbackAttributes.cs" />
+    <Compile Include="Plugins\protobuf-net\Compiler\CompilerContext.cs" />
+    <Compile Include="Plugins\protobuf-net\Compiler\CompilerDelegates.cs" />
+    <Compile Include="Plugins\protobuf-net\Compiler\Local.cs" />
+    <Compile Include="Plugins\protobuf-net\DataFormat.cs" />
+    <Compile Include="Plugins\protobuf-net\Extensible.cs" />
+    <Compile Include="Plugins\protobuf-net\ExtensibleUtil.cs" />
+    <Compile Include="Plugins\protobuf-net\GlobalSuppressions.cs" />
+    <Compile Include="Plugins\protobuf-net\Helpers.cs" />
+    <Compile Include="Plugins\protobuf-net\IExtensible.cs" />
+    <Compile Include="Plugins\protobuf-net\IExtension.cs" />
+    <Compile Include="Plugins\protobuf-net\ImplicitFields.cs" />
+    <Compile Include="Plugins\protobuf-net\KeyValuePairProxy.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\AttributeMap.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\BasicList.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\CallbackSet.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\MetaType.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\RuntimeTypeModel.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\SubType.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\TypeFormatEventArgs.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\TypeModel.cs" />
+    <Compile Include="Plugins\protobuf-net\Meta\ValueMember.cs" />
+    <Compile Include="Plugins\protobuf-net\NetObjectCache.cs" />
+    <Compile Include="Plugins\protobuf-net\PrefixStyle.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoContractAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoConverterAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoEnumAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoException.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoIgnoreAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoIncludeAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoMemberAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoReader.cs" />
+    <Compile Include="Plugins\protobuf-net\ProtoWriter.cs" />
+    <Compile Include="Plugins\protobuf-net\SerializationContext.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ArrayDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\BlobSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\BooleanSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ByteSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\CharSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\CompiledSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\DecimalSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\DefaultValueDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\EnumSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\FieldDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\GuidSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ImmutableCollectionDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\Int16Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\Int32Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\Int64Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\IProtoSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ISerializerProxy.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\KeyValuePairDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ListDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\MemberSpecifiedDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\NetObjectSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\NullDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ParseableSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\PropertyDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\ProtoDecoratorBase.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\SByteSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\SingleSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\StringSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\SubItemSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\SurrogateSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\SystemTypeSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\TagDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\TimeSpanSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\TupleSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\TypeSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\UInt16Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\UInt32Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\UInt64Serializer.cs" />
+    <Compile Include="Plugins\protobuf-net\Serializers\UriDecorator.cs" />
+    <Compile Include="Plugins\protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs" />
+    <Compile Include="Plugins\protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs" />
+    <Compile Include="Plugins\protobuf-net\ServiceModel\ProtoEndpointBehavior.cs" />
+    <Compile Include="Plugins\protobuf-net\ServiceModel\ProtoOperationBehavior.cs" />
+    <Compile Include="Plugins\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
+    <Compile Include="Plugins\protobuf-net\SubItemToken.cs" />
+    <Compile Include="Plugins\protobuf-net\WireType.cs" />
+    <Compile Include="Plugins\websocket-sharp\ByteOrder.cs" />
+    <Compile Include="Plugins\websocket-sharp\CloseEventArgs.cs" />
+    <Compile Include="Plugins\websocket-sharp\CloseStatusCode.cs" />
+    <Compile Include="Plugins\websocket-sharp\CompressionMethod.cs" />
+    <Compile Include="Plugins\websocket-sharp\ErrorEventArgs.cs" />
+    <Compile Include="Plugins\websocket-sharp\Ext.cs" />
+    <Compile Include="Plugins\websocket-sharp\Fin.cs" />
+    <Compile Include="Plugins\websocket-sharp\HttpBase.cs" />
+    <Compile Include="Plugins\websocket-sharp\HttpRequest.cs" />
+    <Compile Include="Plugins\websocket-sharp\HttpResponse.cs" />
+    <Compile Include="Plugins\websocket-sharp\LogData.cs" />
+    <Compile Include="Plugins\websocket-sharp\Logger.cs" />
+    <Compile Include="Plugins\websocket-sharp\LogLevel.cs" />
+    <Compile Include="Plugins\websocket-sharp\Mask.cs" />
+    <Compile Include="Plugins\websocket-sharp\MessageEventArgs.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\AuthenticationBase.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\AuthenticationChallenge.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\AuthenticationResponse.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\AuthenticationSchemes.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\Chunk.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\ChunkedRequestStream.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\ChunkStream.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\ClientSslConfiguration.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\Cookie.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\CookieCollection.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\CookieException.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\EndPointListener.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\EndPointManager.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpBasicIdentity.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpConnection.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpDigestIdentity.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpHeaderInfo.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpHeaderType.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListener.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerAsyncResult.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerContext.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerException.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerPrefix.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerPrefixCollection.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerRequest.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpListenerResponse.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpRequestHeader.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpResponseHeader.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpStatusCode.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpStreamAsyncResult.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpUtility.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\HttpVersion.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\InputChunkState.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\InputState.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\LineState.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\NetworkCredential.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\QueryStringCollection.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\ReadBufferState.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\RequestStream.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\ResponseStream.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\ServerSslConfiguration.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\SslConfiguration.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\WebHeaderCollection.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\WebSockets\HttpListenerWebSocketContext.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\WebSockets\TcpListenerWebSocketContext.cs" />
+    <Compile Include="Plugins\websocket-sharp\Net\WebSockets\WebSocketContext.cs" />
+    <Compile Include="Plugins\websocket-sharp\Opcode.cs" />
+    <Compile Include="Plugins\websocket-sharp\PayloadData.cs" />
+    <Compile Include="Plugins\websocket-sharp\Rsv.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\HttpRequestEventArgs.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\HttpServer.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\IWebSocketSession.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\ServerState.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\WebSocketBehavior.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\WebSocketServer.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\WebSocketServiceHost.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\WebSocketServiceHost`1.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\WebSocketServiceManager.cs" />
+    <Compile Include="Plugins\websocket-sharp\Server\WebSocketSessionManager.cs" />
+    <Compile Include="Plugins\websocket-sharp\WebSocket.cs" />
+    <Compile Include="Plugins\websocket-sharp\WebSocketException.cs" />
+    <Compile Include="Plugins\websocket-sharp\WebSocketFrame.cs" />
+    <Compile Include="Plugins\websocket-sharp\WebSocketState.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxy\GomukuProxy.cs" />
+    <Compile Include="Proxy\HallProxy.cs" />
+    <Compile Include="Proxy\ProxyBase.cs" />
+    <Compile Include="Tools\BitConvert.cs" />
+    <Compile Include="Tools\Debug.cs" />
+    <Compile Include="Tools\EventDefine.cs" />
+    <Compile Include="Tools\FileOpt.cs" />
+    <Compile Include="Tools\LogicHelper.cs" />
+    <Compile Include="Tools\MyPath.cs" />
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Plugins\protobuf-net\Web\TODO.txt" />
+    <Content Include="Plugins\websocket-sharp\doc\.gitignore" />
+    <Content Include="Resource\protonum.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

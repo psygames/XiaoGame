@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: Enums.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Enums")]
   public partial class Enums : global::ProtoBuf.IExtensible

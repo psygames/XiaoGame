@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: LoginReply.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"LoginReply")]
   public partial class LoginReply : global::ProtoBuf.IExtensible

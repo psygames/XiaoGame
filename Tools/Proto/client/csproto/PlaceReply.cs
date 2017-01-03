@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: PlaceReply.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PlaceReply")]
   public partial class PlaceReply : global::ProtoBuf.IExtensible

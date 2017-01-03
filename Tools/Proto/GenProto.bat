@@ -1,0 +1,1 @@
+call generator\ProtoGenerator.exe

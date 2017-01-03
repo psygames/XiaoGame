@@ -9,17 +9,17 @@
 
 // Generated from: BattleResult.proto
 // Note: requires additional types generated from: Enums.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BattleResult")]
   public partial class BattleResult : global::ProtoBuf.IExtensible
   {
     public BattleResult() {}
     
-    private org.redstone.protobuf.msg.Enums.Camp _camp = org.redstone.protobuf.msg.Enums.Camp.NoneCamp;
+    private message.Enums.Camp _camp = message.Enums.Camp.NoneCamp;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"camp", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(org.redstone.protobuf.msg.Enums.Camp.NoneCamp)]
-    public org.redstone.protobuf.msg.Enums.Camp camp
+    [global::System.ComponentModel.DefaultValue(message.Enums.Camp.NoneCamp)]
+    public message.Enums.Camp camp
     {
       get { return _camp; }
       set { _camp = value; }

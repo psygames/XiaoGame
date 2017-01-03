@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: PlaceStatisticsSync.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ChessPlaceStatistics")]
   public partial class ChessPlaceStatistics : global::ProtoBuf.IExtensible
@@ -41,9 +41,9 @@ namespace org.redstone.protobuf.msg
   {
     public PlaceStatisticsSync() {}
     
-    private readonly global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessPlaceStatistics> _statistics = new global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessPlaceStatistics>();
+    private readonly global::System.Collections.Generic.List<message.ChessPlaceStatistics> _statistics = new global::System.Collections.Generic.List<message.ChessPlaceStatistics>();
     [global::ProtoBuf.ProtoMember(1, Name=@"statistics", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public global::System.Collections.Generic.List<org.redstone.protobuf.msg.ChessPlaceStatistics> statistics
+    public global::System.Collections.Generic.List<message.ChessPlaceStatistics> statistics
     {
       get { return _statistics; }
     }

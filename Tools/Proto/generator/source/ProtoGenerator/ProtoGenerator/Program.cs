@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using IniTool;
 using System.Linq;
 using System.Text;
 
@@ -25,7 +26,7 @@ namespace ProtoGenerator
             Console.ForegroundColor = ConsoleColor.Green;
 
             string exePath = GetExePath();
-            IniFiles ini = new IniFiles(exePath + "config.ini");
+			IniFile ini = new IniFile(exePath + "config.ini");
             string pluginDir = exePath + ini.ReadValue("Path", "PluginDir");
             string pluginExe = exePath + ini.ReadValue("Path", "PluginExe");
             string protoDir = exePath + ini.ReadValue("Path", "ProtoDir");
@@ -113,8 +114,6 @@ namespace ProtoGenerator
         static void SaveMd5s(string md5Path, string protoDir)
         {
             MD5Check forSave = new MD5Check();
-            List<string> paths = new List<string>();
-
             DirectoryInfo di = new DirectoryInfo(protoDir);
             FileInfo[] fis = di.GetFiles("*.proto");
             foreach (FileInfo fi in fis)

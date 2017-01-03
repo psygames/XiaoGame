@@ -30,14 +30,6 @@ sysinfo.txt
 *.unitypackage
 XiaoGameClient/Library/
 XiaoGameClient/Temp/
-GameServer.iml
-GameServer/.idea
-GameServer/.settings/
-GameServer/.classpath
-BattleServer.iml
-BattleServer/.idea
-BattleServer/.settings/
-BattleServer/.classpath
 ServerCore.iml
 ServerCore/.idea
 ServerCore/.settings/

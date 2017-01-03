@@ -41,7 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CopyFile.cs" />
+    <Compile Include="FileOpt.cs" />
+    <Compile Include="Formater.cs" />
     <Compile Include="IniFiles.cs" />
+    <Compile Include="MD5Check.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

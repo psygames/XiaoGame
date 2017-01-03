@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: AssignRoomReply.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AssignRoomReply")]
   public partial class AssignRoomReply : global::ProtoBuf.IExtensible

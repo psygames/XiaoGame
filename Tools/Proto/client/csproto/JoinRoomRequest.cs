@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: JoinRoomRequest.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"JoinRoomRequest")]
   public partial class JoinRoomRequest : global::ProtoBuf.IExtensible

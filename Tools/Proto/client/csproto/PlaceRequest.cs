@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: PlaceRequest.proto
-namespace org.redstone.protobuf.msg
+namespace message
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PlaceRequest")]
   public partial class PlaceRequest : global::ProtoBuf.IExtensible

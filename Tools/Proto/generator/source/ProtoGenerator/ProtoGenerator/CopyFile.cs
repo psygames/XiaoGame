@@ -7,7 +7,7 @@ class CopyFile
 {
     public static void ClearFolder(string folderPath, string filter)
     {
-        Console.WriteLine("清空目录 ==> " + folderPath);
+        // Console.WriteLine("清空目录 ==> " + folderPath);
         DirectoryInfo di = new DirectoryInfo(folderPath);
         if (di.Exists)
         {
@@ -18,7 +18,7 @@ class CopyFile
             }
         }
 
-        Console.WriteLine("clear folder succeed :" + folderPath);
+       // Console.WriteLine("clear folder succeed :" + folderPath);
     }
 
     public static void CopyDir(string fromDir, string destDir, string filter)

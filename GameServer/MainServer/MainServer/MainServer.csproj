@@ -74,6 +74,7 @@
     <Compile Include="Manager\GameManager.cs" />
     <Compile Include="Manager\NetworkManager.cs" />
     <Compile Include="Manager\ProxyManager.cs" />
+    <Compile Include="Manager\SessionManager.cs" />
     <Compile Include="Math\MathHelper.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Proxy\GomukuProxy.cs" />
     <Compile Include="Proxy\HallProxy.cs" />
     <Compile Include="Proxy\ProxyBase.cs" />
+    <Compile Include="SessionHandle\ShitManHandle.cs" />
     <Compile Include="Tools\BitConvert.cs" />
     <Compile Include="Tools\Debug.cs" />
     <Compile Include="Tools\EventDefine.cs" />

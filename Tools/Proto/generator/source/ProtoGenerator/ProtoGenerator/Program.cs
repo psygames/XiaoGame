@@ -26,7 +26,7 @@ namespace ProtoGenerator
             Console.ForegroundColor = ConsoleColor.Green;
 
             string exePath = GetExePath();
-			IniFile ini = new IniFile(exePath + "config.ini");
+            IniFile ini = new IniFile(exePath + "config.ini");
             string pluginDir = exePath + ini.ReadValue("Path", "PluginDir");
             string pluginExe = exePath + ini.ReadValue("Path", "PluginExe");
             string protoDir = exePath + ini.ReadValue("Path", "ProtoDir");
@@ -153,10 +153,19 @@ namespace ProtoGenerator
 
         static void PluginRun(string pluginExe, string pluginDir)
         {
-            ProcessStartInfo info = new ProcessStartInfo();
-            info.WorkingDirectory = pluginDir;
-            info.FileName = pluginExe;
-            Process.Start(info).WaitForExit();
+            DirectoryInfo di = new DirectoryInfo(pluginDir);
+            FileInfo[] fis = di.GetFiles("*.proto");
+            foreach (FileInfo fi in fis)
+            {
+                Console.WriteLine("生成 " + fi.Name);
+
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.WorkingDirectory = pluginDir;
+                info.FileName = pluginExe;
+                info.Arguments = string.Format("-i:{0} -o:{1}.cs", fi.Name, Path.GetFileNameWithoutExtension(fi.Name));
+                info.WindowStyle = ProcessWindowStyle.Hidden;
+                Process.Start(info).WaitForExit();
+            }
         }
     }
 }

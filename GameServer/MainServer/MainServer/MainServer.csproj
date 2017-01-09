@@ -80,6 +80,7 @@
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Network\Connection\IConnection.cs" />
     <Compile Include="Network\Connection\WebSocketConnection.cs" />
+    <Compile Include="Network\Server\ISocketServer.cs" />
     <Compile Include="Network\NetType.cs" />
     <Compile Include="Network\Network.cs" />
     <Compile Include="Network\Protocol\AssignRoomReply.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Network\Protocol\PlaceReply.cs" />
     <Compile Include="Network\Protocol\PlaceRequest.cs" />
     <Compile Include="Network\Protocol\PlaceStatisticsSync.cs" />
+    <Compile Include="Network\Server\WebSocketServer.cs" />
     <Compile Include="Plugins\protobuf-net\BclHelpers.cs" />
     <Compile Include="Plugins\protobuf-net\BufferExtension.cs" />
     <Compile Include="Plugins\protobuf-net\BufferPool.cs" />
@@ -308,6 +310,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,7 +8,7 @@ namespace RedStone
 	{
 		private WebSocket m_socket;
 
-		public void Init(string addr, Action<byte[]> onMessage, Action onOpen, Action onClose, Action<string> onError)
+		public void Init(int port, Action<byte[]> onMessage, Action onOpen, Action onClose, Action<string> onError)
 		{
 			m_socket = new WebSocket(addr);
 			m_socket.OnMessage += (sender, e) =>

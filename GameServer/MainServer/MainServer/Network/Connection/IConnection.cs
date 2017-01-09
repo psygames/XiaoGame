@@ -18,5 +18,7 @@ namespace RedStone
 		void Connect();
 		void Close();
 		void Send(byte[] content);
+
+        void OnMessage()
 	}
 }

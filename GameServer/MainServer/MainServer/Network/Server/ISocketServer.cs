@@ -5,12 +5,11 @@ using System.Text;
 
 namespace RedStone.Net
 {
-    public interface ISocketServer
+    public interface ISocketServer<T>
     {
         void Init(int port);
-
-        void Listen();
-        void Close();
+        void Start();
+        void Stop();
         void SendTo(string sessionID, byte[] content);
     }
 }

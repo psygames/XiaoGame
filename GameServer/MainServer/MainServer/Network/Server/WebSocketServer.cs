@@ -5,73 +5,48 @@ using System.Text;
 
 namespace RedStone.Net
 {
-    public class WebSocketServer : ISocketServer
+    public class WebSocketServer<T> : ISocketServer<T>
     {
-        WebSocketSharp.Server.WebSocketServer serv = null;
-        WebSocketSharp.Server.WebSocketServiceHost host = null;
-        public void Close()
-        {
-            throw new NotImplementedException();
-        }
+        private WebSocketSharp.Server.WebSocketServer m_serv = null;
+        private WebSocketSharp.Server.WebSocketServiceHost m_host = null;
 
         public void Init(int port)
         {
-            serv = new WebSocketSharp.Server.WebSocketServer(port);
-            serv.Log.Level = WebSocketSharp.LogLevel.Error;
-            serv.AddWebSocketService<DefaultHandle>("/default", () =>
-             {
-                 return new DefaultHandle();
-             });
-            host = serv.WebSocketServices["/default"];
+            m_serv = new WebSocketSharp.Server.WebSocketServer(port);
+            m_serv.Log.Level = WebSocketSharp.LogLevel.Error;
+            m_serv.AddWebSocketService<DefaultHandle>("/default", () =>
+            {
+                return CreateDefaultHandle();
+            });
+            m_host = m_serv.WebSocketServices["/default"];
         }
 
 
-        public void CreateDefaultHandle()
+        public DefaultHandle CreateDefaultHandle()
         {
             var handle = new DefaultHandle();
-            handle.onOpen = () =>
-            {
-                OnOpen(handle.ID);
-            };
 
-            handle.onClose = (msg) =>
-            {
-                OnClose(handle.ID, msg);
-            };
+            return handle;
         }
 
-        public void OnOpen(string sessionID)
+        public void Stop()
         {
-
+            m_serv.Stop();
         }
 
-        public void OnClose(string sessionID, string msg)
+        public void Start()
         {
-
-        }
-        public void OnError(string sessionID, string msg)
-        {
-
-        }
-        public void OnClose(string sessionID, string msg)
-        {
-
-        }
-
-        public void Listen()
-        {
-            serv.Start();
-            host.
+            m_serv.Start();
         }
 
         public void SendTo(string sessionID, byte[] content)
         {
-            host.Sessions.SendToAsync(content, sessionID, (completed) => { });
+            m_host.Sessions.SendToAsync(content, sessionID, (completed) => { });
         }
 
         public void SendToAll(byte[] content)
         {
-            host.Sessions.BroadcastAsync(content, () => { });
+            m_host.Sessions.BroadcastAsync(content, () => { });
         }
 
         public class DefaultHandle : WebSocketSharp.Server.WebSocketBehavior
@@ -83,7 +58,6 @@ namespace RedStone.Net
 
             protected override void OnOpen()
             {
-                this.
                 base.OnOpen();
                 if (onOpen != null)
                     onOpen.Invoke();

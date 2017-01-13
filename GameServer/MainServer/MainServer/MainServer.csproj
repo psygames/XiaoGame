@@ -80,6 +80,7 @@
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Network\Connection\IConnection.cs" />
     <Compile Include="Network\Connection\WebSocketConnection.cs" />
+    <Compile Include="Network\NetHandle.cs" />
     <Compile Include="Network\Server\ISocketServer.cs" />
     <Compile Include="Network\NetType.cs" />
     <Compile Include="Network\Network.cs" />

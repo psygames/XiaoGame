@@ -30,6 +30,7 @@ namespace ProtoGenerator
             string exePath = GetExePath();
             IniFile ini = new IniFile(exePath + "config.ini");
             string useRemotePlugin = ini.ReadValue("Path", "UseRemotePlugin");
+            string remoteUrl = ini.ReadValue("Path", "RemoteUrl");
             string pluginDir = exePath + ini.ReadValue("Path", "PluginDir");
             string pluginExe = exePath + ini.ReadValue("Path", "PluginExe");
             string protoDir = exePath + ini.ReadValue("Path", "ProtoDir");
@@ -51,7 +52,7 @@ namespace ProtoGenerator
             }
             else
             {
-                RemotePlguninRun(protoDir, pluginDir);
+                RemotePlguninRun(remoteUrl,protoDir, pluginDir);
             }
 
             // format gen cs files
@@ -162,11 +163,11 @@ namespace ProtoGenerator
             }
         }
 
-        static void RemotePlguninRun(string protoDir, string pluginDir)
+        static void RemotePlguninRun(string remoteUrl, string protoDir, string pluginDir)
         {
             DirectoryInfo di = new DirectoryInfo(pluginDir);
             FileInfo[] fis = di.GetFiles("*.proto");
-            string url = "http://139.196.5.96/proto/gen?type=zip&out_type=file";
+            string url = remoteUrl + "?type=zip&out_type=file";
             string zipFile = pluginDir + "protos.zip";
             foreach (FileInfo fi in fis)
             {

@@ -5,6 +5,8 @@ using System.IO;
 using IniTool;
 using System.Linq;
 using System.Text;
+using System.Net;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace ProtoGenerator
 {
@@ -27,6 +29,7 @@ namespace ProtoGenerator
 
             string exePath = GetExePath();
             IniFile ini = new IniFile(exePath + "config.ini");
+            string useRemotePlugin = ini.ReadValue("Path", "UseRemotePlugin");
             string pluginDir = exePath + ini.ReadValue("Path", "PluginDir");
             string pluginExe = exePath + ini.ReadValue("Path", "PluginExe");
             string protoDir = exePath + ini.ReadValue("Path", "ProtoDir");
@@ -42,7 +45,14 @@ namespace ProtoGenerator
             // generator
             Console.WriteLine("生成CS");
             CopyProtosToPluginDir(changedProtos, pluginDir);
-            PluginRun(pluginExe, pluginDir);
+            if (!bool.Parse(useRemotePlugin))
+            {
+                PluginRun(pluginExe, pluginDir);
+            }
+            else
+            {
+                RemotePlguninRun(protoDir, pluginDir);
+            }
 
             // format gen cs files
             Console.WriteLine("格式化CS");
@@ -128,6 +138,7 @@ namespace ProtoGenerator
         {
             CopyFile.ClearFolder(dir, "*.cs");
             CopyFile.ClearFolder(dir, "*.proto");
+            CopyFile.ClearFolder(dir, "*.zip");
         }
 
         static void CopyProtoToPluginDir(string protoDir, string pluginDir)
@@ -149,6 +160,126 @@ namespace ProtoGenerator
             {
                 CopyFile.CopyDir(fromDir, destDirs[i], "*.cs");
             }
+        }
+
+        static void RemotePlguninRun(string protoDir, string pluginDir)
+        {
+            DirectoryInfo di = new DirectoryInfo(pluginDir);
+            FileInfo[] fis = di.GetFiles("*.proto");
+            string url = "http://139.196.5.96/proto/gen?type=zip&out_type=file";
+            string zipFile = pluginDir + "protos.zip";
+            foreach (FileInfo fi in fis)
+            {
+                Console.WriteLine("生成 " + fi.Name);
+                string shortname = Path.GetFileNameWithoutExtension(fi.FullName);
+                string out_file = Path.GetDirectoryName(fi.FullName)
+                    + "/" + shortname + ".cs";
+                string tmp_url = url + "&filename=" + shortname;
+                ZipFileByRule(protoDir, zipFile, shortname);
+                HttpUploadFile(tmp_url, zipFile, out_file);
+            }
+        }
+
+        static void ZipFileByRule(string protoDir, string outFile, string curProtoName)
+        {
+            CreateZipFile(protoDir, outFile);
+        }
+
+        private static void CreateZipFile(string fileDir, string zipFilePath)
+        {
+            if (!Directory.Exists(fileDir))
+            {
+                Console.WriteLine("Cannot find directory '{0}'", fileDir);
+                return;
+            }
+            try
+            {
+                string[] filenames = Directory.GetFiles(fileDir);
+                using (ZipOutputStream s = new ZipOutputStream(File.Create(zipFilePath)))
+                {
+
+                    s.SetLevel(5); // 压缩级别 0-9
+                    byte[] buffer = new byte[4096]; //缓冲区大小
+                    foreach (string file in filenames)
+                    {
+                        ZipEntry entry = new ZipEntry(Path.GetFileName(file));
+                        entry.DateTime = DateTime.Now;
+                        s.PutNextEntry(entry);
+                        using (FileStream fs = File.OpenRead(file))
+                        {
+                            int sourceBytes;
+                            do
+                            {
+                                sourceBytes = fs.Read(buffer, 0, buffer.Length);
+                                s.Write(buffer, 0, sourceBytes);
+                            } while (sourceBytes > 0);
+                        }
+                    }
+                    s.Finish();
+                    s.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception during processing {0}", ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Http上传文件
+        /// </summary>
+        public static void HttpUploadFile(string url, string srcpath, string savepath)
+        {
+            /*------------------- Upload -----------------*/
+
+            // 设置参数
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            CookieContainer cookieContainer = new CookieContainer();
+            request.CookieContainer = cookieContainer;
+            request.AllowAutoRedirect = true;
+            request.Method = "POST";
+            string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
+            request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
+            byte[] itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
+            byte[] endBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+
+            int pos = srcpath.LastIndexOf("\\");
+            string fileName = srcpath.Substring(pos + 1);
+
+            //请求头部信息
+            StringBuilder sbHeader = new StringBuilder(string.Format("Content-Disposition:form-data;name=\"file\";filename=\"{0}\"\r\nContent-Type:application/octet-stream\r\n\r\n", fileName));
+            byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sbHeader.ToString());
+
+            FileStream fs = new FileStream(srcpath, FileMode.Open, FileAccess.Read);
+            byte[] bArr = new byte[fs.Length];
+            fs.Read(bArr, 0, bArr.Length);
+            fs.Close();
+
+            Stream postStream = request.GetRequestStream();
+            postStream.Write(itemBoundaryBytes, 0, itemBoundaryBytes.Length);
+            postStream.Write(postHeaderBytes, 0, postHeaderBytes.Length);
+            postStream.Write(bArr, 0, bArr.Length);
+            postStream.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);
+            postStream.Close();
+
+            /*-------------------- Download ----------------*/
+
+            //发送请求并获取相应回应数据
+            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+            //直到request.GetResponse()程序才开始向目标网页发送Post请求
+            Stream st = response.GetResponseStream();
+            Stream so = new FileStream(savepath, FileMode.Create);
+            Console.WriteLine(savepath);
+            byte[] by = new byte[1024];
+            int osize = st.Read(by, 0, by.Length);
+            while (osize > 0)
+            {
+                so.Write(by, 0, osize);
+                osize = st.Read(by, 0, by.Length);
+            }
+            so.Close();
+            st.Close();
         }
 
         static void PluginRun(string pluginExe, string pluginDir)

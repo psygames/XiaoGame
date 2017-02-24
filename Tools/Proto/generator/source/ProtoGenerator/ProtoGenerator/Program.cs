@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Threading;
 
 namespace ProtoGenerator
 {
@@ -52,7 +53,7 @@ namespace ProtoGenerator
             }
             else
             {
-                RemotePlguninRun(remoteUrl,protoDir, pluginDir);
+                RemotePlguninRun(remoteUrl, protoDir, pluginDir);
             }
 
             // format gen cs files
@@ -168,37 +169,152 @@ namespace ProtoGenerator
             DirectoryInfo di = new DirectoryInfo(pluginDir);
             FileInfo[] fis = di.GetFiles("*.proto");
             string url = remoteUrl + "?type=zip&out_type=file";
-            string zipFile = pluginDir + "protos.zip";
+            AsyncUpDownloadFileInit(); // async remote generate need call init
+            int count = 1;
             foreach (FileInfo fi in fis)
             {
-                Console.WriteLine("生成 " + fi.Name);
                 string shortname = Path.GetFileNameWithoutExtension(fi.FullName);
-                string out_file = Path.GetDirectoryName(fi.FullName)
-                    + "/" + shortname + ".cs";
+                string out_file = Path.GetDirectoryName(fi.FullName);
+                out_file += "/" + shortname + ".cs";
                 string tmp_url = url + "&filename=" + shortname;
-                ZipFileByRule(protoDir, zipFile, shortname);
-                HttpUploadFile(tmp_url, zipFile, out_file);
+                string zipFile = pluginDir + "protos_" + fi.GetHashCode() + ".zip";
+                int improtcount = 0;
+                float zipsize = 0;
+                ZipFileByRule(protoDir, zipFile, shortname + ".proto", out zipsize, out improtcount);
+                AsyncUpDownloadFile(tmp_url, zipFile, out_file);
+
+                Console.WriteLine("网络生成 {0}. zip({2:F2}kb) impt({3})  {1}"
+                    , count++, fi.Name, zipsize, improtcount);
             }
+            WaitForAsyncUpDownloadDone(); // async remote generate need call wait for done
         }
 
-        static void ZipFileByRule(string protoDir, string outFile, string curProtoName)
+        const int maxAsyncThreads = 6;
+        const int mainThreadWaitForAsyncTime = 10;
+        static void AsyncUpDownloadFileInit()
         {
-            CreateZipFile(protoDir, outFile);
+            ThreadPool.SetMaxThreads(maxAsyncThreads, maxAsyncThreads);
+            ThreadPool.SetMinThreads(maxAsyncThreads, maxAsyncThreads);
         }
 
-        private static void CreateZipFile(string fileDir, string zipFilePath)
+        static void AsyncUpDownloadFile(string url, string srcpath, string savepath)
         {
-            if (!Directory.Exists(fileDir))
+            AsyncUpDownLoadParams apms = new AsyncUpDownLoadParams(url, srcpath, savepath);
+            while (!HasReadyThread())
             {
-                Console.WriteLine("Cannot find directory '{0}'", fileDir);
-                return;
+                Thread.Sleep(mainThreadWaitForAsyncTime);
             }
+            ThreadPool.QueueUserWorkItem(AsyncUpDownLoadFunc, apms);
+        }
+
+        static int GetActiveThreadCount()
+        {
+            int works = 0;
+            int maxWorks = 0;
+            int ports = 0;
+            ThreadPool.GetAvailableThreads(out works, out ports);
+            ThreadPool.GetMaxThreads(out maxWorks, out ports);
+            return maxWorks - works;
+        }
+
+        static bool HasReadyThread()
+        {
+            return GetActiveThreadCount() < maxAsyncThreads;
+        }
+
+        static void WaitForAsyncUpDownloadDone()
+        {
+            int works = 0;
+            int readys = 0;
+            while (true)
+            {
+                ThreadPool.GetAvailableThreads(out works, out readys);
+                if (GetActiveThreadCount() <= 0)
+                    break;
+                Thread.Sleep(mainThreadWaitForAsyncTime);
+            }
+        }
+
+        class AsyncUpDownLoadParams
+        {
+            public string url;
+            public string src;
+            public string save;
+            public AsyncUpDownLoadParams(string url, string src, string save)
+            {
+                this.url = url;
+                this.src = src;
+                this.save = save;
+            }
+        }
+
+        static void AsyncUpDownLoadFunc(object asyncParams)
+        {
+            AsyncUpDownLoadParams pms = asyncParams as AsyncUpDownLoadParams;
+            HttpUploadAndDownloadFile(pms.url, pms.src, pms.save);
+        }
+
+        static void ZipFileByRule(string protoDir, string outFile, string curProtoName, out float zipsize, out int importcount)
+        {
+            List<string> imports = LoopImportFiles(protoDir, curProtoName);
+            for (int i = 0; i < imports.Count; i++)
+                imports[i] = Path.Combine(protoDir, imports[i]);
+            CreateZipFile(imports.ToArray(), outFile);
+            zipsize = new FileInfo(outFile).Length / 1024f;
+            importcount = imports.Count - 1;
+        }
+
+        static List<string> LoopImportFiles(string dir, string protoName)
+        {
+            List<string> imports = new List<string>();
+            imports.Add(protoName);
+            LoopImportSt(imports, dir, protoName);
+            return imports;
+        }
+
+        static void LoopImportSt(List<string> imports, string dir, string protoName)
+        {
+            for (int i = 0; i < imports.Count; i++)
+            {
+                List<string> subImports = GetImportProtoNames(dir, imports[i]);
+                foreach (string sub in subImports)
+                {
+                    if (!imports.Contains(sub))
+                    {
+                        imports.Add(sub);
+                        LoopImportSt(imports, dir, sub);
+                    }
+                }
+            }
+        }
+
+        static List<string> GetImportProtoNames(string dir, string protoName)
+        {
+            List<string> imports = new List<string>();
+            string text = FileOpt.ReadTextFromFile(Path.Combine(dir, protoName));
+            string[] lines = text.Split('\n');
+            foreach (string line in lines)
+            {
+                string str = line.Trim();
+                if (str.StartsWith("import"))
+                {
+                    int st = str.IndexOf("\"") + 1;
+                    int ed = str.IndexOf("\"", st);
+                    string importName = str.Substring(st, ed - st);
+                    imports.Add(importName);
+                }
+            }
+            return imports;
+        }
+
+
+
+        private static void CreateZipFile(string[] filenames, string zipFilePath)
+        {
             try
             {
-                string[] filenames = Directory.GetFiles(fileDir);
                 using (ZipOutputStream s = new ZipOutputStream(File.Create(zipFilePath)))
                 {
-
                     s.SetLevel(5); // 压缩级别 0-9
                     byte[] buffer = new byte[4096]; //缓冲区大小
                     foreach (string file in filenames)
@@ -226,11 +342,23 @@ namespace ProtoGenerator
             }
         }
 
+        private static void CreateZipFile(string fileDir, string zipFilePath)
+        {
+            if (!Directory.Exists(fileDir))
+            {
+                Console.WriteLine("Cannot find directory '{0}'", fileDir);
+                return;
+            }
+
+            string[] filenames = Directory.GetFiles(fileDir);
+            CreateZipFile(filenames, zipFilePath);
+        }
+
 
         /// <summary>
         /// Http上传文件
         /// </summary>
-        public static void HttpUploadFile(string url, string srcpath, string savepath)
+        public static void HttpUploadAndDownloadFile(string url, string srcpath, string savepath)
         {
             /*------------------- Upload -----------------*/
 
@@ -271,7 +399,6 @@ namespace ProtoGenerator
             //直到request.GetResponse()程序才开始向目标网页发送Post请求
             Stream st = response.GetResponseStream();
             Stream so = new FileStream(savepath, FileMode.Create);
-            Console.WriteLine(savepath);
             byte[] by = new byte[1024];
             int osize = st.Read(by, 0, by.Length);
             while (osize > 0)
@@ -289,7 +416,7 @@ namespace ProtoGenerator
             FileInfo[] fis = di.GetFiles("*.proto");
             foreach (FileInfo fi in fis)
             {
-                Console.WriteLine("生成 " + fi.Name);
+                Console.WriteLine("本地生成 " + fi.Name);
 
                 ProcessStartInfo info = new ProcessStartInfo();
                 info.WorkingDirectory = pluginDir;

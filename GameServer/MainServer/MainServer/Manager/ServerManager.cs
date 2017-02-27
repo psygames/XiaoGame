@@ -6,51 +6,49 @@ namespace RedStone
 {
     public class ServerManager : Core.Singleton<ServerManager>
     {
-        private Dictionary<NetType, Net.Network> m_networks = new Dictionary<NetType, Net.Network>();
+        private Dictionary<NetType, ISocketServer> m_servers = new Dictionary<NetType, ISocketServer>();
 
-        public Net.Network Get(NetType type)
+        public ISocketServer Get(NetType type)
         {
-            return m_networks[type];
+            return m_servers[type];
         }
 
         public void Init()
         {
-            m_networks.Add(NetType.Hall, new Net.Network(new WebSocketConnection(), NetType.Hall));
-            m_networks.Add(NetType.Battle, new Net.Network(new WebSocketConnection(), NetType.Battle));
+            m_servers.Add(NetType.Hall, new WebSocketServer());
+            m_servers.Add(NetType.Battle, new WebSocketServer());
+
+            m_servers[NetType.Hall].Init(8004, () => { return new HallHandle(); });
+            m_servers[NetType.Battle].Init(8006, () => { return new BattleHandle(); });
         }
 
         public void Update()
         {
-            var itr = m_networks.GetEnumerator();
+            
+        }
+
+        public void Start(NetType type)
+        {
+            m_servers[type].Start();
+        }
+
+        public void StopAll()
+        {
+            var itr = m_servers.GetEnumerator();
             while (itr.MoveNext())
             {
-                itr.Current.Value.Update();
+                itr.Current.Value.Stop();
             }
         }
 
-        public void Connect(NetType type, string addr)
+        public void Stop(NetType type)
         {
-            m_networks[type].Init(addr);
-            m_networks[type].Listen();
+            m_servers[type].Stop();
         }
 
-        public void CloseAll()
+        public void SendMessage<T>(NetType type,long sessionId, T message)
         {
-            var itr = m_networks.GetEnumerator();
-            while (itr.MoveNext())
-            {
-                itr.Current.Value.Close();
-            }
-        }
-
-        public void Close(NetType type)
-        {
-            m_networks[type].Close();
-        }
-
-        public void SendMessage<T>(NetType type, T message)
-        {
-            m_networks[type].SendMessage(message);
+            m_servers[type].SendTo(sessionId,message);
         }
 
         public void SendMessage<T1, T2>(NetType type, T1 message, Action<T2> callback)

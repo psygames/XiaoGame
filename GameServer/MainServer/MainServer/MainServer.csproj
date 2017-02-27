@@ -72,18 +72,15 @@
     </Compile>
     <Compile Include="Manager\EventManager.cs" />
     <Compile Include="Manager\GameManager.cs" />
-    <Compile Include="Manager\NetworkManager.cs" />
+    <Compile Include="Manager\ServerManager.cs" />
     <Compile Include="Manager\ProxyManager.cs" />
-    <Compile Include="Manager\SessionManager.cs" />
     <Compile Include="Math\MathHelper.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
-    <Compile Include="Network\Connection\IConnection.cs" />
-    <Compile Include="Network\Connection\WebSocketConnection.cs" />
-    <Compile Include="Network\NetHandle.cs" />
+    <Compile Include="Network\Server\WebSocketServerHandle.cs" />
+    <Compile Include="Network\Server\IServerHandle.cs" />
     <Compile Include="Network\Server\ISocketServer.cs" />
     <Compile Include="Network\NetType.cs" />
-    <Compile Include="Network\Network.cs" />
     <Compile Include="Network\Protocol\AssignRoomReply.cs" />
     <Compile Include="Network\Protocol\AssignRoomRequest.cs" />
     <Compile Include="Network\Protocol\BattleResult.cs" />

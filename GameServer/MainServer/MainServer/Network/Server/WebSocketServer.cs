@@ -9,24 +9,15 @@ namespace RedStone.Net
     {
         private WebSocketSharp.Server.WebSocketServer m_serv = null;
         private WebSocketSharp.Server.WebSocketServiceHost m_host = null;
+        private IServerHandle m_handle = null;
 
-        public void Init(int port)
+        public void Init(int port,IServerHandle handle)
         {
             m_serv = new WebSocketSharp.Server.WebSocketServer(port);
             m_serv.Log.Level = WebSocketSharp.LogLevel.Error;
-            m_serv.AddWebSocketService<DefaultHandle>("/default", () =>
-            {
-                return CreateDefaultHandle();
-            });
+            m_handle = handle;
+            m_serv.AddWebSocketService<WebSocketServerHandle>("/default");
             m_host = m_serv.WebSocketServices["/default"];
-        }
-
-
-        public DefaultHandle CreateDefaultHandle()
-        {
-            var handle = new DefaultHandle();
-
-            return handle;
         }
 
         public void Stop()
@@ -49,39 +40,14 @@ namespace RedStone.Net
             m_host.Sessions.BroadcastAsync(content, () => { });
         }
 
-        public class DefaultHandle : WebSocketSharp.Server.WebSocketBehavior
+        public class WebSocketServerHandle : WebSocketSharp.Server.WebSocketBehavior
         {
-            public Action onOpen;
-            public Action<byte[]> onMessage;
-            public Action<string> onClose;
-            public Action<string> onError;
+            public IServerHandle 
 
             protected override void OnOpen()
             {
                 base.OnOpen();
-                if (onOpen != null)
-                    onOpen.Invoke();
-            }
-
-            protected override void OnMessage(WebSocketSharp.MessageEventArgs e)
-            {
-                base.OnMessage(e);
-                if (onMessage != null)
-                    onMessage.Invoke(e.RawData);
-            }
-
-            protected override void OnClose(WebSocketSharp.CloseEventArgs e)
-            {
-                if (onClose != null)
-                    onClose.Invoke(e.Reason);
-                base.OnClose(e);
-            }
-
-            protected override void OnError(WebSocketSharp.ErrorEventArgs e)
-            {
-                if (onError != null)
-                    onError.Invoke(e.Message);
-                base.OnError(e);
+                
             }
         }
     }

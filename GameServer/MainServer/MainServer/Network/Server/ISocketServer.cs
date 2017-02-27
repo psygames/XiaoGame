@@ -7,7 +7,7 @@ namespace RedStone.Net
 {
     public interface ISocketServer<T>
     {
-        void Init(int port);
+        void Init(int port, IServerHandle handle);
         void Start();
         void Stop();
         void SendTo(string sessionID, byte[] content);

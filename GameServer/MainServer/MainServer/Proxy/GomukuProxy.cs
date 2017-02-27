@@ -57,13 +57,13 @@ namespace RedStone
 
 		public void ConnectToBattleServer(string address, int roomId)
 		{
-			NetworkManager.instance.Get(NetType.Battle).onConnected =
+			ServerManager.instance.Get(NetType.Battle).onConnected =
 			(obj) =>
 			{
 				JoinRoom(roomId);
 			};
 
-			NetworkManager.instance.Connect(NetType.Battle, address);
+			ServerManager.instance.Connect(NetType.Battle, address);
 		}
 
 		public void OnBoardSync(message.BoardSync board)

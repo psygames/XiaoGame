@@ -7,7 +7,7 @@ namespace RedStone
 	{
 		public Net.Network network
 		{
-			get { return NetworkManager.instance.Get(netType); }
+			get { return ServerManager.instance.Get(netType); }
 		}
 
 		public T GetProxy<T>() where T : ProxyBase

@@ -4,7 +4,7 @@ using RedStone.Net;
 
 namespace RedStone
 {
-    public class NetworkManager : Core.Singleton<NetworkManager>
+    public class ServerManager : Core.Singleton<ServerManager>
     {
         private Dictionary<NetType, Net.Network> m_networks = new Dictionary<NetType, Net.Network>();
 

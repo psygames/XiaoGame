@@ -12,14 +12,14 @@ namespace RedStone
 
 		private void CreateInstance()
 		{
-			NetworkManager.CreateInstance();
+			ServerManager.CreateInstance();
 			ProxyManager.CreateInstance();
 			EventManager.CreateInstance();
 		}
 
 		private void Init()
 		{
-			NetworkManager.instance.Init();
+			ServerManager.instance.Init();
 			ProxyManager.instance.Init();
 
 			ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer(serverAddress);
@@ -27,7 +27,7 @@ namespace RedStone
 
 		private void Update()
 		{
-			NetworkManager.instance.Update();
+			ServerManager.instance.Update();
 			ProxyManager.instance.Update();
 		}
 
@@ -39,7 +39,7 @@ namespace RedStone
 
 		private void OnApplicationQuit()
 		{
-			NetworkManager.instance.CloseAll();
+			ServerManager.instance.CloseAll();
 		}
 	}
 }

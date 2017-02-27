@@ -37,12 +37,12 @@ namespace RedStone
 
 		public void ConnectToGameServer(string address)
 		{
-			NetworkManager.instance.Get(NetType.Hall).onConnected = (obj) =>
+			ServerManager.instance.Get(NetType.Hall).onConnected = (obj) =>
 			{
 
 			};
 
-			NetworkManager.instance.Connect(NetType.Hall, address);
+			ServerManager.instance.Connect(NetType.Hall, address);
 		}
 
 		public void Login(string uuid)

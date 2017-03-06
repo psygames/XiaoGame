@@ -8,8 +8,7 @@ namespace RedStone
 
 		public ProxyManager()
 		{
-			AddProxy<HallProxy>();
-			AddProxy<GomukuProxy>();
+            AddProxy<PlayerProxy>();
 		}
 
 		private void AddProxy<T>() where T : ProxyBase, new()

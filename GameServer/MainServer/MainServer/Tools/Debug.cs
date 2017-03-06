@@ -5,12 +5,26 @@ using System.Text;
 
 public class Debug
 {
-    public static void Log(string str)
+
+    public static void Log(object obj)
     {
-        Console.WriteLine(str);
+        Log(obj.ToString());
     }
-    public static void LogError(string str)
+
+    public static void LogError(object obj)
     {
-        Console.WriteLine(str);
+        LogError(obj.ToString());
+    }
+
+    public static void Log(string str, params object[] parms)
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(str, parms);
+    }
+
+    public static void LogError(string str, params object[] parms)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(str, parms);
     }
 }

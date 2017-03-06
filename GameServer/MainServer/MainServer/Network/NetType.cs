@@ -7,7 +7,7 @@ namespace RedStone.Net
 {
     public enum NetType
     {
-        Hall,
+        Main,
         Battle,
     }
 }

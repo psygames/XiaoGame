@@ -3,26 +3,16 @@ namespace RedStone
 {
 	public class GameManager : Core.Singleton<GameManager>
 	{
-        private string serverAddress = "ws://139.196.5.96:8180/GameServer/gameServer";
-		public void Awake()
+		public void Init()
 		{
-			CreateInstance();
-			Init();
-		}
+            ProtoTool.CreateInstance();
+            ServerManager.CreateInstance();
+            ProxyManager.CreateInstance();
+            EventManager.CreateInstance();
 
-		private void CreateInstance()
-		{
-			ServerManager.CreateInstance();
-			ProxyManager.CreateInstance();
-			EventManager.CreateInstance();
-		}
-
-		private void Init()
-		{
-			ServerManager.instance.Init();
-			ProxyManager.instance.Init();
-
-			ProxyManager.instance.GetProxy<HallProxy>().ConnectToGameServer(serverAddress);
+            ProtoTool.instance.Init();
+            ServerManager.instance.Init();
+            ProxyManager.instance.Init();
 		}
 
 		private void Update()
@@ -39,7 +29,7 @@ namespace RedStone
 
 		private void OnApplicationQuit()
 		{
-			ServerManager.instance.CloseAll();
+			ServerManager.instance.StopAll();
 		}
 	}
 }

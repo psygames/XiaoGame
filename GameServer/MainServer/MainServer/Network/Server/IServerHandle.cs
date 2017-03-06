@@ -11,5 +11,6 @@ namespace RedStone.Net
         void OnMessage(byte[] data);
         void OnClose(string reason);
         void OnError(string reason);
+        void Send(byte[] type);
     }
 }

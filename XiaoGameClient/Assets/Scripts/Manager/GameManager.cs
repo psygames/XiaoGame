@@ -4,7 +4,7 @@ namespace RedStone
 {
 	public class GameManager : Core.SingletonBehaviour<GameManager>
 	{
-        private string serverAddress = "ws://139.196.5.96:8180/GameServer/gameServer";
+        private string serverAddress = "ws://localhost:8004/default";
 		protected override void Awake()
 		{
 			base.Awake();

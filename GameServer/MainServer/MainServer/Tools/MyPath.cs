@@ -17,7 +17,7 @@ namespace RedStone
 
         public static string RES_PROTO_NUM
         {
-            get { return "Config/protoNum"; }
+            get { return RES + "protonum.txt"; }
         }
     }
 }

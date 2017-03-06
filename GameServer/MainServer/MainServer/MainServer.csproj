@@ -77,7 +77,9 @@
     <Compile Include="Math\MathHelper.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
-    <Compile Include="Network\Server\WebSocketServerHandle.cs" />
+    <Compile Include="Network\Handle\HandleBase.cs" />
+    <Compile Include="Network\Handle\BattleHandle.cs" />
+    <Compile Include="Network\Handle\PlayerHandle.cs" />
     <Compile Include="Network\Server\IServerHandle.cs" />
     <Compile Include="Network\Server\ISocketServer.cs" />
     <Compile Include="Network\NetType.cs" />
@@ -261,16 +263,16 @@
     <Compile Include="Plugins\websocket-sharp\WebSocketState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proxy\GomukuProxy.cs" />
-    <Compile Include="Proxy\HallProxy.cs" />
+    <Compile Include="Proxy\PlayerProxy.cs" />
     <Compile Include="Proxy\ProxyBase.cs" />
-    <Compile Include="SessionHandle\ShitManHandle.cs" />
     <Compile Include="Tools\BitConvert.cs" />
     <Compile Include="Tools\Debug.cs" />
     <Compile Include="Tools\EventDefine.cs" />
     <Compile Include="Tools\FileOpt.cs" />
+    <Compile Include="Tools\GUID.cs" />
     <Compile Include="Tools\LogicHelper.cs" />
     <Compile Include="Tools\MyPath.cs" />
+    <Compile Include="Tools\ProtoTool.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

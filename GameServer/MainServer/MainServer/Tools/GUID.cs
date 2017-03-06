@@ -17,9 +17,8 @@ public static class GUID
             for (int i = 0; i < bytes.Length; i++)
             {
                 byte b = bytes[i];
-                id |= ((long)b) << i;
+                id |= ((long)b) << (i * 8);
             }
-            Debug.Log("random guid --> " + id);
             return id;
         }
     }

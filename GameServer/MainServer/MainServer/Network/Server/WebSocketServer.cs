@@ -11,7 +11,7 @@ namespace RedStone.Net
         private WebSocketSharp.Server.WebSocketServer m_serv = null;
         private WebSocketSharp.Server.WebSocketServiceHost m_host = null;
 
-        public void Init(int port,Func<IServerHandle> handleInitializer)
+        public void Init(int port, Func<IServerHandle> handleInitializer)
         {
             m_serv = new WebSocketSharp.Server.WebSocketServer(port);
             m_serv.Log.Level = WebSocketSharp.LogLevel.Error;
@@ -35,7 +35,9 @@ namespace RedStone.Net
 
         public void SendTo(long sessionID, byte[] content)
         {
-            m_host.Sessions.SendToAsync(content, sessionID, (completed) => { });
+            string sessionStrID = m_host.Sessions.Sessions.First(
+                (a) => (a as WebSocketServerHandle).sessionID == sessionID).ID;
+            m_host.Sessions.SendToAsync(content, sessionStrID, (completed) => { });
         }
 
         public void SendToAll(byte[] content)
@@ -43,9 +45,15 @@ namespace RedStone.Net
             m_host.Sessions.BroadcastAsync(content, () => { });
         }
 
+        public void SendTo<T>(long sessionId, T msg)
+        {
+
+        }
+
         public class WebSocketServerHandle : WebSocketSharp.Server.WebSocketBehavior
         {
             private IServerHandle m_handle;
+            public long sessionID;
             public WebSocketServerHandle(IServerHandle handle)
             {
                 m_handle = handle;
@@ -54,8 +62,8 @@ namespace RedStone.Net
             protected override void OnOpen()
             {
                 base.OnOpen();
-                long guid = GUID.Long;
-                m_handle.OnOpen(guid);
+                sessionID = GUID.Long;
+                m_handle.OnOpen(sessionID);
             }
 
             protected override void OnMessage(MessageEventArgs e)

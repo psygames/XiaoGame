@@ -38,6 +38,8 @@ namespace RedStone
             long playerUID = msg.deviceUID.GetHashCode();
             sessionPlayerDict[sessionID] = playerUID;
 
+
+
             Debug.Log("login  {0}", sessionID);
         }
 

@@ -6,10 +6,10 @@ using System.Text;
 
 namespace RedStone
 {
-    public class PlayerProxy : MainServerProxyBase
+    public class MatchProxy : MainServerProxyBase
     {
-        public Dictionary<long, PlayerData> playerDict = new Dictionary<long, PlayerData>();
-        public Dictionary<long, long> sessionPlayerDict = new Dictionary<long, long>();
+		private List<long> matchPlayers = new List<long>();
+		private List<long> battlePlayers = new List<long>();
 
         public long GetPlayerID(long sessionID)
         {

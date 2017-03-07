@@ -31,16 +31,17 @@ namespace RedStone.Net
 			object proto = ProtoTool.ToProtoObj(data);
 			if (proto.GetType() == typeof(message.LoginRequest))
 			{
-				// 发送SessionID作为key
-				EventManager.instance.Send(proto.GetType().ToString(), sessionId, proto);
-			}
-			else
+                // 发送SessionID作为key
+                EventManager.instance.Send(proto.GetType().ToString(), sessionId, proto);
+            }
+            else
 			{
 				// 发送PlayerID作为key
 				long playerID = ProxyManager.instance.GetProxy<PlayerProxy>().GetPlayerID(sessionId);
-				EventManager.instance.Send(proto.GetType().ToString(), playerID, proto);
-			}
-		}
+                Debug.Log("receive ---> {0}   {1} :len({2})", playerID, proto.GetType(), data.Length);
+                EventManager.instance.Send(proto.GetType().ToString(), playerID, proto);
+            }
+        }
 
 		public void Send<T>(T proto)
 		{

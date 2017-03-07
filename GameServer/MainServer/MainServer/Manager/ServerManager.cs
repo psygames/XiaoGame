@@ -46,7 +46,7 @@ namespace RedStone
             m_servers[type].Stop();
         }
 
-        public void SendMessage<T>(NetType type, long sessionId, T message)
+        public void SendMessage(NetType type, long sessionId, byte[] message)
         {
             m_servers[type].SendTo(sessionId, message);
         }

@@ -4,7 +4,6 @@ namespace RedStone
 {
 	public static class UUID
 	{
-
 		private static string m_device = null;
 		public static string DEVICE
 		{
@@ -24,6 +23,6 @@ namespace RedStone
 				return SystemInfo.deviceUniqueIdentifier;
 		}
 
-		public static bool USE_RANDOM_DEVICE = true;
+		public static bool USE_RANDOM_DEVICE = false;
 	}
 }

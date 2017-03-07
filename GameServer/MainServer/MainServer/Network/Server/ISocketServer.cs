@@ -11,6 +11,5 @@ namespace RedStone.Net
         void Start();
         void Stop();
         void SendTo(long sessionId, byte[] content);
-        void SendTo<T>(long sessionId, T msg);
     }
 }

@@ -9,18 +9,22 @@ namespace RedStone.Net
     public class WebSocketServer : ISocketServer
     {
         private WebSocketSharp.Server.WebSocketServer m_serv = null;
-        private WebSocketSharp.Server.WebSocketServiceHost m_host = null;
+        private WebSocketSharp.Server.WebSocketServiceHost host
+        {
+            get { return m_serv.WebSocketServices["/default"]; }
+        }
+        private static Dictionary<long, string> m_sessionDict = new Dictionary<long, string>();
 
         public void Init(int port, Func<IServerHandle> handleInitializer)
         {
             m_serv = new WebSocketSharp.Server.WebSocketServer(port);
             m_serv.Log.Level = WebSocketSharp.LogLevel.Error;
+            m_serv.WaitTime = TimeSpan.FromSeconds(1);
             m_serv.AddWebSocketService<WebSocketServerHandle>("/default", () =>
             {
-                return new WebSocketServerHandle(handleInitializer.Invoke());
+                WebSocketServerHandle handle = new WebSocketServerHandle(handleInitializer.Invoke());
+                return handle;
             });
-
-            m_host = m_serv.WebSocketServices["/default"];
         }
 
         public void Stop()
@@ -35,19 +39,13 @@ namespace RedStone.Net
 
         public void SendTo(long sessionID, byte[] content)
         {
-            string sessionStrID = m_host.Sessions.Sessions.First(
-                (a) => (a as WebSocketServerHandle).sessionID == sessionID).ID;
-            m_host.Sessions.SendToAsync(content, sessionStrID, (completed) => { });
+            string sessionStrID = m_sessionDict[sessionID];
+            host.Sessions.SendToAsync(content, sessionStrID, (completed) => { });
         }
 
         public void SendToAll(byte[] content)
         {
-            m_host.Sessions.BroadcastAsync(content, () => { });
-        }
-
-        public void SendTo<T>(long sessionId, T msg)
-        {
-
+            host.Sessions.BroadcastAsync(content, () => { });
         }
 
         public class WebSocketServerHandle : WebSocketSharp.Server.WebSocketBehavior
@@ -63,6 +61,7 @@ namespace RedStone.Net
             {
                 base.OnOpen();
                 sessionID = GUID.Long;
+                m_sessionDict[sessionID] = ID;
                 m_handle.OnOpen(sessionID);
             }
 

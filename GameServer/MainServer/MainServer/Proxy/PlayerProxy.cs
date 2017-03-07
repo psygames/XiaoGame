@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RedStone
 {
-    public class PlayerProxy : ProxyBase
+    public class PlayerProxy : MainServerProxyBase
     {
         public Dictionary<long, PlayerData> playerDict = new Dictionary<long, PlayerData>();
         public Dictionary<long, long> sessionPlayerDict = new Dictionary<long, long>();
@@ -25,6 +25,11 @@ namespace RedStone
             return null;
         }
 
+        public long GetSessionID(long playerID)
+        {
+            return sessionPlayerDict.First(a => { return a.Value == playerID; }).Key;
+        }
+
         public override void OnInit()
         {
             base.OnInit();
@@ -38,15 +43,19 @@ namespace RedStone
             long playerUID = msg.deviceUID.GetHashCode();
             sessionPlayerDict[sessionID] = playerUID;
 
+            //TODO: 额外LOG处理
+            Debug.Log("receive ---> {0}   {1} :len({2})", playerUID, msg.GetType(), -1);
 
-
-            Debug.Log("login  {0}", sessionID);
+            message.LoginReply rep = new message.LoginReply();
+            rep.level = 1;
+            rep.name = "hello";
+            SendTo(playerUID, rep);
         }
 
         public void OnPlayerLogout(long sessionID)
         {
+            Debug.Log("force close ---> {0}", sessionPlayerDict[sessionID]);
             sessionPlayerDict.Remove(sessionID);
-            Debug.Log("logout  {0}", sessionID);
         }
     }
 }

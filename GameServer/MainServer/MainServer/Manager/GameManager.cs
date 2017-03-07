@@ -5,11 +5,13 @@ namespace RedStone
 	{
 		public void Init()
 		{
+            DBManager.CreateInstance();
             ProtoTool.CreateInstance();
             ServerManager.CreateInstance();
             ProxyManager.CreateInstance();
             EventManager.CreateInstance();
 
+            DBManager.instance.Init();
             ProtoTool.instance.Init();
             ServerManager.instance.Init();
             ProxyManager.instance.Init();

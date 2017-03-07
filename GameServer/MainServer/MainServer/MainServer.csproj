@@ -49,6 +49,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=1.7.0.4714, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Plugins\mongodb\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.7.0.4714, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Plugins\mongodb\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -73,6 +81,7 @@
     </Compile>
     <Compile Include="Manager\EventManager.cs" />
     <Compile Include="Manager\GameManager.cs" />
+    <Compile Include="Manager\DBManager.cs" />
     <Compile Include="Manager\ServerManager.cs" />
     <Compile Include="Manager\ProxyManager.cs" />
     <Compile Include="Math\MathHelper.cs" />
@@ -265,6 +274,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxy\PlayerProxy.cs" />
+    <Compile Include="Proxy\MainServerProxyBase.cs" />
     <Compile Include="Proxy\ProxyBase.cs" />
     <Compile Include="Tools\BitConvert.cs" />
     <Compile Include="Tools\Debug.cs" />
@@ -272,6 +282,7 @@
     <Compile Include="Tools\FileOpt.cs" />
     <Compile Include="Tools\GUID.cs" />
     <Compile Include="Tools\LogicHelper.cs" />
+    <Compile Include="Tools\MongoDBHelper.cs" />
     <Compile Include="Tools\MyPath.cs" />
     <Compile Include="Tools\ProtoTool.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -298,6 +309,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Plugins\mongodb\License.txt" />
+    <Content Include="Plugins\mongodb\MongoDB.Bson.dll" />
+    <Content Include="Plugins\mongodb\MongoDB.Driver.dll" />
+    <Content Include="Plugins\mongodb\Release Notes v1.7.txt" />
     <Content Include="Plugins\protobuf-net\Web\TODO.txt" />
     <Content Include="Plugins\websocket-sharp\doc\.gitignore" />
     <Content Include="Resource\protonum.txt">

@@ -9,17 +9,36 @@ namespace RedStone
 {
     public class DBManager : Core.Singleton<DBManager>
     {
+        private MongoClient client = new MongoClient("mongodb://localhost:27017");
+        private Dictionary<string, MongoDatabase> dbs = new Dictionary<string, MongoDatabase>();
         public void Init()
         {
-            var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetServer().GetDatabase("foo");
+            AddDataBase("xiao_game");
+        }
+
+        public void AddDataBase(string name)
+        {
+            var database = client.GetServer().GetDatabase(name);
+            dbs.Add(name, database);
+        }
+
+        public MongoDatabase GetDB(string name)
+        {
+            return dbs[name];
+        }
+
+
+
+
+        private void Test()
+        {
+            var database = GetDB("xiao_game");
             var collection = database.GetCollection<BsonDocument>("bar");
-
             collection.Insert(new BsonDocument("Name", "Jack"));
-
             IMongoQuery query = Query.GTE("Name", "Jack");
             var entity = collection.FindOne(query);
         }
+
     }
 }
 

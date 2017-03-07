@@ -22,4 +22,12 @@ public static class GUID
             return id;
         }
     }
+
+    public static long UserID
+    {
+        get
+        {
+            return DateTime.UtcNow.Ticks;
+        }
+    }
 }

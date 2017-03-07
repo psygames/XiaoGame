@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace RedStone
 {
     public class PlayerProxy : MainServerProxyBase
@@ -40,11 +41,12 @@ namespace RedStone
 
         public void OnPlayerLogin(long sessionID, message.LoginRequest msg)
         {
-            long playerUID = msg.deviceUID.GetHashCode();
+            long playerUID = .GetHashCode();
             sessionPlayerDict[sessionID] = playerUID;
 
             //TODO: 额外LOG处理
             Debug.Log("receive ---> {0}   {1} :len({2})", playerUID, msg.GetType(), -1);
+            
 
             message.LoginReply rep = new message.LoginReply();
             rep.level = 1;

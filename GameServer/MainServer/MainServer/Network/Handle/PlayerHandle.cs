@@ -10,7 +10,8 @@ namespace RedStone.Net
 		public override void OnClose(string reason)
 		{
 			base.OnClose(reason);
-			EventManager.instance.Send(Event.Player.Logout, sessionId);
+            long playerID = ProxyManager.instance.GetProxy<PlayerProxy>().GetPlayerID(sessionId);
+            EventManager.instance.Send(Event.Player.ForceQuit, playerID);
 		}
 
 		public override void OnError(string reason)

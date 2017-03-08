@@ -36,13 +36,13 @@ namespace RedStone
             base.OnInit();
 
             RegisterNet<long, message.LoginRequest>(OnPlayerLogin);
-            EventManager.instance.Register<long>(Event.Player.Logout, OnPlayerLogout);
+            EventManager.instance.Register<long>(Event.Player.ForceQuit, OnPlayerForceQuit);
         }
 
         public void OnPlayerLogin(long sessionID, message.LoginRequest msg)
         {
-			var u = DB.User.Login(msg.deviceUID);
-			long playerUID = u["uid"].AsInt64;
+            var u = DB.User.Login(msg.deviceUID);
+            long playerUID = u["uid"].AsInt64;
             sessionPlayerDict[sessionID] = playerUID;
 
             //TODO: 额外LOG处理
@@ -54,12 +54,11 @@ namespace RedStone
             SendTo(playerUID, rep);
         }
 
-        public void OnPlayerLogout(long sessionID)
+        public void OnPlayerForceQuit(long pid)
         {
-			long playerUID = sessionPlayerDict[sessionID];
-			DB.User.Logout(playerUID);
-			Debug.Log("force close ---> {0}",playerUID);
-            sessionPlayerDict.Remove(sessionID);
+            DB.User.Logout(pid);
+            Debug.Log("force close ---> {0}", pid);
+            sessionPlayerDict.Remove(GetSessionID(pid));
         }
     }
 }

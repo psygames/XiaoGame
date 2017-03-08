@@ -9,7 +9,8 @@ namespace RedStone
 		public ProxyManager()
 		{
             AddProxy<PlayerProxy>();
-		}
+            AddProxy<MatchProxy>();
+        }
 
 		private void AddProxy<T>() where T : ProxyBase, new()
 		{

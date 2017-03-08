@@ -23,7 +23,7 @@ namespace RedStone
             if (!m_handlers.ContainsKey(eventName))
                 m_handlers.Add(eventName, new Dictionary<int, Action<object>>());
 
-            m_handlers[eventName].Add(handler.GetHashCode(), (obj) =>
+            m_handlers[eventName].Add(handler.Target.GetHashCode(), (obj) =>
             {
                 object[] objArray = obj as object[];
                 handler.Invoke((T)objArray[0]);
@@ -35,7 +35,7 @@ namespace RedStone
             if (!m_handlers.ContainsKey(eventName))
                 return;
 
-            m_handlers[eventName].Remove(handler.GetHashCode());
+            m_handlers[eventName].Remove(handler.Target.GetHashCode());
             if (m_handlers[eventName].Count == 0)
                 m_handlers.Remove(eventName);
         }
@@ -45,7 +45,7 @@ namespace RedStone
             if (!m_handlers.ContainsKey(eventName))
                 m_handlers.Add(eventName, new Dictionary<int, Action<object>>());
 
-            m_handlers[eventName].Add(handler.GetHashCode(), (obj) =>
+            m_handlers[eventName].Add(handler.Target.GetHashCode(), (obj) =>
             {
                 object[] objArray = obj as object[];
                 handler.Invoke((T1)objArray[0], (T2)objArray[1]);
@@ -57,7 +57,7 @@ namespace RedStone
             if (!m_handlers.ContainsKey(eventName))
                 return;
 
-            m_handlers[eventName].Remove(handler.GetHashCode());
+            m_handlers[eventName].Remove(handler.Target.GetHashCode());
             if (m_handlers[eventName].Count == 0)
                 m_handlers.Remove(eventName);
         }
